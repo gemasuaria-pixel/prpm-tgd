@@ -1,0 +1,84 @@
+/* ============================= */
+/* Font utama AdminLTE → Inter   */
+/* ============================= */
+
+/* Override variabel AdminLTE */
+:root {
+    --body-font-family: 'Inter', sans-serif;
+    --headings-font-family: 'Inter', sans-serif;
+}
+
+/* Body & heading */
+body {
+    font-family: var(--body-font-family);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--headings-font-family);
+}
+
+/* Cards */
+.card, .card-header, .card-title {
+    font-family: var(--headings-font-family);
+}
+
+/* Modals */
+.modal, .modal-header, .modal-title {
+    font-family: var(--headings-font-family);
+}
+
+/* Tables */
+.table, .table th, .table td {
+    font-family: var(--body-font-family);
+}
+
+/* Sidebar */
+.main-sidebar, .brand-link, .nav-sidebar .nav-link {
+    font-family: var(--body-font-family);
+}
+
+/* Navbar */
+.navbar, .navbar-nav .nav-link {
+    font-family: var(--body-font-family);
+}
+
+/* Buttons */
+.btn {
+    font-family: var(--body-font-family);
+}
+
+/* Form inputs & labels */
+input, textarea, select, label {
+    font-family: var(--body-font-family);
+}
+
+/* Breadcrumb */
+.breadcrumb, .breadcrumb-item {
+    font-family: var(--body-font-family);
+}
+
+/* Footer */
+.main-footer {
+    font-family: var(--body-font-family);
+}
+
+/* Optional: Small adjustments untuk heading berat *
+/* Sidebar utama */
+
+.main-sidebar, 
+.main-sidebar .brand-link, 
+.main-sidebar .sidebar, 
+.main-sidebar .nav-link, p,
+.main-sidebar .nav-header {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Submenu / treeview */
+.main-sidebar .nav-treeview .nav-link {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Badge / info kecil di sidebar */
+.main-sidebar .nav-item .badge {
+    font-family: 'Inter', sans-serif;
+}
