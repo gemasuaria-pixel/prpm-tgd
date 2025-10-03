@@ -33,6 +33,7 @@ Route::middleware(['auth', 'role:user', 'check.status'])
             ->name('dashboard');
         Route::get('/usulan-proposal-penelitian', [App\Http\Controllers\ResearchController\UploadPenelitianController::class, 'index'])
             ->name('usulanProposal');
+            
         Route::post('/usulan-proposal-penelitian', [App\Http\Controllers\ResearchController\UploadPenelitianController::class, 'store'])
             ->name('usulanProposal.store');
         Route::get('/upload-Laporan', [App\Http\Controllers\ResearchController\UploadLaporanController::class, 'index'])
