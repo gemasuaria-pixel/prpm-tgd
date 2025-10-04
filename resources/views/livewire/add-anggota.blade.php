@@ -1,8 +1,16 @@
 <div x-data="anggotaComponent()" x-init="init()" x-cloak>
     <style>
-        [x-cloak] { display: none !important; }
-        .drag-handle { cursor: grab; }
-        .sortable-ghost { opacity: 0.6; }
+        [x-cloak] {
+            display: none !important;
+        }
+
+        .drag-handle {
+            cursor: grab;
+        }
+
+        .sortable-ghost {
+            opacity: 0.6;
+        }
     </style>
 
     <!-- Form tambah anggota -->
@@ -12,13 +20,11 @@
             <div class="row g-3 mt-1">
                 <div class="col-md-6">
                     <label class="form-label">Nama Anggota</label>
-                    <input type="text" class="form-control" wire:model="nama"
-                        placeholder="Contoh: Dr. Ahmad Salem">
+                    <input type="text" class="form-control" wire:model="nama" placeholder="Contoh: Dr. Ahmad Salem">
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">NIDN Anggota</label>
-                    <input type="text" class="form-control" wire:model="nidn"
-                        placeholder="123443212">
+                    <input type="text" class="form-control" wire:model="nidn" placeholder="123443212">
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Alamat Anggota</label>
@@ -27,15 +33,12 @@
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Kontak Anggota</label>
-                    <input type="text" class="form-control" wire:model="kontak"
-                        placeholder="08123456783">
+                    <input type="text" class="form-control" wire:model="kontak" placeholder="08123456783">
                 </div>
             </div>
             <div class="text-end mt-3">
-                <button type="button" wire:click="batal"
-                    class="btn btn-secondary btn-sm">Batal</button>
-                <button type="button" wire:click="addAnggota"
-                    class="btn btn-primary btn-sm">Tambah</button>
+                <button type="button" wire:click="batal" class="btn btn-secondary btn-sm">Batal</button>
+                <button type="button" wire:click="addAnggota" class="btn btn-primary btn-sm">Tambah</button>
             </div>
         </div>
     </div>
@@ -45,9 +48,7 @@
         <h6 class="fw-bold">Daftar Anggota</h6>
 
         <!-- Tombol hapus: dikontrol oleh Alpine (selected entangled) -->
-        <button type="button"
-            id="hapus-btn"
-            x-bind:disabled="selected.length === 0"
+        <button type="button" id="hapus-btn" x-bind:disabled="selected.length === 0"
             x-bind:class="selected.length === 0 ? 'btn btn-secondary btn-sm' : 'btn btn-danger btn-sm'"
             @click="() => { if(selected.length) $wire.call('hapusTerpilih') }">
             <span x-text="selected.length === 0 ? 'Hapus Terpilih' : `Hapus (${selected.length})`"></span>
@@ -88,6 +89,15 @@
         </tbody>
     </table>
 
+    {{-- hidden input agar data anggota ikut terkirim di form utama --}}
+    @foreach ($anggota as $index => $item)
+        <input type="hidden" name="anggota[{{ $index }}][nama]" value="{{ $item['nama'] }}">
+        <input type="hidden" name="anggota[{{ $index }}][nidn]" value="{{ $item['nidn'] }}">
+        <input type="hidden" name="anggota[{{ $index }}][alamat]" value="{{ $item['alamat'] }}">
+        <input type="hidden" name="anggota[{{ $index }}][kontak]" value="{{ $item['kontak'] }}">
+    @endforeach
+
+
     <!-- Alpine component & dynamic load SortableJS -->
     <script>
         function anggotaComponent() {
@@ -115,7 +125,9 @@
 
                     // destroy instance lama jika ada
                     if (this.sortable) {
-                        try { this.sortable.destroy(); } catch(e) {}
+                        try {
+                            this.sortable.destroy();
+                        } catch (e) {}
                         this.sortable = null;
                     }
 
@@ -136,7 +148,8 @@
                         ghostClass: 'sortable-ghost',
                         onEnd: (evt) => {
                             // ambil urutan id setelah drag
-                            const order = Array.from(tbody.querySelectorAll('tr[data-id]')).map(tr => tr.dataset.id);
+                            const order = Array.from(tbody.querySelectorAll('tr[data-id]')).map(tr => tr
+                                .dataset.id);
                             // kirim ke Livewire untuk disimpan
                             this.$wire.call('updateOrder', order);
                         }
@@ -146,4 +159,3 @@
         }
     </script>
 </div>
-

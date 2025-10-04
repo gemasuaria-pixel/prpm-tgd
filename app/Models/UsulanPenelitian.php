@@ -11,11 +11,17 @@ class UsulanPenelitian extends Model
     protected $fillable = [
         'judul_penelitian', 'tahun_pelaksanaan', 'ketua_pengusul',
         'rumpun_ilmu', 'bidang_penelitian', 'kata_kunci',
-        'abstrak', 'file_proposal', 'luaran_tambahan', 'pernyataan'
+        'abstrak', 'luaran_tambahan', 'pernyataan'
     ];
 
     public function anggota()
     {
         return $this->hasMany(AnggotaPenelitian::class, 'usulan_id');
     }
+
+    public function dokumen()
+{
+    return $this->hasMany(DokumenPenelitian::class, 'usulan_id');
+}
+
 }

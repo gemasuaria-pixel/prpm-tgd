@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\ResearchController;
+namespace App\Http\Controllers\PenelitianController;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;

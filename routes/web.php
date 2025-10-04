@@ -31,14 +31,14 @@ Route::middleware(['auth', 'role:user', 'check.status'])
     ->group(function () {
         Route::get('/dashboard', [App\Http\Controllers\User\DashboardController::class, 'index'])
             ->name('dashboard');
-        Route::get('/usulan-proposal-penelitian', [App\Http\Controllers\ResearchController\UploadPenelitianController::class, 'index'])
+        Route::get('/usulan-proposal-penelitian', [App\Http\Controllers\PenelitianController\UsulanPenelitianController::class, 'index'])
             ->name('usulanProposal');
-            
-        Route::post('/usulan-proposal-penelitian', [App\Http\Controllers\ResearchController\UploadPenelitianController::class, 'store'])
+        Route::post('/usulan-proposal-penelitian', [App\Http\Controllers\PenelitianController\UsulanPenelitianController::class, 'store'])
             ->name('usulanProposal.store');
-        Route::get('/upload-Laporan', [App\Http\Controllers\ResearchController\UploadLaporanController::class, 'index'])
+
+        Route::get('/upload-Laporan', [App\Http\Controllers\PenelitianController\UploadLaporanController::class, 'index'])
             ->name('uploadLaporan');
-        Route::get('/status-penelitian', [App\Http\Controllers\ResearchController\StatusPenelitianController::class, 'index'])
+        Route::get('/status-penelitian', [App\Http\Controllers\PenelitianController\StatusPenelitianController::class, 'index'])
             ->name('statusPenelitian');
         Route::get('/usulanProposal-pengabdian', [App\Http\Controllers\PengabdianController\UploadProposalController::class, 'index'])
             ->name('usulanProposal-pengabdian');

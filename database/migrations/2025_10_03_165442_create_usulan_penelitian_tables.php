@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('bidang_penelitian', 100)->nullable();
             $table->string('kata_kunci');
             $table->text('abstrak');
-            $table->string('file_proposal'); // path file
             $table->enum('luaran_tambahan', ['Publikasi Jurnal', 'Hak Kekayaan Intelektual', 'Buku Ajar'])->nullable();
             $table->boolean('pernyataan')->default(false);
             $table->timestamps();
