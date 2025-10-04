@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             ['name' => 'admin', 'guard_name' => 'web']
         );
           $ketuaprpmRole = Role::firstOrCreate(
-            ['name' => 'ketuaPRPM', 'guard_name' => 'web']
+            ['name' => 'ketua_prpm', 'guard_name' => 'web']
         );
         $userRole = Role::firstOrCreate(
             ['name' => 'user', 'guard_name' => 'web']
@@ -30,7 +30,6 @@ class DatabaseSeeder extends Seeder
         $role1 = Role::find('1');
         $role2 = Role::find('2');
         $role3 = Role::find('3');
-
 
 
         $superAdmin = User::firstOrCreate(

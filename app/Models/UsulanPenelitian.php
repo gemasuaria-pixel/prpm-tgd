@@ -11,8 +11,14 @@ class UsulanPenelitian extends Model
     protected $fillable = [
         'judul_penelitian', 'tahun_pelaksanaan', 'ketua_pengusul',
         'rumpun_ilmu', 'bidang_penelitian', 'kata_kunci',
-        'abstrak', 'luaran_tambahan', 'pernyataan'
+        'abstrak', 'luaran_tambahan', 'pernyataan', 'status', 'catatan_reviewer'
+        
     ];
+    const STATUS_PENDING  = 'pending';
+    const STATUS_APPROVED = 'approved';
+    const STATUS_REJECTED = 'rejected';
+    const STATUS_REVISION = 'revision';
+
 
     public function anggota()
     {

@@ -135,7 +135,7 @@
                                             <div class="small-muted mt-1">File maks 25 MB dalam format PDF atau DOCX.</div>
                                         </div>
                                         <div class="col-md-4 d-flex align-items-end">
-                                            <a href="{{ asset('panduan_pengabdian.pdf') }}"
+                                            <a href=""
                                                 class="btn btn-outline-secondary w-100" download>Unduh Panduan</a>
                                         </div>
                                     </div>

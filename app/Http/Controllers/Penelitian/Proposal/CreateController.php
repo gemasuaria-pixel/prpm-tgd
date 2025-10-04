@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\PenelitianController;
+namespace App\Http\Controllers\Penelitian\Proposal;
 
 use App\Http\Controllers\Controller;
 use App\Models\DokumenPenelitian;
+use App\Models\UsulanPenelitian;
 use Illuminate\Http\Request;
 
-class UsulanPenelitianController extends Controller
+class CreateController extends Controller
 {
     public function index()
     {
 
-        return view('user.penelitian.usulanProposal');
+        return view('dosen.penelitian.proposal.create');
     }
 
     public function store(Request $request)
@@ -42,6 +43,7 @@ class UsulanPenelitianController extends Controller
         'abstrak' => $validated['abstrak'],
         'luaran_tambahan' => $validated['luaran_tambahan'] ?? null,
         'pernyataan' => true,
+        'status' => 'pending',
     ]);
 
 
@@ -73,5 +75,7 @@ class UsulanPenelitianController extends Controller
     return redirect()->route('user.usulanProposal')
         ->with('status', 'Usulan berhasil disimpan.');
 }
+
+
 
 }

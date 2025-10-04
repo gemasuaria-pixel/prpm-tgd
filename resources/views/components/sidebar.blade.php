@@ -62,13 +62,23 @@
                          </a>
                      </li>
                  @endrole
+                
+                     <li class="nav-item menu-open">
+                         <a href="{{ route('review.index') }}" class="nav-link active">
+                             <i class="nav-icon bi bi-speedometer"></i>
+                             <p>
+                                 Dashboard
+                             </p>
+                         </a>
+                     </li>
+                
 
                  @role('user')
                      <li class="nav-item menu-open">
                          <a href="{{ route('user.dashboard') }}" class="nav-link active">
                              <i class="nav-icon bi bi-speedometer"></i>
                              <p>
-                                 Dashboard
+                                 review
                              </p>
                          </a>
                      </li>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\Dosen;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -11,6 +11,6 @@ class DashboardController extends Controller
     public function index()
     {
         // bisa return view admin dashboard
-        return view('user.dashboard');
+        return view('dosen.dashboard');
     }
 }

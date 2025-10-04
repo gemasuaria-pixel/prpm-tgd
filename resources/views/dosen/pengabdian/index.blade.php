@@ -18,7 +18,7 @@
                             <div class="small-box text-black  bg-success-subtle">
                                 <div class="inner">
                                     <h3 class="text-success">53</h3>
-                                    <p class="text-success">Pengabdian<br>Diterima</p>
+                                    <p class="text-success">Proposal<br>Diterima</p>
                                 </div>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="small-box-icon" fill="#198754"
                                     viewBox="0 0 640 640">
@@ -35,7 +35,7 @@
                             <div class="small-box bg-warning-subtle">
                                 <div class="inner">
                                     <h3 class="alert-link">44</h3>
-                                    <p>Pengabdian <br>Diproses</p>
+                                    <p>Proposal<br>Diproses</p>
                                 </div>
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffc107"
                                     class="small-box-icon">

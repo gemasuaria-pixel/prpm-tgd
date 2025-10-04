@@ -23,6 +23,8 @@ return new class extends Migration
             $table->text('abstrak');
             $table->enum('luaran_tambahan', ['Publikasi Jurnal', 'Hak Kekayaan Intelektual', 'Buku Ajar'])->nullable();
             $table->boolean('pernyataan')->default(false);
+            $table->enum('status', ['pending', 'approved', 'rejected', 'revision'])->default('pending');
+            $table->text('catatan_reviewer')->nullable(); // optional, untuk memberi feedback
             $table->timestamps();
         });
 
