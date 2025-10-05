@@ -12,6 +12,7 @@ Route::get('/login', [HomeController::class, 'login']);
 Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('pending-users', [AdminController::class, 'pendingUsers'])->name('admin.pending-users');
     Route::post('approve-user/{id}', [AdminController::class, 'approveUser'])->name('admin.approve-user');
+    Route::post('reject-user/{id}', [AdminController::class, 'rejectUser'])->name('admin.reject-user');
 });
 
 Route::middleware(['auth', 'role:admin', 'check.status'])
@@ -24,16 +25,16 @@ Route::middleware(['auth', 'role:admin', 'check.status'])
         Route::get('/target', [HomeController::class, 'target'])->name('target');
     });
 
-Route::middleware(['auth', 'role:user', 'check.status'])
-    ->prefix('user')
-    ->name('user.')
+Route::middleware(['auth', 'role:dosen', 'check.status'])
+    ->prefix('dosen')
+    ->name('dosen.')
     ->group(function () {
         Route::get('/dashboard', [App\Http\Controllers\Dosen\DashboardController::class, 'index'])
             ->name('dashboard');
         Route::get('/usulan-proposal-penelitian', [App\Http\Controllers\Penelitian\Proposal\CreateController::class, 'index'])
-            ->name('usulanProposal');
+            ->name('ProposalPenelitian');
         Route::post('/usulan-proposal-penelitian', [App\Http\Controllers\Penelitian\Proposal\CreateController::class, 'store'])
-            ->name('usulanProposal.store');
+            ->name('ProposalPenelitian.store');
 
         Route::get('/upload-Laporan', [App\Http\Controllers\Penelitian\Laporan\CreateController::class, 'index'])
             ->name('uploadLaporan');
@@ -49,7 +50,6 @@ Route::middleware(['auth', 'role:user', 'check.status'])
     
     Route::get('/review', [ReviewProposalController::class, 'index'])->name('review.index');
     Route::post('review/{proposal}', [ReviewProposalController::class, 'updateStatus'])->name('review.update');
-
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

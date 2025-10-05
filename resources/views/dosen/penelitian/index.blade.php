@@ -75,7 +75,7 @@
                     <!-- Tombol Usulan & Laporan -->
                     <div class="row my-4">
                         <div class="col-md-6 d-grid mb-3 mb-md-0">
-                            <a href="{{ route('user.usulanProposal') }}"
+                            <a href="{{ route('user.ProposalPenelitian') }}"
                                 class="btn btn-outline-primary btn-lg rounded-3 fw-semibold shadow-sm">
                                 <i class="bi bi-plus-circle me-2"></i> Usulan Penelitian
                             </a>

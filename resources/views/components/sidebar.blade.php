@@ -63,29 +63,31 @@
                      </li>
                  @endrole
                 
+                   
+
+                 @role('dosen')
                      <li class="nav-item menu-open">
-                         <a href="{{ route('review.index') }}" class="nav-link active">
+                         <a href="{{ route('dosen.dashboard') }}" class="nav-link active">
                              <i class="nav-icon bi bi-speedometer"></i>
                              <p>
                                  Dashboard
                              </p>
                          </a>
                      </li>
-                
-
-                 @role('user')
-                     <li class="nav-item menu-open">
-                         <a href="{{ route('user.dashboard') }}" class="nav-link active">
+                     
+                       <li class="nav-item menu-open">
+                         <a href="{{ route('review.index') }}" class="nav-link active">
                              <i class="nav-icon bi bi-speedometer"></i>
                              <p>
                                  review
                              </p>
                          </a>
                      </li>
+                
 
 
                      <li class="nav-item ">
-                         <a href="{{ route('user.statusPenelitian') }}" class="nav-link  ">
+                         <a href="{{ route('dosen.statusPenelitian') }}" class="nav-link  ">
                              <i class="bi bi-lightbulb-fill"></i>
                              <p>
                                  Penelitian
@@ -95,7 +97,7 @@
                      </li>
 
                      <li class="nav-item ">
-                         <a href="{{ route('user.pengabdian') }}" class="nav-link  ">
+                         <a href="{{ route('dosen.pengabdian') }}" class="nav-link  ">
                              <i class="bi bi-people-fill"></i>
                              <p>
                                  Pengabdian
@@ -106,7 +108,7 @@
 
 
                          {{-- <li class="nav-item ">
-                                 <a href="{{ route('user.uploadLaporan-pengabdian') }}" class="nav-link ">
+                                 <a href="{{ route('dosen.uploadLaporan-pengabdian') }}" class="nav-link ">
                                      <i class="nav-icon bi bi-circle"></i>
                                      <p>Upload laporan</p>
                                  </a>

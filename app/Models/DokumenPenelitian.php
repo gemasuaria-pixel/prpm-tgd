@@ -12,17 +12,17 @@ class DokumenPenelitian extends Model
     protected $table = 'dokumen_penelitian';
 
     protected $fillable = [
-        'usulan_id',
+        'proposal_id',
         'jenis_dokumen',
         'file_path',
     ];
 
     /**
-     * Relasi ke model UsulanPenelitian (many to one)
-     * Setiap dokumen milik satu usulan penelitian
+     * Relasi ke model proposalPenelitian (many to one)
+     * Setiap dokumen milik satu proposal penelitian
      */
-    public function usulan()
+    public function proposal()
     {
-        return $this->belongsTo(UsulanPenelitian::class, 'usulan_id');
+        return $this->belongsTo(ProposalPenelitian::class, 'proposal_id');
     }
 }

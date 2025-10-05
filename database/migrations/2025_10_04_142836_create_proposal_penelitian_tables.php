@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Tabel usulan_penelitian
-        Schema::create('usulan_penelitian', function (Blueprint $table) {
+        // Tabel proposal_penelitian
+        Schema::create('proposal_penelitian', function (Blueprint $table) {
             $table->id();
             $table->string('judul_penelitian');
             $table->year('tahun_pelaksanaan');
@@ -21,17 +21,20 @@ return new class extends Migration
             $table->string('bidang_penelitian', 100)->nullable();
             $table->string('kata_kunci');
             $table->text('abstrak');
-            $table->enum('luaran_tambahan', ['Publikasi Jurnal', 'Hak Kekayaan Intelektual', 'Buku Ajar'])->nullable();
             $table->boolean('pernyataan')->default(false);
-            $table->enum('status', ['pending', 'approved', 'rejected', 'revision'])->default('pending');
-            $table->text('catatan_reviewer')->nullable(); // optional, untuk memberi feedback
+            $table->text('komentar_prpm')->nullable();
+            $table->string('luaran_tambahan')->nullable();
+            // status berlapis
+            $table->enum('status_prpm', ['pending', 'approved', 'rejected', 'revision'])->default('pending');
+            $table->enum('status_final', ['pending', 'layak', 'tidak_layak'])->default('pending');
+
             $table->timestamps();
         });
 
         // Tabel anggota_penelitian
         Schema::create('anggota_penelitian', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('usulan_id')->constrained('usulan_penelitian')->onDelete('cascade');
+            $table->foreignId('proposal_id')->constrained('proposal_penelitian')->onDelete('cascade');
             $table->string('nama', 150);
             $table->string('nidn', 50)->nullable();
             $table->string('alamat', 255)->nullable();
@@ -40,12 +43,21 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // Opsional: tabel dokumen tambahan
+        // Tabel dokumen tambahan
         Schema::create('dokumen_penelitian', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('usulan_id')->constrained('usulan_penelitian')->onDelete('cascade');
-            $table->string('jenis_dokumen', 100); // contoh: Proposal, HKI, Buku Ajar
+            $table->foreignId('proposal_id')->constrained('proposal_penelitian')->onDelete('cascade');
+            $table->enum('jenis_dokumen', ['proposal', 'hki', 'buku_ajar', 'lainnya']);
             $table->string('file_path', 255);
+            $table->timestamps();
+        });
+
+        // Tabel luaran tambahan (lebih fleksibel daripada enum tunggal)
+        Schema::create('luaran_penelitian', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('proposal_id')->constrained('proposal_penelitian')->onDelete('cascade');
+            $table->enum('jenis_luaran', ['Publikasi Jurnal', 'Hak Kekayaan Intelektual', 'Buku Ajar']);
+            $table->string('keterangan')->nullable(); // misalnya judul jurnal atau nomor HKI
             $table->timestamps();
         });
     }
@@ -55,8 +67,10 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('luaran_penelitian');
+        Schema::dropIfExists('proposal_reviews');
         Schema::dropIfExists('dokumen_penelitian');
         Schema::dropIfExists('anggota_penelitian');
-        Schema::dropIfExists('usulan_penelitian');
+        Schema::dropIfExists('proposal_penelitian');
     }
 };

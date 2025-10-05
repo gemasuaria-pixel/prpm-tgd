@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
@@ -15,49 +14,44 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Roles
+        $adminRole = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
+        $ketuaprpmRole = Role::firstOrCreate(['name' => 'ketua_prpm', 'guard_name' => 'web']);
+        $dosenRole = Role::firstOrCreate(['name' => 'dosen', 'guard_name' => 'web']);
 
-        $adminRole = Role::firstOrCreate(
-            ['name' => 'admin', 'guard_name' => 'web']
-        );
-          $ketuaprpmRole = Role::firstOrCreate(
-            ['name' => 'ketua_prpm', 'guard_name' => 'web']
-        );
-        $userRole = Role::firstOrCreate(
-            ['name' => 'user', 'guard_name' => 'web']
-        );
-      
-
-        $role1 = Role::find('1');
-        $role2 = Role::find('2');
-        $role3 = Role::find('3');
-
-
+        // Admin
         $superAdmin = User::firstOrCreate(
             ['email' => 'admin@example.com'],
             [
-                'name' => 'admin',
+                'name' => 'Admin Super',
                 'password' => Hash::make('12345678'),
                 'status' => 'approved',
             ]
         );
-        $ketuaprpm= User::firstOrCreate(
-            ['email' => 'prpmtgd@example.com'],
+        $superAdmin->assignRole($adminRole);
+
+        // Ketua PRPM
+        $ketuaprpm = User::firstOrCreate(
+            ['email' => 'ketuaprpm@example.com'],
             [
-                'name' => 'ketuaprpm',
+                'name' => 'Ketua PRPM',
                 'password' => Hash::make('prpm1582004'),
                 'status' => 'approved',
             ]
         );
-        $ketuaprpm= User::firstOrCreate(
-            ['email' => 'user@example.com'],
-            [
-                'name' => 'anto ketes',
-                'password' => Hash::make('user12345'),
-                'status' => 'approved',
-            ]
-        )->assignRole($role3);
-        $superAdmin->assignRole($role1);
-        $ketuaprpm->assignRole($role2);
-       
+        $ketuaprpm->assignRole($ketuaprpmRole);
+
+        // Generate 10 dosen reviewer dummy
+        for ($i = 1; $i <= 10; $i++) {
+            $reviewer = User::firstOrCreate(
+                ['email' => "dosen$i@example.com"],
+                [
+                    'name' => "Dosen $i",
+                    'password' => Hash::make('dosen123'),
+                    'status' => 'approved',
+                ]
+            );
+            $reviewer->assignRole($dosenRole);
+        }
     }
 }

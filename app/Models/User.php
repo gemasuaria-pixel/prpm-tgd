@@ -61,4 +61,10 @@ class User extends Authenticatable implements MustVerifyEmail
             ? asset('storage/' . $this->profile_photo_path)
             : 'https://ui-avatars.com/api/?name=' . urlencode($this->name);
     }
+
+    public function reviews()
+{
+    return $this->hasMany(ProposalReview::class, 'reviewer_id');
+}
+
 }

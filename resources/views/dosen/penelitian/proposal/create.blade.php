@@ -4,14 +4,14 @@
     <main class="app-main">
         <div class="app-content">
             <div class="container">
-                <x-breadcrumbs>Usulan Penelitian</x-breadcrumbs>
+                <x-breadcrumbs>proposal Penelitian</x-breadcrumbs>
                 <div class="row justify-content-center">
                     <div class="col-xl-12">
                         <div class="card">
                             <div class="card-body p-4">
                                 <div class="d-flex justify-content-between align-items-start border-bottom">
                                     <div>
-                                        <h4 class="mb-1">Formulir Usulan Penelitian Masyarakat</h4>
+                                        <h4 class="mb-1">Formulir Usulan proposal Penelitian </h4>
                                         <p class="small text-muted mb-0">
                                             Formulir ini dibuat untuk memenuhi pertanyaan terkait pengusulan proposal Penelitian.
                                             Harap untuk melengkapi semua pertanyaan yang ada
@@ -20,7 +20,7 @@
                                 </div>
 
                               
-                                <form action="{{ route('user.usulanProposal.store') }}" method="POST" enctype="multipart/form-data">
+                                <form action="{{ route('user.ProposalPenelitian.store') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
 
                                     <!-- A. Informasi Umum -->

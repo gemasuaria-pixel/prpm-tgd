@@ -9,11 +9,11 @@ class AnggotaPenelitian extends Model
     protected $table = 'anggota_penelitian';
 
     protected $fillable = [
-        'usulan_id', 'nama', 'nidn', 'alamat', 'kontak', 'urutan'
+        'proposal_id', 'nama', 'nidn', 'alamat', 'kontak', 'urutan'
     ];
 
-    public function usulan()
+    public function proposal()
     {
-        return $this->belongsTo(UsulanPenelitian::class, 'usulan_id');
+        return $this->belongsTo(ProposalPenelitian::class, 'proposal_id');
     }
 }

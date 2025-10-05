@@ -2,29 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\UsulanPenelitian;
+use App\Models\ProposalPenelitian;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ReviewProposalController extends Controller
 {
+
     public function index()
     {
-        $proposals = UsulanPenelitian::where('status', UsulanPenelitian::STATUS_PENDING)->get();
-        return view('review.proposal.index', compact('proposals'));
+         // Ambil proposal yang statusnya pending
+    $proposals = ProposalPenelitian::where('status_prpm', ProposalPenelitian::STATUS_PENDING)->get();
+
+    // Ambil semua reviewer (misal role = 'dosen')
+    $reviewers = User::where('role', 'dosen')->get();
+
+    // Kirim kedua variabel ke view
+    return view('review.proposal.index', compact('proposals', 'reviewers'));
     }
 
-    public function updateStatus(Request $request, UsulanPenelitian $proposal)
+    public function updateStatus(Request $request, ProposalPenelitian $proposal)
     {
         $request->validate([
-            'status' => 'required|in:approved,rejected,revision',
-            'catatan_reviewer' => 'nullable|string'
+            'status_prpm' => 'required|in:approved,rejected,revision',
+            'komentar_prpm' => 'nullable|string'
         ]);
 
         $proposal->update([
-            'status' => $request->status,
-            'catatan_reviewer' => $request->catatan_reviewer,
+            'status_prpm' => $request->status_prpm,
+            'komentar_prpm' => $request->komentar,
         ]);
 
-        return redirect()->back()->with('status', 'Status usulan berhasil diperbarui.');
+        return redirect()->back()->with('status_prpm', 'Status Proposal berhasil diperbarui.');
     }
 }

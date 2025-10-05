@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Penelitian\Proposal;
 
 use App\Http\Controllers\Controller;
 use App\Models\DokumenPenelitian;
-use App\Models\UsulanPenelitian;
+use App\Models\ProposalPenelitian;
 use Illuminate\Http\Request;
 
 class CreateController extends Controller
@@ -33,7 +33,7 @@ class CreateController extends Controller
     ]);
 
     // 2️⃣ Simpan usulan utama
-    $usulan = \App\Models\UsulanPenelitian::create([
+    $proposal = \App\Models\ProposalPenelitian::create([
         'judul_penelitian' => $validated['judul_penelitian'],
         'tahun_pelaksanaan' => $validated['tahun_pelaksanaan'],
         'rumpun_ilmu' => $validated['rumpun_ilmu'],
@@ -43,7 +43,7 @@ class CreateController extends Controller
         'abstrak' => $validated['abstrak'],
         'luaran_tambahan' => $validated['luaran_tambahan'] ?? null,
         'pernyataan' => true,
-        'status' => 'pending',
+        'status_prpm' => 'pending',
     ]);
 
 
@@ -51,8 +51,8 @@ class CreateController extends Controller
     if ($request->hasFile('file_proposal')) {
         $path = $request->file('file_proposal')->store('proposals', 'public');
 
-        dokumenPenelitian::create([
-            'usulan_id' => $usulan->id,
+        DokumenPenelitian::create([
+            'proposal_id' => $proposal->id,
             'jenis_dokumen' => 'proposal',
             'file_path' => $path,
         ]);
@@ -61,7 +61,7 @@ class CreateController extends Controller
     // 4️⃣ Simpan anggota penelitian
     if ($request->has('anggota')) {
         foreach ($request->anggota as $index => $anggota) {
-            $usulan->anggota()->create([
+            $proposal->anggota()->create([
                 'nama' => $anggota['nama'] ?? null,
                 'nidn' => $anggota['nidn'] ?? null,
                 'alamat' => $anggota['alamat'] ?? null,
@@ -72,8 +72,8 @@ class CreateController extends Controller
     }
 
     
-    return redirect()->route('user.usulanProposal')
-        ->with('status', 'Usulan berhasil disimpan.');
+    return redirect()->route('dosen.ProposalPenelitian')
+        ->with('status_prpm', 'proposal berhasil disimpan.');
 }
 
 
