@@ -10,6 +10,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
 {{-- end google font inter --}}
     {{-- css costume --}}
+
+
+
+     
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireStyles
+
+
      <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     <!--begin::Accessibility Meta Tags-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
@@ -329,6 +337,8 @@
     </script>
 
       @stack('scripts')
+
+      @livewireScripts
     <!--end::Script-->
   </body>
   <!--end::Body-->

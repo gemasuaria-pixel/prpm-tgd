@@ -9,6 +9,6 @@ class CreateController extends Controller
 {
 
         public function index(){
-        return view('dosen.penelitian.laporan.create');
+        return view('penelitian.laporan.create');
     }
 }

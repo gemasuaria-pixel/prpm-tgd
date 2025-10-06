@@ -31,7 +31,7 @@ class ProposalPenelitian extends Model
 }
 public function reviews()
 {
-    return $this->morphMany(ProposalReview::class, 'reviewable');
+    return $this->morphMany(Review::class, 'reviewable');
 }
 
 }

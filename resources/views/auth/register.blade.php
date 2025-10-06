@@ -50,6 +50,7 @@
                         <x-input-error :messages="$errors->get('password_confirmation')" class="invalid-feedback"/>
                     </div>
 
+                    
                     <!-- Register Button -->
                     <div class="d-grid mb-2">
                         <button type="submit" class="btn btn-dark fw-semibold">

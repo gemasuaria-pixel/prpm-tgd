@@ -43,8 +43,14 @@ class AuthenticatedSessionController extends Controller
         return redirect()->route('admin.dashboard');
     }
 
-    if ($user->hasRole('user')) {
-        return redirect()->route('user.dashboard');
+    if ($user->hasRole('dosen')) {
+        return redirect()->route('dashboard');
+    }
+    if ($user->hasRole('ketua_prpm')) {
+        return redirect()->route('ketua-prpm.dashboard');
+    }
+    if ($user->hasRole('reviewer')) {
+        return redirect()->route('dashboard');
     }
 
     // fallback

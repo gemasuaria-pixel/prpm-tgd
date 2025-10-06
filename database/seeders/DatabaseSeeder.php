@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         $adminRole = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
         $ketuaprpmRole = Role::firstOrCreate(['name' => 'ketua_prpm', 'guard_name' => 'web']);
         $dosenRole = Role::firstOrCreate(['name' => 'dosen', 'guard_name' => 'web']);
+        $reviewerRole = Role::firstOrCreate(['name' => 'reviewer', 'guard_name' => 'web']); // 👈 role baru
 
         // Admin
         $superAdmin = User::firstOrCreate(
@@ -41,9 +42,9 @@ class DatabaseSeeder extends Seeder
         );
         $ketuaprpm->assignRole($ketuaprpmRole);
 
-        // Generate 10 dosen reviewer dummy
+        // Generate 10 dosen dummy
         for ($i = 1; $i <= 10; $i++) {
-            $reviewer = User::firstOrCreate(
+            $dosen = User::firstOrCreate(
                 ['email' => "dosen$i@example.com"],
                 [
                     'name' => "Dosen $i",
@@ -51,7 +52,20 @@ class DatabaseSeeder extends Seeder
                     'status' => 'approved',
                 ]
             );
-            $reviewer->assignRole($dosenRole);
+            $dosen->assignRole($dosenRole);
+        }
+
+        // Generate 3 reviewer dummy
+        for ($i = 1; $i <= 3; $i++) {
+            $reviewer = User::firstOrCreate(
+                ['email' => "reviewer$i@example.com"],
+                [
+                    'name' => "Reviewer $i",
+                    'password' => Hash::make('reviewer123'),
+                    'status' => 'approved',
+                ]
+            );
+            $reviewer->assignRole($reviewerRole);
         }
     }
 }

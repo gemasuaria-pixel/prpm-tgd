@@ -41,8 +41,8 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
             'status' => 'pending', // 👈 set status pending
         ]);
-        // ✅ kasih role default "user"
-        $user->assignRole('user');
+           // 🚀 Otomatis assign role dosen
+        $user->assignRole('dosen');
         // event(new Registered($user));
         // jangan auto-login
         // Auth::login($user);
