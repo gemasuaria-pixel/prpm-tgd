@@ -1,96 +1,96 @@
 <?php
 
 namespace App\Livewire;
+
 use Livewire\Component;
 
 class AddAnggota extends Component
 {
-    public $nama, $nidn, $alamat, $kontak;
-
-    // daftar anggota (setiap item berisi id, nama, nidn, alamat, kontak)
+    public $nama, $nidn, $nim, $alamat, $kontak;
     public $anggota = [];
-
-    // array id yang dipilih (checkbox)
     public $selected = [];
-
-    // select all checkbox
     public $selectAll = false;
 
     public function updatedSelectAll($value)
     {
-        if ($value) {
-            $this->selected = array_column($this->anggota, 'id');
-        } else {
-            $this->selected = [];
-        }
+        $this->selected = $value
+            ? array_column($this->anggota, 'id')
+            : [];
     }
 
     public function addAnggota()
     {
         $this->validate([
-            'nama'   => 'required|string',
-            'nidn'   => 'required|string',
-            'alamat' => 'required|string',
-            'kontak' => 'required|string',
+            'nama'   => 'required|string|max:255',
+            'tipe'   => 'nullable|string|max:50', // bisa dipakai kalau ingin pilih dosen/mahasiswa
+            'nidn'   => 'nullable|string|max:50',
+            'nim'    => 'nullable|string|max:50',
+            'alamat' => 'nullable|string|max:255',
+            'kontak' => 'nullable|string|max:50',
         ]);
 
         $this->anggota[] = [
-            'id'     => (string) uniqid(), // ID unik untuk stabilitas checkbox
-            'nama'   => $this->nama,
-            'nidn'   => $this->nidn,
-            'alamat' => $this->alamat,
-            'kontak' => $this->kontak,
+            'id'     => uniqid(),
+            'nama'   => trim($this->nama),
+            'nidn'   => trim($this->nidn),
+            'nim'    => trim($this->nim),
+            'alamat' => trim($this->alamat),
+            'kontak' => trim($this->kontak),
         ];
 
-        $this->reset(['nama', 'nidn', 'alamat', 'kontak']);
+        $this->reset(['nama', 'nidn', 'nim', 'alamat', 'kontak']);
     }
 
     public function batal()
     {
-        $this->reset(['nama', 'nidn', 'alamat', 'kontak']);
+        $this->reset(['nama', 'nidn', 'nim', 'alamat', 'kontak']);
     }
 
     public function hapusTerpilih()
     {
-        if (empty($this->selected)) {
-            return;
-        }
+        if (empty($this->selected)) return;
 
         $this->anggota = array_values(array_filter($this->anggota, function ($item) {
             return !in_array($item['id'], $this->selected);
         }));
 
-        $this->selected = [];
-        $this->selectAll = false;
+        $this->reset(['selected', 'selectAll']);
     }
 
-    // update urutan setelah drag & drop (menerima array id dalam urutan baru)
     public function updateOrder($order)
     {
-        if (!is_array($order)) {
-            return;
-        }
+        if (!is_array($order)) return;
 
-        // buat map id => item untuk lookup cepat
-        $map = [];
-        foreach ($this->anggota as $item) {
-            $map[$item['id']] = $item;
-        }
+        $map = collect($this->anggota)->keyBy('id');
 
-        $newOrder = [];
-        foreach ($order as $id) {
-            if (isset($map[$id])) {
-                $newOrder[] = $map[$id];
-                unset($map[$id]);
-            }
-        }
+        $this->anggota = collect($order)
+            ->map(fn($id) => $map[$id] ?? null)
+            ->filter()
+            ->values()
+            ->toArray();
+    }
 
-        // tambahkan sisa item kalau ada (sebagai jaga-jaga)
-        foreach ($map as $item) {
-            $newOrder[] = $item;
+    /**
+     * Simpan anggota ke database
+     * $parent = instance ProposalPenelitian / ProposalPengabdian
+     */
+    public function saveMembers($parent)
+    {
+        foreach ($this->anggota as $member) {
+            $parent->members()->create([
+                'tipe'   => $member['nidn'] ? 'dosen' : 'mahasiswa',
+                'nama'   => $member['nama'],
+                'nidn'   => $member['nidn'] ?? null,
+                'nim'    => $member['nim'] ?? null,
+                'alamat' => $member['alamat'] ?? null,
+                'kontak' => $member['kontak'] ?? null,
+            ]);
         }
-
-        $this->anggota = array_values($newOrder);
+dd($this->anggota);
+        // Reset array setelah disimpan
+        $this->anggota = [];
+        $this->selected = [];
+        $this->selectAll = false;
     }
 
     public function render()
@@ -98,5 +98,3 @@ class AddAnggota extends Component
         return view('livewire.add-anggota');
     }
 }
-
-

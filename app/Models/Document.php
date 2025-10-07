@@ -2,27 +2,31 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Proposal\Proposal;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class DokumenPenelitian extends Model
+class Document extends Model
 {
     use HasFactory;
 
-    protected $table = 'dokumen_penelitian';
+    protected $table = 'documents';
+
+    protected $guarded = [];
 
     protected $fillable = [
-        'proposal_id',
-        'jenis_dokumen',
+        
+        'tipe',
         'file_path',
+        'link_jurnal',
     ];
 
     /**
      * Relasi ke model proposalPenelitian (many to one)
      * Setiap dokumen milik satu proposal penelitian
      */
-    public function proposal()
+    public function documentable()
     {
-        return $this->belongsTo(ProposalPenelitian::class, 'proposal_id');
+        return $this->morphTo();
     }
 }

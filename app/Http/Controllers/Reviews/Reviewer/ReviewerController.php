@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Reviews\Reviewer;
 
+use Illuminate\Http\Request;
+use App\Models\Review\Review;
 use App\Http\Controllers\Controller;
-use App\Models\Review;
 use Illuminate\Support\Facades\Auth;
 
 class ReviewerController extends Controller
@@ -23,18 +24,17 @@ class ReviewerController extends Controller
         return view('reviews.reviewer._list_penelitian', compact('review'));
     }
 
-    public function submit(\Illuminate\Http\Request $request, Review $review)
+    public function submit(Request $request, Review $review)
     {
         $request->validate([
             'komentar' => 'required|string',
-            'nilai' => 'required|numeric|min:0|max:100',
         ]);
 
         $review->update([
             'komentar' => $request->komentar,
-            'nilai' => $request->nilai,
-            'status' => 'approved',
+            'status' => $request->status,
         ]);
+dd($review->toArray(), $request->all());
 
         return redirect()->route('reviewer.index')->with('success', 'Review berhasil disimpan.');
     }

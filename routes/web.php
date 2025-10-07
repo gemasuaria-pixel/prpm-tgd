@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Admin\Nontification\NontificationController;
 use App\Http\Controllers\Admin\TargetController;
 use App\Http\Controllers\Admin\UserRegistrationManagementController;
 use App\Http\Controllers\Dashboard\AdminDashboardController;
@@ -20,8 +19,8 @@ Route::middleware(['auth', 'role:admin', 'check.status'])
     ->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])
             ->name('dashboard');
-        Route::get('/pusatnotifikasi', [NontificationController::class, 'notification'])->name('pusatnotifikasi');
-        Route::get('/target', [TargetController::class, 'target'])->name('target');
+        Route::get('/pusatnotifikasi', [App\Http\Controllers\Admin\Notification\NotificationController::class, 'index'])->name('pusat-notifikasi');
+        Route::get('/target', [TargetController::class, 'index'])->name('target');
         Route::get('/user-registration-management', [UserRegistrationManagementController::class, 'index'])
             ->name('user-registration.index');
         Route::post('/users-registration/approve-user/{id}', [UserRegistrationManagementController::class, 'approveUser'])
@@ -44,6 +43,8 @@ Route::middleware(['auth', 'role:dosen', 'check.status'])
 
         Route::get('/upload-Laporan', [App\Http\Controllers\Penelitian\Laporan\CreateController::class, 'index'])
             ->name('uploadLaporan');
+        Route::post('/upload-Laporan', [App\Http\Controllers\Penelitian\Laporan\CreateController::class, 'index'])
+            ->name('uploadLaporan.store');
         Route::get('/status-penelitian', [App\Http\Controllers\Penelitian\IndexController::class, 'index'])
             ->name('statusPenelitian');
         Route::get('/usulanProposal-pengabdian', [App\Http\Controllers\Pengabdian\Proposal\CreateController::class, 'index'])
@@ -76,7 +77,7 @@ Route::middleware('auth', 'role:reviewer')
     ->group(function () {
         Route::get('/reviewer/review', [ReviewerController::class, 'index'])->name('index');
         Route::get('/reviewer/review/{review}', [ReviewerController::class, 'form'])->name('review-form');
-        Route::post('/reviewer/review/{review}', [ReviewerController::class, 'submit'])->name('review-submit');
+        Route::post('/reviewer/review/submit/{review}', [ReviewerController::class, 'submit'])->name('review-submit');
     });
 
 Route::middleware('auth')->group(function () {

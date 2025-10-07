@@ -13,10 +13,7 @@
 
     <div class="card card-modern overflow-hidden">
         <div class="card-body p-4 p-lg-5">
-             <div class="">
-                    <h4 class="mb-1 fw-bold" style="letter-spacing: -0.2px">Manage Roles</h4>
-                    <div class="muted-small">Atur role untuk <span class="fw-semibold">Dosen</span> & <span class="fw-semibold">Reviewer</span></div>
-                </div>
+             
             <div class="d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center mb-4 gap-3">
                
 

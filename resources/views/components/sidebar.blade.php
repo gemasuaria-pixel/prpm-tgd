@@ -72,26 +72,27 @@
                          <a href="{{ route('ketua-prpm.dashboard') }}" class="nav-link active">
                              <i class="nav-icon bi bi-speedometer"></i>
                              <p>
-                                 review
+                                 Dashboard
+                             </p>
+                         </a>
+                     </li>
+                     <li class="nav-item menu-open">
+                         <a href="{{ route('ketua-prpm.prpm.review.index') }}" class="nav-link active">
+                             <i class="nav-icon bi bi-speedometer"></i>
+                             <p>
+                                 Review
                              </p>
                          </a>
                      </li>
                  @endrole
 
                  @role('reviewer')
-                     <li class="nav-item menu-open">
-                         <a href="{{ route('dashboard') }}" class="nav-link active">
-                             <i class="nav-icon bi bi-speedometer"></i>
-                             <p>
-                                 dashboard
-                             </p>
-                         </a>
-                     </li>
+                   
                      <li class="nav-item menu-open">
                          <a href="{{ route('reviewer.index') }}" class="nav-link active">
                              <i class="nav-icon bi bi-speedometer"></i>
                              <p>
-                                 reviewer
+                                 review
                              </p>
                          </a>
                      </li>
@@ -120,7 +121,7 @@
 
              @role('admin')
                  <li class="nav-item">
-                     <a href="{{ route('admin.pusatnotifikasi') }}" class="nav-link">
+                     <a href="{{ route('admin.pusat-notifikasi') }}" class="nav-link">
                          <i class="bi bi-bell-fill"></i>
                          <p>Pusat Nontifikasi</p>
                      </a>
@@ -133,9 +134,9 @@
                  </li>
                  <li class="nav-item">
                      <a href="#" class="nav-link">
-                         <i class="nav-icon bi bi-box-seam-fill"></i>
+                         <i class="bi bi-people-fill"></i>
                          <p>
-                             User management
+                             Users management
                              <i class="nav-arrow bi bi-chevron-right"></i>
                          </p>
                      </a>
@@ -143,7 +144,7 @@
                          <li class="nav-item">
                              <a href="{{ route('admin.user-registration.index') }}" class="nav-link">
                                  <i class="nav-icon bi bi-circle"></i>
-                                 <p>User Registraion</p>
+                                 <p>Users Registraion</p>
                              </a>
                          </li>
                          <li class="nav-item">

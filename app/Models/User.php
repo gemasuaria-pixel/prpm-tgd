@@ -1,22 +1,21 @@
 <?php
 
 namespace App\Models;
-
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Review\Review;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    /**spatie */
-    use HasRoles;
-
-
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
+
+    /**spatie */
+    use HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -27,7 +26,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
-         'profile_photo_path',
+        'profile_photo_path',
     ];
 
     /**
@@ -58,13 +57,12 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getProfilePhotoUrlAttribute()
     {
         return $this->profile_photo_path
-            ? asset('storage/' . $this->profile_photo_path)
-            : 'https://ui-avatars.com/api/?name=' . urlencode($this->name);
+            ? asset('storage/'.$this->profile_photo_path)
+            : 'https://ui-avatars.com/api/?name='.urlencode($this->name);
     }
-
+    
     public function reviews()
-{
-    return $this->hasMany(ProposalReview::class, 'reviewer_id');
-}
-
+    {
+        return $this->hasMany(Review::class, 'reviewer_id');
+    }
 }

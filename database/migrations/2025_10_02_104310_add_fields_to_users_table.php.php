@@ -18,7 +18,6 @@ return new class extends Migration
             $table->date('tanggal_lahir')->nullable()->after('tempat_lahir');
  
             // Akademik
-            $table->string('klaster')->nullable()->after('tanggal_lahir');
             $table->string('kelompok_pt_binaan')->nullable()->after('klaster');
             $table->string('institusi')->default('STMIK Triguna Dharma')->after('kelompok_pt_binaan');
             $table->string('program_studi')->nullable()->after('institusi');
