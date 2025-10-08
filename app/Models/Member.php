@@ -9,10 +9,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Member extends Model
 {
     use HasFactory;
-
+    protected $table = 'members';
     protected $fillable = [
-        'proposal_id',
-        'user_id',
         'tipe',
         'nama',
         'nidn',

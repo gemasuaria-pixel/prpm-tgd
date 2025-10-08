@@ -80,88 +80,91 @@
                                 <i class="bi bi-plus-circle me-2"></i> Usulan Penelitian
                             </a>
                         </div>
-                        <div class="col-md-6 d-grid">
-                            <a href="{{ route('dosen.uploadLaporan') }}"
-                                class="btn btn-outline-success btn-lg rounded-3 fw-semibold shadow-sm">
-                                <i class="bi bi-file-earmark-text me-2"></i> Laporan Penelitian
-                            </a>
-                        </div>
-                    </div>
 
-
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <h3 class="card-title">Status penelitian</h3>
-                        </div>
-                        <!-- /.card-header -->
-                        <div class="card-body">
-                            <div class="table-responsive-md">
-                                <table class="table table-bordered ">
-                                    <thead>
-                                        <tr>
-                                            <th>Tanggal Upload</th>
-                                            <th>Judul</th>
-                                            <th>Jenis</th>
-                                            <th>Status</th>
-                                            <th>Tanggal Update</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="align-middle">
-                                            <td>23 - 01 - 2025</td>
-                                            <td>Update software</td>
-                                            <td>
-                                                Laporan
-                                            </td>
-                                            <td><span class="badge text-bg-danger">Ditolak</span></td>
-                                            <td>23 - 01 - 2025</td>
-                                        </tr>
-                                        <tr class="align-middle">
-                                            <td>23 - 01 - 2025</td>
-                                            <td>Clean database</td>
-                                            <td>
-                                                Laporan
-                                            </td>
-                                            <td><span class="badge text-bg-warning">Menunggu</span></td>
-                                            <td>23 - 01 - 2025</td>
-                                        </tr>
-                                        <tr class="align-middle">
-                                            <td>23 - 01 - 2025</td>
-                                            <td>Cron job running</td>
-                                            <td>
-                                                Laporan
-                                            </td>
-                                            <td><span class="badge text-bg-success">Disetujui</span></td>
-                                            <td>23 - 01 - 2025</td>
-                                        </tr>
-                                        <tr class="align-middle">
-                                            <td>23 - 01 - 2025</td>
-                                            <td>Fix and squish bugs</td>
-                                            <td>
-                                                Laporan
-                                            </td>
-                                            <td><span class="badge text-bg-success">Disetujui</span></td>
-                                            <td>23 - 01 - 2025</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                        @if ($proposalFinal)
+                            <div class="col-md-6 d-grid">
+                                <a href="{{ route('dosen.uploadLaporan') }}"
+                                    class="btn btn-outline-success btn-lg rounded-3 fw-semibold shadow-sm">
+                                    <i class="bi bi-file-earmark-text me-2"></i> Laporan Penelitian
+                                </a>
                             </div>
-                       
-                        </div>
-                        <!-- /.card-body -->
-                        <div class="card-footer clearfix">
-                            <ul class="pagination pagination-sm m-0 float-end">
-                                <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-                            </ul>
+                        @endif
+                    </div>
+
+
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h3 class="card-title">Status penelitian</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <div class="table-responsive-md">
+                                    <table class="table table-bordered ">
+                                        <thead>
+                                            <tr>
+                                                <th>Tanggal Upload</th>
+                                                <th>Judul</th>
+                                                <th>Jenis</th>
+                                                <th>Status</th>
+                                                <th>Tanggal Update</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="align-middle">
+                                                <td>23 - 01 - 2025</td>
+                                                <td>Update software</td>
+                                                <td>
+                                                    Laporan
+                                                </td>
+                                                <td><span class="badge text-bg-danger">Ditolak</span></td>
+                                                <td>23 - 01 - 2025</td>
+                                            </tr>
+                                            <tr class="align-middle">
+                                                <td>23 - 01 - 2025</td>
+                                                <td>Clean database</td>
+                                                <td>
+                                                    Laporan
+                                                </td>
+                                                <td><span class="badge text-bg-warning">Menunggu</span></td>
+                                                <td>23 - 01 - 2025</td>
+                                            </tr>
+                                            <tr class="align-middle">
+                                                <td>23 - 01 - 2025</td>
+                                                <td>Cron job running</td>
+                                                <td>
+                                                    Laporan
+                                                </td>
+                                                <td><span class="badge text-bg-success">Disetujui</span></td>
+                                                <td>23 - 01 - 2025</td>
+                                            </tr>
+                                            <tr class="align-middle">
+                                                <td>23 - 01 - 2025</td>
+                                                <td>Fix and squish bugs</td>
+                                                <td>
+                                                    Laporan
+                                                </td>
+                                                <td><span class="badge text-bg-success">Disetujui</span></td>
+                                                <td>23 - 01 - 2025</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                            <!-- /.card-body -->
+                            <div class="card-footer clearfix">
+                                <ul class="pagination pagination-sm m-0 float-end">
+                                    <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
             </body>
 
             </html>
@@ -176,5 +179,4 @@
 
         <!--end::App Content-->
     </main>
-    
 @endsection

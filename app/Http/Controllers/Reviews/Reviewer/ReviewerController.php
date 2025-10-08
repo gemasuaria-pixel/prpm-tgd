@@ -2,26 +2,41 @@
 
 namespace App\Http\Controllers\Reviews\Reviewer;
 
-use Illuminate\Http\Request;
-use App\Models\Review\Review;
 use App\Http\Controllers\Controller;
+use App\Models\Laporan\LaporanPenelitian;
+use App\Models\Proposal\Proposal;
+use App\Models\Review\Review;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ReviewerController extends Controller
 {
-
     public function index()
     {
         $reviews = Review::with('reviewable')
             ->where('reviewer_id', Auth::id())
+            ->latest()
             ->get();
 
-        return view('reviews.reviewer.index', compact('reviews'));
+        $proposalReviews = $reviews->filter(fn ($r) => $r->reviewable_type === Proposal::class);
+        $laporanReviews = $reviews->filter(fn ($r) => $r->reviewable_type === LaporanPenelitian::class);
+
+        return view('reviews.reviewer.penelitian.index', compact('proposalReviews', 'laporanReviews'));
     }
 
-    public function form(Review $review)
+    public function formProposal(Review $review)
     {
-        return view('reviews.reviewer._list_penelitian', compact('review'));
+        return view('reviews.reviewer.penelitian.show-proposal', compact('review'));
+    }
+
+    public function formLaporan(Review $review)
+    {
+        $review->load([
+            'reviewable.proposal.infoPenelitian',
+            'reviewable.documents',
+        ]);
+
+        return view('reviews.reviewer.penelitian.show-laporan', compact('review'));
     }
 
     public function submit(Request $request, Review $review)
@@ -34,7 +49,6 @@ class ReviewerController extends Controller
             'komentar' => $request->komentar,
             'status' => $request->status,
         ]);
-dd($review->toArray(), $request->all());
 
         return redirect()->route('reviewer.index')->with('success', 'Review berhasil disimpan.');
     }

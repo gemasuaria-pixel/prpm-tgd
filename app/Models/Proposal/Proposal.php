@@ -8,7 +8,7 @@ use App\Models\Member;
 use App\Models\Document;
 use App\Models\Review\Review;
 use App\Models\InfoPenelitian;
-use App\Models\Laporan\Laporan;
+use App\Models\Laporan\LaporanPenelitian;
 use App\Models\Review\ProposalReviews;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -29,7 +29,6 @@ class Proposal extends Model
         'abstrak',
         'pernyataan',
         'status_prpm',
-        'status_final_prpm',
         'komentar_prpm',
         'luaran_tambahan_dijanjikan'
     ];
@@ -38,12 +37,6 @@ class Proposal extends Model
     public function dosen()
     {
         return $this->belongsTo(User::class, 'dosen_id');
-    }
-
-    // Relasi ke member proposal
-    public function member()
-    {
-        return $this->hasMany(Member::class);
     }
 
     // Relasi ke mitra (khusus pengabdian)
@@ -59,10 +52,10 @@ class Proposal extends Model
 }
 
 
-    // Relasi ke laporan
-    public function Laporan()
+    // Relasi ke LaporanPenelitian
+    public function LaporanPenelitian()
     {
-        return $this->hasMany(Laporan::class);
+        return $this->hasMany(LaporanPenelitian::class);
     }
       public function documents()
     {

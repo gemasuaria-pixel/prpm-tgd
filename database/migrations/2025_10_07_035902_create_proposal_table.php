@@ -13,13 +13,10 @@ return new class extends Migration
     {
         Schema::create('proposal', function (Blueprint $table) {
             $table->id();
-
             // Relasi ke dosen pengusul
             $table->foreignId('dosen_id')->constrained('users')->onDelete('cascade');
-
             // Jenis kegiatan
             $table->enum('jenis', ['penelitian', 'pengabdian']);
-
             // Identitas proposal
             $table->string('judul');
             $table->year('tahun_pelaksanaan'); // contoh: 2025
@@ -30,10 +27,8 @@ return new class extends Migration
             $table->text('pernyataan')->nullable(); // misal: pernyataan keaslian
             $table->text('luaran_tambahan_dijanjikan')->nullable(); // misal: pernyataan keaslian
             // Status dan hasil evaluasi PRPM
-            $table->enum('status_prpm', ['pending', 'approved', 'rejected','revisi'])->default('pending');
-            $table->enum('status_final_prpm', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->enum('status_prpm', ['pending', 'approved', 'rejected','revisi','final'])->default('pending');
             $table->text('komentar_prpm')->nullable();
-
             $table->timestamps();
         });
     }

@@ -2,48 +2,79 @@
 
 @section('content')
 <div class="container mt-4">
-    <h4 class="mb-4">Form Review Proposal Penelitian</h4>
+    <h4 class="mb-4">Form Review Laporan Penelitian</h4>
 
     <div class="card shadow-sm border-0 rounded-4">
         <div class="card-body">
 
-            {{-- ================== INFORMASI PROPOSAL ================== --}}
-            <h5 class="fw-semibold text-primary mb-3">
-                {{ $review->reviewable->judul_penelitian ?? '-' }}
-            </h5>
+            {{-- ================== AMBIL PROPOSAL TERKAIT ================== --}}
+            @php
+                $laporan = $review->reviewable;
+                $proposal = $laporan->proposal;
+            @endphp
+
+            {{-- ================== INFORMASI LAPORAN & PROPOSAL ================== --}}
+            <h5 class="fw-semibold text-primary mb-3">{{ $proposal->judul ?? '-' }}</h5>
 
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <p><strong>Ketua Pengusul:</strong> {{ $review->reviewable->ketua_pengusul ?? '-' }}</p>
-                    <p><strong>Rumpun Ilmu:</strong> {{ $review->reviewable->rumpun_ilmu ?? '-' }}</p>
-                    <p><strong>Bidang Penelitian:</strong> 
-                        {{ optional($review->reviewable->infoPenelitian)->bidang_penelitian ?? '-' }}
-                    </p>
+                    <p><strong>Ketua Pengusul:</strong> {{ $proposal->ketua_pengusul ?? '-' }}</p>
+                    <p><strong>Rumpun Ilmu:</strong> {{ $proposal->rumpun_ilmu ?? '-' }}</p>
+                    <p><strong>Bidang Penelitian:</strong> {{ optional($proposal->infoPenelitian)->bidang_penelitian ?? '-' }}</p>
+                    <p><strong>Tahun Pelaksanaan:</strong> {{ $proposal->tahun_pelaksanaan ?? '-' }}</p>
                 </div>
+
                 <div class="col-md-6">
-                    <p><strong>Tahun Pelaksanaan:</strong> {{ $review->reviewable->tahun_pelaksanaan ?? '-' }}</p>
-                    <p><strong>Luaran Tambahan Dijanjikan:</strong> 
-                        {{ $review->reviewable->luaran_tambahan_dijanjikan ?? '-' }}
-                    </p>
+                    <p><strong>Kata Kunci:</strong> {{ $laporan->kata_kunci ?? '-' }}</p>
                     <p>
-                        <strong>Dokumen Proposal:</strong><br>
-                        @if ($review->reviewable->documents->count())
-                            <a href="{{ asset('storage/' . $review->reviewable->documents->first()->file_path) }}" 
-                               target="_blank" class="btn btn-sm btn-outline-primary mt-1">
+                        <strong>Dokumen Laporan:</strong><br>
+                        @if ($laporan->documents->count())
+                            <a href="{{ asset('storage/' . $laporan->documents->first()->file_path) }}" target="_blank" class="btn btn-sm btn-outline-primary mt-1">
                                 <i class="bi bi-file-earmark-text me-1"></i> Lihat Dokumen
                             </a>
                         @else
-                            <span class="text-muted">Belum ada dokumen</span>
+                            <span class="text-muted">Belum ada dokumen laporan</span>
                         @endif
                     </p>
                 </div>
             </div>
 
-            {{-- ================== ABSTRAK ================== --}}
+            {{-- ================== RINGKASAN ================== --}}
             <div class="mb-4">
-                <strong>Abstrak:</strong>
+                <strong>Ringkasan Hasil Penelitian:</strong>
                 <div class="border rounded p-3 bg-light mt-1">
-                    {{ optional($review->reviewable->infoPenelitian)->abstrak ?? 'Belum ada abstrak.' }}
+                    {{ $laporan->ringkasan_laporan ?? optional($proposal->infoPenelitian)->abstrak ?? 'Belum ada ringkasan hasil.' }}
+                </div>
+            </div>
+
+            {{-- ================== LUARAN PENELITIAN ================== --}}
+            <div class="mb-4">
+                <strong>Luaran Penelitian:</strong>
+                <div class="table-responsive mt-2">
+                    <table class="table table-sm table-bordered align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Jenis Luaran</th>
+                                <th>Judul Luaran</th>
+                                <th>Keterangan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($laporan->luaran ?? [] as $luaran)
+                                <tr>
+                                    <td>{{ $luaran->jenis_luaran ?? '-' }}</td>
+                                    <td>{{ $luaran->judul_luaran ?? '-' }}</td>
+                                    <td>{{ $luaran->keterangan ?? '-' }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted py-2">
+                                        Belum ada data luaran penelitian.
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
@@ -61,7 +92,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($review->reviewable->members ?? [] as $anggota)
+                            @forelse ($proposal->members ?? [] as $anggota)
                                 <tr>
                                     <td>{{ $anggota->nama }}</td>
                                     <td>{{ $anggota->nidn ?? '-' }}</td>
@@ -93,8 +124,6 @@
                         <div class="text-danger small mt-1">{{ $message }}</div>
                     @enderror
                 </div>
-
-             
 
                 <div class="mb-3">
                     <label for="status" class="form-label fw-semibold">Status Review</label>

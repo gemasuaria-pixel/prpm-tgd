@@ -13,11 +13,9 @@ return new class extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
-
             // 🔹 relasi polymorphic
             $table->unsignedBigInteger('documentable_id');
             $table->string('documentable_type');
-
             // 🔹 atribut dokumen
             $table->enum('tipe', [
                 'proposal_penelitian',
@@ -26,7 +24,6 @@ return new class extends Migration
                 'laporan_pengabdian',
                 'jurnal',
             ]);
-
             $table->string('file_path')->nullable();
             $table->string('link_jurnal')->nullable();
             $table->timestamps();

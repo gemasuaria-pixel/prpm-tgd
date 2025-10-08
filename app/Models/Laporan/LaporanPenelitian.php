@@ -2,22 +2,23 @@
 
 namespace App\Models\Laporan;
 
+use App\Models\Document;
+use App\Models\Review\Review;
 use App\Models\Proposal\Proposal;
-use App\Models\Review\LaporanReview;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Models\Document;
 
-class Laporan extends Model
+class LaporanPenelitian extends Model
 {
         use HasFactory;
-
+protected $table = 'laporan_penelitian';
     protected $fillable = [
         'proposal_id',
-        'file_laporan',
-        'link_jurnal',
+        'metode_penelitian',
+        'ringkasan_laporan',
+        'abstrak',
+        'kata_kunci',
         'status_prpm',
-        'status_final_prpm',
         'komentar_prpm',
     ];
 
@@ -28,10 +29,12 @@ class Laporan extends Model
     }
 
     // Relasi ke review laporan
-    public function reviews()
-    {
-        return $this->hasMany(LaporanReview::class);
-    }
+  // App\Models\LaporanPenelitian.php
+public function reviews()
+{
+    return $this->morphMany(Review::class, 'reviewable');
+}
+
 
      public function documents()
     {

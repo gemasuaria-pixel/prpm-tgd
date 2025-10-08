@@ -76,14 +76,30 @@
                              </p>
                          </a>
                      </li>
-                     <li class="nav-item menu-open">
-                         <a href="{{ route('ketua-prpm.prpm.review.index') }}" class="nav-link active">
-                             <i class="nav-icon bi bi-speedometer"></i>
-                             <p>
-                                 Review
-                             </p>
-                         </a>
-                     </li>
+                  
+                     <li class="nav-item">
+                     <a href="#" class="nav-link">
+                         <i class="bi bi-people-fill"></i>
+                         <p>
+                             Reviews
+                             <i class="nav-arrow bi bi-chevron-right"></i>
+                         </p>
+                     </a>
+                     <ul class="nav nav-treeview">
+                         <li class="nav-item">
+                             <a href="{{ route('ketua-prpm.prpm.review.index') }}" class="nav-link">
+                                 <i class="nav-icon bi bi-circle"></i>
+                                 <p>Penelitian</p>
+                             </a>
+                         </li>
+                         <li class="nav-item">
+                             <a href="#" class="nav-link">
+                                 <i class="nav-icon bi bi-circle"></i>
+                                 <p>Pengabdian</p>
+                             </a>
+                         </li>
+                       
+                     </ul>
                  @endrole
 
                  @role('reviewer')
