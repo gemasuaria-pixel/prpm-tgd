@@ -13,6 +13,8 @@
                     <!--begin::Row-->
 
 
+
+
                     <div class="row g-3">
                         <!-- ======================== -->
                         <!-- PROPOSAL -->
@@ -25,7 +27,7 @@
                                     <div class="icon-square bg-success-subtle text-success mb-2 rounded-circle">
                                         <i class="bi bi-check-circle-fill fs-4"></i>
                                     </div>
-                                    <h5 class="card-title fw-bold text-success mb-0">{{ $proposalDiterimaCount ?? 0 }}</h5>
+                                    <h5 class="card-title fw-bold text-success mb-0">{{ $proposalCount['diterima'] }}</h5>
                                     <p class="card-text text-success text-center">Diterima</p>
                                 </div>
                             </div>
@@ -39,7 +41,7 @@
                                     <div class="icon-square bg-warning-subtle text-warning mb-2 rounded-circle">
                                         <i class="bi bi-hourglass-split fs-4"></i>
                                     </div>
-                                    <h5 class="card-title fw-bold text-warning mb-0">{{ $proposalDiprosesCount ?? 0 }}</h5>
+                                    <h5 class="card-title fw-bold text-warning mb-0">{{ $proposalCount['diproses'] }}</h5>
                                     <p class="card-text text-warning text-center">Diproses</p>
                                 </div>
                             </div>
@@ -53,7 +55,7 @@
                                     <div class="icon-square bg-danger-subtle text-danger mb-2 rounded-circle">
                                         <i class="bi bi-x-circle-fill fs-4"></i>
                                     </div>
-                                    <h5 class="card-title fw-bold text-danger mb-0">{{ $proposalDitolakCount ?? 0 }}</h5>
+                                    <h5 class="card-title fw-bold text-danger mb-0">{{ $proposalCount['ditolak'] }}</h5>
                                     <p class="card-text text-danger text-center">Ditolak</p>
                                 </div>
                             </div>
@@ -70,7 +72,7 @@
                                     <div class="icon-square bg-primary-subtle text-primary mb-2 rounded-3">
                                         <i class="bi bi-check-circle-fill fs-4"></i>
                                     </div>
-                                    <h5 class="card-title fw-bold text-primary mb-0">{{ $laporanDiterimaCount ?? 0 }}</h5>
+                                    <h5 class="card-title fw-bold text-primary mb-0">{{ $reportCount['diterima'] }}</h5>
                                     <p class="card-text text-primary text-center">Diterima</p>
                                 </div>
                             </div>
@@ -84,7 +86,7 @@
                                     <div class="icon-square bg-warning-subtle text-warning mb-2 rounded-3">
                                         <i class="bi bi-hourglass-split fs-4"></i>
                                     </div>
-                                    <h5 class="card-title fw-bold text-warning mb-0">{{ $laporanDiprosesCount ?? 0 }}</h5>
+                                    <h5 class="card-title fw-bold text-warning mb-0">{{ $reportCount['diproses'] }}</h5>
                                     <p class="card-text text-warning text-center">Diproses</p>
                                 </div>
                             </div>
@@ -98,12 +100,13 @@
                                     <div class="icon-square bg-danger-subtle text-danger mb-2 rounded-3">
                                         <i class="bi bi-x-circle-fill fs-4"></i>
                                     </div>
-                                    <h5 class="card-title fw-bold text-danger mb-0">{{ $laporanDitolakCount ?? 0 }}</h5>
+                                    <h5 class="card-title fw-bold text-danger mb-0">{{ $reportCount['ditolak'] }}</h5>
                                     <p class="card-text text-danger text-center">Ditolak</p>
                                 </div>
                             </div>
                         </div>
                     </div>
+
 
 
 
@@ -136,49 +139,68 @@
                     </div>
 
 
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <h3 class="card-title">Status Penelitian</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive-md">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>Tanggal Upload</th>
-                                            <th>Judul</th>
-                                            <th>Jenis</th>
-                                            <th>Status</th>
-                                            <th>Tanggal Update</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {{-- Contoh row kosong / skeleton --}}
-                                        <tr class="align-middle">
-                                            <td>--</td>
-                                            <td>--</td>
-                                            <td>--</td>
-                                            <td>
-                                                <span class="badge text-bg-secondary">--</span>
-                                            </td>
-                                            <td>--</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="card-footer clearfix">
-                            <ul class="pagination pagination-sm m-0 float-end">
-                                <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                </div>
+                  <div class="card mb-4">
+    <div class="card-header">
+        <h3 class="card-title">Status Penelitian</h3>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive-md">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Tanggal Upload</th>
+                        <th>Judul</th>
+                        <th>Jenis</th>
+                        <th>Status</th>
+                        <th>Tanggal Update</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($allEntries as $entry)
+                        <tr class="align-middle">
+                            <td>{{ $entry->tanggal_upload->format('d-m-Y H:i') }}</td>
+                            <td>{{ $entry->judul }}</td>
+                            <td>
+                                @if ($entry->jenis === 'Proposal')
+                                    <span class="badge text-bg-primary">{{ $entry->jenis }}</span>
+                                @else
+                                    <span class="badge text-bg-success">{{ $entry->jenis }}</span>
+                                @endif
+                            </td>
+                            <td>
+                                @php
+                                    $statusClass = match($entry->status) {
+                                        'final' => 'text-bg-success',
+                                        'menunggu_validasi_prpm' => 'text-bg-warning',
+                                        'rejected' => 'text-bg-danger',
+                                        default => 'text-bg-secondary'
+                                    };
+                                @endphp
+                                <span class="badge {{ $statusClass }}">
+                                    {{ ucfirst(str_replace('_', ' ', $entry->status)) }}
+                                </span>
+                            </td>
+                            <td>{{ $entry->tanggal_update->format('d-m-Y H:i') }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="text-center text-muted">Belum ada data penelitian</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card-footer clearfix">
+        <ul class="pagination pagination-sm m-0 float-end">
+            <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+        </ul>
+    </div>
+</div>
 
 
 

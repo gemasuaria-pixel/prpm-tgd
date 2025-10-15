@@ -87,7 +87,7 @@
                      </a>
                      <ul class="nav nav-treeview">
                          <li class="nav-item">
-                             <a href="{{ route('ketua-prpm.prpm.review.index') }}" class="nav-link">
+                             <a href="{{ route('ketua-prpm.review.proposal.index') }}" class="nav-link">
                                  <i class="nav-icon bi bi-circle"></i>
                                  <p>Penelitian</p>
                              </a>

@@ -54,30 +54,41 @@ Route::middleware(['auth', 'role:dosen', 'check.status'])
             ->name('pengabdian');
     });
 
-Route::middleware('auth', 'role:ketua_prpm')
+Route::middleware(['auth', 'role:ketua_prpm'])
     ->prefix('ketua-prpm')
     ->name('ketua-prpm.')
     ->group(function () {
-        Route::get('/dashboard', [App\Http\Controllers\Dashboard\KetuaPRPMDashboardController::class, 'index'])->name('dashboard');
-        Route::get('/review/penelitian', [App\Http\Controllers\Reviews\PRPM\Penelitian\ReviewController::class, 'index'])->name('prpm.review.index');
-        Route::get('/review/pengabdian', [App\Http\Controllers\Reviews\PRPM\Pengabdian\ReviewController::class, 'index'])->name('prpm.review.index');
-        Route::post('/review/{proposal}/update-status', [App\Http\Controllers\Reviews\PRPM\Penelitian\ReviewController::class, 'updateStatus'])
-            ->name('prpm.review.updateStatus');
-        // Untuk review proposal
-        Route::get('/review/proposal/{id}', [ReviewController::class, 'showProposal'])
-            ->name('review.proposal.show');
-        // Untuk review laporan (kalau nanti dipakai juga)
-        Route::get('/review/laporan/{id}', [ReviewController::class, 'showLaporan'])
-            ->name('review.laporan.show');
-        Route::post('/ketua-prpm/prpm/review/laporan/{id}', [ReviewController::class, 'updateStatusLaporan'])
-            ->name('prpm.review.updateStatusLaporan');
+        // Dashboard
+        Route::get('/dashboard', [App\Http\Controllers\Dashboard\KetuaPRPMDashboardController::class, 'index'])
+            ->name('dashboard');
+
+        // Review Proposal penelitian
+        Route::prefix('review/penelitian/proposal')->group(function () {
+            Route::get('/', [App\Http\Controllers\Reviews\PRPM\Penelitian\ProposalReviewController::class, 'index'])
+                ->name('review.proposal.index');
+            Route::get('/{proposal}', [App\Http\Controllers\Reviews\PRPM\Penelitian\ProposalReviewController::class, 'show'])
+                ->name('review.proposal.show');
+            Route::post('/{proposal}/update-status', [App\Http\Controllers\Reviews\PRPM\Penelitian\ProposalReviewController::class, 'updateStatus'])
+                ->name('review.proposal.updateStatus');
+        });
+
+        // Review Laporan penelitian
+        Route::prefix('review/penelitian/laporan')->group(function () {
+            Route::get('/', [App\Http\Controllers\Reviews\PRPM\Penelitian\LaporanReviewController::class, 'index'])
+                ->name('review.laporan.index');
+            Route::get('/{id}', [App\Http\Controllers\Reviews\PRPM\Penelitian\LaporanReviewController::class, 'show'])
+                ->name('review.laporan.show');
+            Route::post('/{id}/update-status', [App\Http\Controllers\Reviews\PRPM\Penelitian\LaporanReviewController::class, 'updateStatus'])
+                ->name('review.laporan.updateStatus');
+        });
     });
 
+
 Route::middleware(['auth', 'role:reviewer|dosen'])
-        ->group(function () {
-            Route::get('/dashboard', [App\Http\Controllers\Dashboard\DashboardController::class, 'index'])
-                ->name('dashboard');
-        });
+    ->group(function () {
+        Route::get('/dashboard', [App\Http\Controllers\Dashboard\DashboardController::class, 'index'])
+            ->name('dashboard');
+    });
 
 Route::middleware('auth', 'role:reviewer')
     ->prefix('reviewer')
@@ -87,8 +98,8 @@ Route::middleware('auth', 'role:reviewer')
         Route::get('/reviewer/review/proposal/{review}', [ReviewerController::class, 'formProposal'])->name('review-proposal');
         Route::get('/reviewer/review/laporan/{review}', [ReviewerController::class, 'formLaporan'])->name('review-laporan');
         Route::post('/reviewer/review/submit/{review}', [ReviewerController::class, 'submit'])->name('review-submit');
-        Route::post('/reviewer/review-laporan/{id}', [ReviewController::class, 'submitLaporan'])
-    ->name('reviewer.review-submit-laporan');
+        Route::post('/reviewer/review-laporan/{id}', [ReviewerController::class, 'submitLaporan'])
+            ->name('reviewer.review-submit-laporan');
 
     });
 

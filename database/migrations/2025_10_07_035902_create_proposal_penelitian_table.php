@@ -27,6 +27,8 @@ return new class extends Migration
         'menunggu_validasi_prpm',
         'revisi',
         'approved_by_prpm',
+        'menunggu_validasi_reviewer',
+        'approved_by_prpm',
         'rejected',
         'final'
     ])->default('menunggu_validasi_prpm');

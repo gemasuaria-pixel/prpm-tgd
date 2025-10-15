@@ -16,9 +16,12 @@ class Document extends Model
 
     protected $fillable = [
         
+         'documentable_id',
+        'documentable_type',
         'tipe',
         'file_path',
         'link_jurnal',
+        'link_video',
     ];
 
     /**
