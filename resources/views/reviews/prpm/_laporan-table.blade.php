@@ -19,22 +19,22 @@
                     };
                 @endphp
                 <tr>
+                <tr data-bs-toggle="collapse" data-bs-target="#detail-laporan-{{ $laporan->id }}" aria-expanded="false"
+                    aria-controls="detail-laporan-{{ $laporan->id }}" class="cursor-pointer">
                     <td class="fw-semibold text-wrap">{{ $laporan->proposal->judul ?? '-' }}</td>
                     <td>{{ $laporan->proposal->ketua_pengusul ?? '-' }}</td>
                     <td>
-                        <span class="badge rounded-pill px-3 py-2 {{ $statusClass }}">
-                            {{ ucfirst($laporan->status_prpm ?? 'Menunggu') }}
-                        </span>
+                        <x-status-badge :status="$laporan->status_prpm" />
                     </td>
                     <td class="text-center">
                         <button class="btn btn-light btn-sm border rounded-pill px-3" data-bs-toggle="modal"
                             data-bs-target="#modalLaporan{{ $laporan->id }}">
                             <i class="bi bi-eye text-primary"></i> Detail
                         </button>
+                       
                     </td>
                 </tr>
 
-                {{-- Modal Detail Laporan --}}
                 <div class="modal fade" id="modalLaporan{{ $laporan->id }}" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-xl modal-dialog-scrollable">
                         <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
@@ -207,10 +207,17 @@
                                         </form>
                                     </div>
                                 </div>
-                            </div>
+                            </div> {{-- /modal-body --}}
+                        </div> {{-- /modal-content --}}
+                    </div> {{-- /modal-dialog --}}
+                </div> {{-- /modal --}}
+                <tr class="collapse-row">
+                    <td colspan="4" class="p-0">
+                        <div id="detail-laporan-{{ $laporan->id }}" class="collapse">
+                            <x-review-item-detail :item="$laporan" type="laporan" :reviewers="$reviewers" />
                         </div>
-                    </div>
-                </div>
+                    </td>
+                </tr>
             @empty
                 <tr>
                     <td colspan="4" class="text-center py-4 text-muted">Belum ada laporan penelitian.</td>
@@ -219,3 +226,14 @@
         </tbody>
     </table>
 </div>
+
+@push('styles')
+    <style>
+        .cursor-pointer {
+            cursor: pointer;
+        }
+        .collapse-row {
+            border: none !important;
+        }
+    </style>
+@endpush

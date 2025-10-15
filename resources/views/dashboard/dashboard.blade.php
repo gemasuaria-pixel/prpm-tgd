@@ -14,7 +14,7 @@
                         <!--begin::Small Box Widget 2-->
                         <div class="small-box text-black  bg-success-subtle">
                             <div class="inner">
-                                <h3 class="text-success">53</h3>
+                                <h3 class="text-success">{{ $diterimaCount ?? 0 }}</h3>
                                 <p class="text-success">Dokumen<br>Diterima</p>
                             </div>
                             <svg xmlns="http://www.w3.org/2000/svg" class="small-box-icon" fill="#198754"
@@ -31,7 +31,7 @@
                         <!--begin::Small Box Widget 3-->
                         <div class="small-box bg-warning-subtle">
                             <div class="inner">
-                                <h3 class="alert-link">44</h3>
+                                <h3 class="alert-link">{{ $diprosesCount ?? 0 }}</h3>
                                 <p>Dokumen <br>Diproses</p>
                             </div>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffc107"
@@ -50,7 +50,7 @@
                         <!--begin::Small Box Widget 4-->
                         <div class="small-box bg-danger-subtle">
                             <div class="inner text-danger">
-                                <h3>65</h3>
+                                <h3>{{ $ditolakCount ?? 0 }}</h3>
                                 <p>Dokumen <br> Ditolak</p>
                             </div>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#dc3545"

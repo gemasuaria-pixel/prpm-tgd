@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Review\Review;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -23,7 +24,16 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var list<string>
      */
     protected $fillable = [
+        'full_name',
         'name',
+        'nidn',
+        'tempat_lahir',
+        'tanggal_lahir',
+        'institusi',
+        'program_studi',
+        'no_hp',
+        'alamat',
+        'kontak',
         'email',
         'password',
         'profile_photo_path',
@@ -60,7 +70,7 @@ class User extends Authenticatable implements MustVerifyEmail
             ? asset('storage/'.$this->profile_photo_path)
             : 'https://ui-avatars.com/api/?name='.urlencode($this->name);
     }
-    
+
     public function reviews()
     {
         return $this->hasMany(Review::class, 'reviewer_id');

@@ -8,17 +8,6 @@
             <!--begin::Container-->
             <div class="container-fluid">
                 <div class="row">
-
-                    
-
-
-
-
-
-
-
-
-
                     <div class="col-md-8">
                         <div class="card mb-4">
                             <div class="card-header">

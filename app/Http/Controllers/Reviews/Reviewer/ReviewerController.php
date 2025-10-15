@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Reviews\Reviewer;
 
 use App\Http\Controllers\Controller;
-use App\Models\Laporan\LaporanPenelitian;
-use App\Models\Proposal\Proposal;
+use App\Models\Penelitian\ProposalPenelitian;
+use App\Models\Penelitian\LaporanPenelitian;
 use App\Models\Review\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,26 +13,52 @@ class ReviewerController extends Controller
 {
     public function index()
     {
-        $reviews = Review::with('reviewable')
-            ->where('reviewer_id', Auth::id())
+        $reviewerId = Auth::id();
+
+        // === Review untuk Proposal Penelitian ===
+        $proposalReviews = Review::with([
+            'reviewable',
+            'reviewable.ketuaPengusul',
+            'reviewable.anggotaDosen',
+        ])
+            ->where('reviewer_id', $reviewerId)
+            ->where('reviewable_type', ProposalPenelitian::class)
             ->latest()
             ->get();
 
-        $proposalReviews = $reviews->filter(fn ($r) => $r->reviewable_type === Proposal::class);
-        $laporanReviews = $reviews->filter(fn ($r) => $r->reviewable_type === LaporanPenelitian::class);
+        // === Review untuk Laporan Penelitian ===
+        $laporanReviews = Review::with([
+            'reviewable',
+            'reviewable.proposal',
+            'reviewable.proposal.ketuaPengusul',
+            'reviewable.proposal.anggotaDosen',
+        ])
+            ->where('reviewer_id', $reviewerId)
+            ->where('reviewable_type', LaporanPenelitian::class)
+            ->latest()
+            ->get();
 
         return view('reviews.reviewer.penelitian.index', compact('proposalReviews', 'laporanReviews'));
     }
 
     public function formProposal(Review $review)
     {
+        $review->load([
+            'reviewable.documents',
+            'reviewable.ketuaPengusul',
+            'reviewable.anggotaDosen',
+            'reviewer',
+        ]);
+
         return view('reviews.reviewer.penelitian.show-proposal', compact('review'));
     }
 
     public function formLaporan(Review $review)
     {
         $review->load([
-            'reviewable.proposal.infoPenelitian',
+            'reviewable.proposal',
+            'reviewable.proposal.ketuaPengusul',
+            'reviewable.proposal.anggotaDosen',
             'reviewable.documents',
         ]);
 
@@ -43,13 +69,16 @@ class ReviewerController extends Controller
     {
         $request->validate([
             'komentar' => 'required|string',
+            'status'   => 'required|in:pending,approved,revision,rejected',
         ]);
 
         $review->update([
             'komentar' => $request->komentar,
-            'status' => $request->status,
+            'status'   => $request->status,
         ]);
 
-        return redirect()->route('reviewer.index')->with('success', 'Review berhasil disimpan.');
+        return redirect()
+            ->route('reviewer.index')
+            ->with('success', 'Review berhasil disimpan.');
     }
 }

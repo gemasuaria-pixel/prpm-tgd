@@ -6,11 +6,9 @@
 
     <div class="card shadow-sm border-0 rounded-4">
         <div class="card-body">
-
-            {{-- ================== AMBIL PROPOSAL TERKAIT ================== --}}
             @php
                 $laporan = $review->reviewable;
-                $proposal = $laporan->proposal;
+                $proposal = $laporan->proposal ?? null;
             @endphp
 
             {{-- ================== INFORMASI LAPORAN & PROPOSAL ================== --}}
@@ -18,7 +16,7 @@
 
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <p><strong>Ketua Pengusul:</strong> {{ $proposal->ketua_pengusul ?? '-' }}</p>
+                    <p><strong>Ketua Pengusul:</strong> {{ optional($proposal->ketuaPengusul)->name ?? '-' }}</p>
                     <p><strong>Rumpun Ilmu:</strong> {{ $proposal->rumpun_ilmu ?? '-' }}</p>
                     <p><strong>Bidang Penelitian:</strong> {{ optional($proposal->infoPenelitian)->bidang_penelitian ?? '-' }}</p>
                     <p><strong>Tahun Pelaksanaan:</strong> {{ $proposal->tahun_pelaksanaan ?? '-' }}</p>
@@ -28,10 +26,13 @@
                     <p><strong>Kata Kunci:</strong> {{ $laporan->kata_kunci ?? '-' }}</p>
                     <p>
                         <strong>Dokumen Laporan:</strong><br>
-                        @if ($laporan->documents->count())
-                            <a href="{{ asset('storage/' . $laporan->documents->first()->file_path) }}" target="_blank" class="btn btn-sm btn-outline-primary mt-1">
-                                <i class="bi bi-file-earmark-text me-1"></i> Lihat Dokumen
-                            </a>
+                        @if ($laporan->documents && $laporan->documents->count() > 0)
+                            @foreach ($laporan->documents as $doc)
+                                <a href="{{ asset('storage/' . $doc->file_path) }}" target="_blank"
+                                    class="btn btn-sm btn-outline-primary mt-1 w-auto">
+                                    <i class="bi bi-file-earmark-text me-1"></i> {{ ucfirst($doc->tipe ?? 'Dokumen') }}
+                                </a>
+                            @endforeach
                         @else
                             <span class="text-muted">Belum ada dokumen laporan</span>
                         @endif
@@ -92,9 +93,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($proposal->members ?? [] as $anggota)
+                            @forelse ($proposal->anggotaDosen ?? [] as $anggota)
                                 <tr>
-                                    <td>{{ $anggota->nama }}</td>
+                                    <td>{{ $anggota->nama ?? '-' }}</td>
                                     <td>{{ $anggota->nidn ?? '-' }}</td>
                                     <td>{{ $anggota->alamat ?? '-' }}</td>
                                     <td>{{ $anggota->kontak ?? '-' }}</td>
@@ -129,9 +130,9 @@
                     <label for="status" class="form-label fw-semibold">Status Review</label>
                     <select name="status" id="status" class="form-select" required>
                         <option value="">-- Pilih Status --</option>
-                        <option value="approved" {{ old('status', $review->status) == 'approved' ? 'selected' : '' }}>Layak</option>
-                        <option value="revision" {{ old('status', $review->status) == 'revision' ? 'selected' : '' }}>Revisi</option>
-                        <option value="rejected" {{ old('status', $review->status) == 'rejected' ? 'selected' : '' }}>Tidak Layak</option>
+                        <option value="layak" {{ old('status', $review->status) == 'layak' ? 'selected' : '' }}>Layak</option>
+                        <option value="revisi" {{ old('status', $review->status) == 'revisi' ? 'selected' : '' }}>Perlu Revisi</option>
+                        <option value="tidak_layak" {{ old('status', $review->status) == 'tidak_layak' ? 'selected' : '' }}>Tidak Layak</option>
                     </select>
                     @error('status')
                         <div class="text-danger small mt-1">{{ $message }}</div>

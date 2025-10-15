@@ -110,12 +110,19 @@
                 <!-- ========================================= -->
                 <!-- PERNYATAAN -->
                 <!-- ========================================= -->
-                <div class="form-check mt-4 mb-3">
-                  <input class="form-check-input" type="checkbox" id="pernyataan" required>
-                  <label class="form-check-label small" for="pernyataan">
-                    Saya menyatakan bahwa informasi dan dokumen yang saya serahkan adalah benar,
-                    dan siap menanggung konsekuensi apabila terjadi pelanggaran.
-                  </label>
+                <div class="card border-info shadow-sm rounded-4 mt-4 mb-4">
+                    <div class="card-body">
+                        <h6 class="fw-semibold text-info mb-3 d-flex align-items-center">
+                            <i class="bi bi-exclamation-circle-fill me-2"></i> Pernyataan Penting
+                        </h6>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="pernyataan" name="pernyataan" required>
+                            <label class="form-check-label small" for="pernyataan">
+                                Saya menyatakan bahwa informasi dan dokumen yang saya serahkan adalah benar,
+                                dan siap menanggung konsekuensi apabila terjadi pelanggaran.
+                            </label>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- ========================================= -->

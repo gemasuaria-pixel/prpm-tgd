@@ -6,46 +6,40 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            // Identitas
-            $table->string('nidn_nidk')->nullable()->after('email');
-            $table->string('no_ktp')->nullable()->after('nidn_nidk');
-
-            // Data pribadi
-            $table->string('tempat_lahir')->nullable()->after('no_ktp');
-            $table->date('tanggal_lahir')->nullable()->after('tempat_lahir');
- 
-            // Akademik
-            $table->string('kelompok_pt_binaan')->nullable()->after('klaster');
-            $table->string('institusi')->default('STMIK Triguna Dharma')->after('kelompok_pt_binaan');
-            $table->string('program_studi')->nullable()->after('institusi');
-            $table->string('jenjang_pendidikan')->nullable()->after('program_studi');
-            $table->string('jabatan_akademik')->nullable()->after('jenjang_pendidikan');
-
-            // Kontak
-            $table->string('no_hp')->nullable()->after('jabatan_akademik');
-            $table->text('alamat')->nullable()->after('no_hp'); // Tambahan alamat
+            $table->string('full_name')->after('name')->nullable();
+            $table->string('nidn')->after('full_name')->nullable()->unique();
+            $table->string('tempat_lahir')->after('nidn')->nullable();
+            $table->date('tanggal_lahir')->after('tempat_lahir')->nullable();
+            $table->string('institusi')->after('tanggal_lahir')->nullable()->default('STMIK Triguna Dharma');
+            $table->string('program_studi')->after('institusi')->nullable();
+            $table->string('no_hp')->after('program_studi')->nullable();
+            $table->text('alamat')->after('no_hp')->nullable();
+            $table->string('kontak')->after('alamat')->nullable();
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn([
-                'nidn_nidk',
-                'no_ktp',
+                'full_name',
+                'nidn',
                 'tempat_lahir',
                 'tanggal_lahir',
-                'klaster',
-                'kelompok_pt_binaan',
                 'institusi',
                 'program_studi',
-                'jenjang_pendidikan',
-                'jabatan_akademik',
                 'no_hp',
-                'alamat', 
+                'alamat',
+                'kontak',
             ]);
         });
     }

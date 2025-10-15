@@ -26,8 +26,8 @@ return new class extends Migration
             ]);
             $table->string('file_path')->nullable();
             $table->string('link_jurnal')->nullable();
+            $table->string('link_video')->nullable();
             $table->timestamps();
-
             // 🔹 (opsional) buat index untuk efisiensi query
             $table->index(['documentable_id', 'documentable_type']);
         });

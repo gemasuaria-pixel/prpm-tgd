@@ -27,40 +27,45 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        // Update semua field yang tervalidasi (termasuk full_name, nidn, dll)
+        $user->fill($request->validated());
+
+        // Jika email diubah, reset email verification
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
         }
 
-        $request->user()->save();
+        $user->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
-public function updatePhoto(Request $request)
-{
-       
-    $request->validate([
-        'photo' => 'required|image|mimes:jpeg,png,jpg|max:2048', // max 2MB
-    ]);
+    /**
+     * Update user profile photo.
+     */
+    public function updatePhoto(Request $request)
+    {
+        $request->validate([
+            'photo' => 'required|image|mimes:jpeg,png,jpg|max:2048', // max 2MB
+        ]);
 
-    $user = $request->user();
+        $user = $request->user();
 
-    // hapus file lama (opsional)
-    if ($user->profile_photo_path) {
-        Storage::disk('public')->delete($user->profile_photo_path);
+        // Hapus file lama jika ada
+        if ($user->profile_photo_path) {
+            Storage::disk('public')->delete($user->profile_photo_path);
+        }
+
+        $path = $request->file('photo')->store('profile-photos', 'public');
+
+        $user->update([
+            'profile_photo_path' => $path,
+        ]);
+
+        return back()->with('status', 'Photo updated successfully.');
     }
-
-    $path = $request->file('photo')->store('profile-photos', 'public');
-
-    $user->update([
-        'profile_photo_path' => $path,
-    ]);
-
-    return back()->with('status', 'Photo updated successfully.');
-}
-
 
     /**
      * Delete the user's account.

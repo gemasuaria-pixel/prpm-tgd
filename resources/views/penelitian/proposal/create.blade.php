@@ -66,13 +66,12 @@
                                         <div class="col-md-6">
                                             <label class="form-label">Ketua Pengusul <span
                                                     class="text-danger">*</span></label>
-                                            <input type="text" name="ketua_pengusul" class="form-control"
-                                                value="{{ old('ketua_pengusul') }}"
-                                                placeholder="Dr. Dicky Noviandhisyah, S.Kom, M.Kom">
-                                            @error('ketua_pengusul')
-                                                <small class="text-danger">{{ $message }}</small>
-                                            @enderror
+                                            <input type="text" class="form-control" value="{{ Auth::user()->full_name }}"
+                                                readonly>
+                                            {{-- Simpan ID user secara tersembunyi agar tidak bisa diubah dari UI --}}
+                                            <input type="hidden" name="ketua_pengusul_id" value="{{ Auth::id() }}">
                                         </div>
+
 
                                         <div class="col-md-6">
                                             <label class="form-label">Rumpun Ilmu</label>
@@ -110,110 +109,117 @@
                                     </div>
 
 
-                                    
-                                    <!-- Tambah Anggota -->
-                                    <!-- Tambah Anggota (Dosen saja) -->
 
-                                    <div class="row g-3 mt-1">
-                                        <div class="col-md-4">
-                                            <input type="text" id="namaAnggota" class="form-control"
-                                                placeholder="Nama Dosen">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <input type="text" id="nidnAnggota" class="form-control"
-                                                placeholder="NIDN Dosen">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <input type="text" id="alamatAnggota" class="form-control"
-                                                placeholder="Alamat Dosen">
-                                        </div>
-                                        <div class="col-md-4 mt-2">
-                                            <input type="text" id="kontakAnggota" class="form-control"
-                                                placeholder="Kontak Dosen">
-                                        </div>
-                                    </div>
-                                    <div class="text-end mt-2">
-                                        <button type="button" id="tambahAnggotaBtn" class="btn btn-primary btn-sm">Tambah
-                                            Dosen</button>
-                                    </div>
+                                 <div class="col-md-6">
+    <label class="form-label">Pilih Anggota Dosen</label>
+    <select id="selectAnggota" class="form-select">
+        <option selected disabled>-- Pilih Dosen --</option>
+        @foreach ($dosenTerdaftar as $dosen)
+            <option value="{{ $dosen->id }}" data-nidn="{{ $dosen->nidn }}"
+                data-alamat="{{ $dosen->alamat }}" data-kontak="{{ $dosen->kontak }}">
+                {{ $dosen->name }}
+            </option>
+        @endforeach
+    </select>
+</div>
 
-                                    <table class="table table-bordered mt-3" id="tabelAnggota">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th>Nama</th>
-                                                <th>NIDN</th>
-                                                <th>Alamat</th>
-                                                <th>Kontak</th>
-                                                <th>Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                    </table>
+<div class="text-end mt-2">
+    <button type="button" id="tambahAnggotaBtn" class="btn btn-primary btn-sm">Tambah Dosen</button>
+</div>
 
-                                    <div id="hiddenAnggotaInputs"></div>
+<table class="table table-bordered mt-3" id="tabelAnggota">
+    <thead class="table-light">
+        <tr>
+            <th>Nama</th>
+            <th>NIDN</th>
+            <th>Alamat</th>
+            <th>Kontak</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
 
-                                    <script>
-                                        let anggotaList = [];
+<div id="hiddenAnggotaInputs">
+    @if(old('anggota'))
+        @foreach(old('anggota') as $userId)
+            <input type="hidden" name="anggota[]" value="{{ $userId }}">
+        @endforeach
+    @endif
+</div>
 
-                                        function renderTable() {
-                                            const tbody = document.querySelector('#tabelAnggota tbody');
-                                            tbody.innerHTML = '';
-                                            const hiddenContainer = document.getElementById('hiddenAnggotaInputs');
-                                            hiddenContainer.innerHTML = '';
+<script>
+let anggotaList = [];
 
-                                            anggotaList.forEach((a, index) => {
-                                                const row = document.createElement('tr');
-                                                row.innerHTML = `
-                <td>${a.nama}</td>
-                <td>${a.nidn || '-'}</td>
-                <td>${a.alamat}</td>
-                <td>${a.kontak}</td>
-                <td><button type="button" class="btn btn-danger btn-sm" onclick="hapusAnggota(${index})">Hapus</button></td>
-            `;
-                                                tbody.appendChild(row);
+// Inisialisasi dari old input
+@if(old('anggota'))
+    const oldAnggota = @json(old('anggota'));
+    oldAnggota.forEach(id => {
+        const opt = document.querySelector('#selectAnggota option[value="'+id+'"]');
+        if(opt) {
+            anggotaList.push({
+                user_id: id,
+                nama: opt.text,
+                nidn: opt.dataset.nidn,
+                alamat: opt.dataset.alamat,
+                kontak: opt.dataset.kontak
+            });
+        }
+    });
+@endif
 
-                                                // Hidden input untuk form
-                                                hiddenContainer.innerHTML += `
-                <input type="hidden" name="anggota[${index}][nama]" value="${a.nama}">
-                <input type="hidden" name="anggota[${index}][nidn]" value="${a.nidn}">
-                <input type="hidden" name="anggota[${index}][alamat]" value="${a.alamat}">
-                <input type="hidden" name="anggota[${index}][kontak]" value="${a.kontak}">
-                <input type="hidden" name="anggota[${index}][tipe]" value="dosen">
-            `;
-                                            });
-                                        }
+function renderTable() {
+    const tbody = document.querySelector('#tabelAnggota tbody');
+    tbody.innerHTML = '';
+    const hiddenContainer = document.getElementById('hiddenAnggotaInputs');
+    hiddenContainer.innerHTML = '';
 
-                                        function hapusAnggota(index) {
-                                            anggotaList.splice(index, 1);
-                                            renderTable();
-                                        }
+    anggotaList.forEach((a, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${a.nama}</td>
+            <td>${a.nidn}</td>
+            <td>${a.alamat}</td>
+            <td>${a.kontak}</td>
+            <td><button type="button" class="btn btn-danger btn-sm" onclick="hapusAnggota(${index})">Hapus</button></td>
+        `;
+        tbody.appendChild(row);
 
-                                        document.getElementById('tambahAnggotaBtn').addEventListener('click', () => {
-                                            const nama = document.getElementById('namaAnggota').value.trim();
-                                            const nidn = document.getElementById('nidnAnggota').value.trim();
-                                            const alamat = document.getElementById('alamatAnggota').value.trim();
-                                            const kontak = document.getElementById('kontakAnggota').value.trim();
+        hiddenContainer.innerHTML += `<input type="hidden" name="anggota[]" value="${a.user_id}">`;
+    });
+}
 
-                                            if (!nama || !nidn || !alamat || !kontak) {
-                                                alert('Semua kolom wajib diisi!');
-                                                return;
-                                            }
+function hapusAnggota(index) {
+    anggotaList.splice(index, 1);
+    renderTable();
+}
 
-                                            anggotaList.push({
-                                                nama,
-                                                nidn,
-                                                alamat,
-                                                kontak
-                                            });
+document.getElementById('tambahAnggotaBtn').addEventListener('click', () => {
+    const select = document.getElementById('selectAnggota');
+    const selectedOption = select.options[select.selectedIndex];
+    if(!selectedOption || selectedOption.disabled) return;
 
-                                            document.getElementById('namaAnggota').value = '';
-                                            document.getElementById('nidnAnggota').value = '';
-                                            document.getElementById('alamatAnggota').value = '';
-                                            document.getElementById('kontakAnggota').value = '';
+    const userId = selectedOption.value;
+    const nama = selectedOption.text;
+    const nidn = selectedOption.dataset.nidn;
+    const alamat = selectedOption.dataset.alamat;
+    const kontak = selectedOption.dataset.kontak;
 
-                                            renderTable();
-                                        });
-                                    </script>
+    if(!anggotaList.some(a => a.user_id == userId) && anggotaList.length < 4) {
+        anggotaList.push({ user_id: userId, nama, nidn, alamat, kontak });
+        renderTable();
+    }
+
+    select.selectedIndex = 0;
+});
+
+// render tabel awal
+renderTable();
+</script>
+
+
+
+
 
 
                                     <!-- B. Informasi Penelitian -->
@@ -269,15 +275,19 @@
                                         @enderror
                                     </div>
 
-                                    <!-- D. Pernyataan -->
-                                    <h6 class="fw-bold mt-4">D. Pernyataan</h6>
-                                    <div class="mb-3">
-                                        <textarea name="pernyataan" class="form-control" rows="3"
-                                            placeholder="Tulis pernyataan keaslian atau tanggung jawab Anda di sini">{{ old('pernyataan') }}</textarea>
-                                        @error('pernyataan')
-                                            <small class="text-danger">{{ $message }}</small>
-                                        @enderror
+                                    <!-- PERNYATAAN -->
+                                    <!-- ========================================= -->
+                                    <!-- PERNYATAAN -->
+                                    <!-- ========================================= -->
+                                    <div class="form-check mt-4 mb-3">
+                                        <input class="form-check-input" type="checkbox" id="syarat_ketentuan"
+                                            name="syarat_ketentuan" required>
+                                        <label class="form-check-label small" for="syarat_ketentuan">
+                                            Saya menyatakan bahwa informasi dan dokumen yang saya serahkan adalah benar,
+                                            dan siap menanggung konsekuensi apabila terjadi pelanggaran.
+                                        </label>
                                     </div>
+
 
                                     <!-- Buttons -->
                                     <div class="d-flex justify-content-end gap-2">
@@ -317,4 +327,8 @@
             });
         </script>
     @endif
+
+    @push('scripts')
+    
+    @endpush
 @endsection
