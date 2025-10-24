@@ -11,72 +11,97 @@ use Illuminate\Support\Facades\Auth;
 class CreateController extends Controller
 {
     /**
-     * 📝 Tampilkan form upload laporan untuk proposal final
+     *  Tampilkan form upload laporan untuk proposal final
      */
-    public function index()
+    public function index(ProposalPenelitian $proposal)
     {
         $user = Auth::user();
 
-        // ✅ Ambil proposal final milik dosen (dengan anggota)
-        $proposal = ProposalPenelitian::with('members')
-            ->where('ketua_pengusul_id', $user->id)
-            ->where('status', 'final')
-            ->first();
-
-        if (!$proposal) {
-            abort(403, 'Proposal tidak ditemukan atau belum berstatus final.');
+        // Pastikan proposal milik dosen yang login
+        if ($proposal->ketua_pengusul_id !== $user->id) {
+            abort(403, 'Anda tidak berhak mengakses proposal ini.');
         }
+
+        if ($proposal->status !== 'final') {
+            abort(403, 'Proposal belum berstatus final.');
+        }
+
+        // Load relasi anggota
+        $proposal->load('anggotaDosen');
 
         return view('penelitian.laporan.create', compact('proposal'));
     }
 
     /**
-     * 📤 Simpan laporan penelitian
+     *  Simpan laporan penelitian
      */
-    public function store(Request $request)
+    public function store(Request $request, ProposalPenelitian $proposal)
     {
+
+        //  Pastikan proposal milik dosen
+        if ($proposal->ketua_pengusul_id !== Auth::id()) {
+            abort(403, 'Anda tidak berhak mengunggah laporan untuk proposal ini.');
+        }
+        // validasi form
         $request->validate([
-            'proposal_penelitian_id' => 'required|exists:proposal_penelitians,id',
-            'abstrak' => 'nullable|string',
+            // 'abstrak' => 'nullable|string',
+            'judul' => 'nullable|string|max:255',
             'kata_kunci' => 'nullable|string|max:255',
             'metode_penelitian' => 'nullable|string|max:255',
             'ringkasan_laporan' => 'nullable|string|max:255',
             'file_laporan' => 'required|file|mimes:pdf,doc,docx|max:25000',
+            'luaran.jurnal.*' => 'nullable|url',
+            'luaran.video.*' => 'nullable|url',
         ]);
 
-        // ✅ Pastikan proposal ada dan milik dosen yang login
-        $proposal = ProposalPenelitian::findOrFail($request->proposal_penelitian_id);
-        if ($proposal->ketua_pengusul_id !== Auth::id()) {
-            abort(403, 'Anda tidak berhak mengunggah laporan untuk proposal ini.');
+
+        // cek laporan existing
+        if ($proposal->laporanPenelitian()->exists()) {
+            return redirect()->back()->with('error', 'Proposal ini sudah memiliki laporan.');
         }
 
-        // ✅ Cek apakah proposal sudah punya laporan
-        $existing = LaporanPenelitian::where('proposal_penelitian_id', $proposal->id)->first();
-        if ($existing) {
-            return redirect()->back()->with('error', 'Proposal ini sudah memiliki laporan. Tidak bisa upload lagi.');
-        }
-
-        // ✅ Simpan laporan
+        //  Simpan laporan
         $laporan = LaporanPenelitian::create([
+            'judul' => $request->judul,
             'proposal_penelitian_id' => $proposal->id,
-            'abstrak' => $request->abstrak,
+            // 'abstrak' => $request->abstrak,
             'kata_kunci' => $request->kata_kunci,
             'metode_penelitian' => $request->metode_penelitian,
             'ringkasan_laporan' => $request->ringkasan_laporan,
-            'status' => 'pending',
+            'status' => 'menunggu_validasi_prpm',
             'komentar_prpm' => null,
         ]);
 
-        // ✅ Upload file ke storage
+        $externalLinks = [];
+        if ($request->filled('luaran.jurnal')) {
+            foreach ($request->luaran['jurnal'] as $link) {
+                if ($link) {
+                    $externalLinks[] = ['type' => 'jurnal', 'url' => $link];
+                }
+            }
+        }
+        if ($request->filled('luaran.video')) {
+            foreach ($request->luaran['video'] as $link) {
+                if ($link) {
+                    $externalLinks[] = ['type' => 'video', 'url' => $link];
+                }
+            }
+        }
+
+        // Simpan JSON ke kolom external_links
+        $laporan->external_links = $externalLinks;
+        $laporan->save();
+        //  Upload file ke storage
         $path = $request->file('file_laporan')->store('laporan', 'public');
 
-        // ✅ Simpan metadata file ke tabel documents
+        //  Simpan metadata file ke tabel documents
         $laporan->documents()->create([
             'tipe' => 'laporan_penelitian',
             'file_path' => $path,
         ]);
 
-        return redirect()->route('dosen.uploadLaporan')
+        return redirect()->route('dosen.penelitian.proposal.create', $proposal)
             ->with('status', 'Laporan berhasil diunggah dan menunggu verifikasi PRPM.');
+
     }
 }

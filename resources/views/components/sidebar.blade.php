@@ -39,7 +39,7 @@
 
                  @role('dosen')
                      <li class="nav-item menu-open">
-                         <a href="{{ route('dashboard') }}" class="nav-link active">
+                         <a href="{{ route('dosen.dashboard') }}" class="nav-link active">
                              <i class="nav-icon bi bi-speedometer"></i>
                              <p>
                                  Dashboard
@@ -48,7 +48,7 @@
                      </li>
 
                      <li class="nav-item ">
-                         <a href="{{ route('dosen.statusPenelitian') }}" class="nav-link  ">
+                         <a href="{{ route('dosen.penelitian.index') }}" class="nav-link  ">
                              <i class="bi bi-lightbulb-fill"></i>
                              <p>
                                  Penelitian
@@ -58,7 +58,7 @@
                      </li>
 
                      <li class="nav-item ">
-                         <a href="{{ route('dosen.pengabdian') }}" class="nav-link  ">
+                         <a href="{{ route('dosen.pengabdian.index') }}" class="nav-link  ">
                              <i class="bi bi-people-fill"></i>
                              <p>
                                  Pengabdian
@@ -87,13 +87,13 @@
                      </a>
                      <ul class="nav nav-treeview">
                          <li class="nav-item">
-                             <a href="{{ route('ketua-prpm.review.proposal.index') }}" class="nav-link">
+                             <a href="{{ route('ketua-prpm.review.penelitian.proposal.index') }}" class="nav-link">
                                  <i class="nav-icon bi bi-circle"></i>
                                  <p>Penelitian</p>
                              </a>
                          </li>
                          <li class="nav-item">
-                             <a href="#" class="nav-link">
+                             <a href="{{ route('ketua-prpm.review.pengabdian.proposal.index') }}" class="nav-link">
                                  <i class="nav-icon bi bi-circle"></i>
                                  <p>Pengabdian</p>
                              </a>
@@ -103,15 +103,30 @@
                  @endrole
 
                  @role('reviewer')
-                   
-                     <li class="nav-item menu-open">
-                         <a href="{{ route('reviewer.index') }}" class="nav-link active">
-                             <i class="nav-icon bi bi-speedometer"></i>
-                             <p>
-                                 review
-                             </p>
-                         </a>
-                     </li>
+
+                     <li class="nav-item">
+                     <a href="#" class="nav-link">
+                         <i class="bi bi-people-fill"></i>
+                         <p>
+                             Reviews
+                             <i class="nav-arrow bi bi-chevron-right"></i>
+                         </p>
+                     </a>
+                     <ul class="nav nav-treeview">
+                         <li class="nav-item">
+                             <a href="{{ route('reviewer.review.penelitian.proposal.index') }}" class="nav-link">
+                                 <i class="nav-icon bi bi-circle"></i>
+                                 <p>Penelitian</p>
+                             </a>
+                         </li>
+                         <li class="nav-item">
+                             <a href="{{ route('reviewer.review.pengabdian.proposal.index') }}" class="nav-link">
+                                 <i class="nav-icon bi bi-circle"></i>
+                                 <p>Pengabdian</p>
+                             </a>
+                         </li>
+                       
+                     </ul>
                  @endrole
 
 
@@ -142,12 +157,7 @@
                          <p>Pusat Nontifikasi</p>
                      </a>
                  </li>
-                 <li class="nav-item">
-                     <a href="{{ route('admin.target') }}" class="nav-link">
-                         <i class="bi bi-bullseye"></i>
-                         <p>Target semester</p>
-                     </a>
-                 </li>
+
                  <li class="nav-item">
                      <a href="#" class="nav-link">
                          <i class="bi bi-people-fill"></i>

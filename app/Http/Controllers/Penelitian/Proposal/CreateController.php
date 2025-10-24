@@ -19,7 +19,7 @@ class CreateController extends Controller
 
     public function store(Request $request)
     {
-        // ✅ Validasi data input
+        //  Validasi data input
         $validated = $request->validate([
             'judul' => 'required|string|max:255',
             'tahun_pelaksanaan' => 'required|digits:4|integer',
@@ -34,7 +34,7 @@ class CreateController extends Controller
             'anggota.*' => 'exists:users,id', // Hanya user_id valid
         ]);
 
-        // ✅ Simpan data proposal
+        //  Simpan data proposal
         $proposal = ProposalPenelitian::create([
             'ketua_pengusul_id' => Auth::id(),
             'judul' => $validated['judul'],
@@ -49,14 +49,14 @@ class CreateController extends Controller
             'komentar_prpm' => null,
         ]);
 
-        // ✅ Simpan anggota dosen (relasi ke user)
+        //  Simpan anggota dosen (relasi ke user)
         foreach ($validated['anggota'] as $userId) {
             $proposal->anggotaDosen()->create([
                 'user_id' => $userId,
             ]);
         }
 
-        // ✅ Upload & simpan dokumen proposal
+        //  Upload & simpan dokumen proposal
         if ($request->hasFile('documents')) {
             $path = $request->file('documents')->store('proposals', 'public');
             $proposal->documents()->create([
@@ -65,7 +65,7 @@ class CreateController extends Controller
             ]);
         }
 
-        return redirect()->route('dosen.ProposalPenelitian')
+        return redirect()->route('dosen.penelitian.index')
             ->with('status', 'Proposal penelitian berhasil disimpan beserta anggota & dokumennya.');
     }
 }

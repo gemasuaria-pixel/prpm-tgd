@@ -63,10 +63,10 @@
                         <tbody>
                             @forelse ($proposal->anggotaDosen ?? [] as $anggota)
                                 <tr>
-                                    <td>{{ $anggota->nama ?? '-' }}</td>
-                                    <td>{{ $anggota->nidn ?? '-' }}</td>
-                                    <td>{{ $anggota->alamat ?? '-' }}</td>
-                                    <td>{{ $anggota->kontak ?? '-' }}</td>
+                                    <td>{{ $anggota->user->name ?? '-' }}</td>
+                                    <td>{{ $anggota->user->nidn ?? '-' }}</td>
+                                    <td>{{ $anggota->user->alamat ?? '-' }}</td>
+                                    <td>{{ $anggota->user->kontak ?? '-' }}</td>
                                 </tr>
                             @empty
                                 <tr>
@@ -83,7 +83,7 @@
             <hr>
 
             {{-- ================== FORM REVIEW ================== --}}
-            <form method="POST" action="{{ route('reviewer.review-submit', $review->id) }}">
+            <form method="POST" action="{{ route('reviewer.review.pengabdian.proposal.submit', $review->id) }}">
                 @csrf
 
                 <div class="mb-3">
@@ -108,7 +108,7 @@
                 </div>
 
                 <div class="d-flex justify-content-between">
-                    <a href="{{ route('reviewer.index') }}" class="btn btn-secondary">
+                    <a href="{{ route('reviewer.review.pengabdian.proposal.index') }}" class="btn btn-secondary">
                         <i class="bi bi-arrow-left me-1"></i> Kembali
                     </a>
                     <button type="submit" class="btn btn-success">

@@ -20,14 +20,17 @@ return new class extends Migration
             $table->string('judul');
             $table->year('tahun_pelaksanaan');
             $table->text('ringkasan')->nullable();
-            $table->string('file_laporan')->nullable();
-            $table->string('link_video')->nullable();
+            // Tambahan: JSON untuk link eksternal (video / jurnal)
+            $table->json('external_links')->nullable()
+                ->comment('Simpan link video/jurnal dalam format JSON: [{"type":"video","url":"..."},{"type":"jurnal","url":"..."}]');
+
             $table->enum('status', [
                 'draft',
-                'menunggu_validasi_prpm',
                 'revisi',
-                'approved_by_prpm',
                 'rejected',
+                'menunggu_validasi_prpm',
+                'menunggu_validasi_reviewer',
+                'approved_by_reviewer',
                 'final',
             ])->default('menunggu_validasi_prpm');
             $table->text('komentar_reviewer')->nullable();

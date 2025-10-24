@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Reviews\PRPM\Penelitian;
+namespace App\Http\Controllers\Reviews\PRPM\Pengabdian;
 
 use App\Http\Controllers\Controller;
-use App\Models\Penelitian\ProposalPenelitian;
+use App\Models\Pengabdian\ProposalPengabdian;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -12,35 +12,38 @@ class ProposalReviewController extends Controller
     public function index(Request $request)
     {
         // Ambil semua proposal + relasi penting
-        $query = ProposalPenelitian::with([
+        $query = ProposalPengabdian::with([
             'documents',
             'anggotaDosen.user',
+            'anggotaMahasiswa',
             'reviews.reviewer',
+            'ketuaPengusul',
         ])->orderByDesc('created_at');
 
         // ===============================
-        // 🔎 Filter status
+        //  Filter status
         // ===============================
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
 
         // ===============================
-        // 🔍 Search
+        //  Search
         // ===============================
         if ($request->filled('q')) {
             $q = $request->q;
             $query->where(function ($query) use ($q) {
                 $query->where('judul', 'like', "%{$q}%")
-                    ->orWhereHas('ketuaPengusul', fn ($q2) => $q2->where('name', 'like', "%{$q}%"))
-                    ->orWhere('rumpun_ilmu', 'like', "%{$q}%");
+                    ->orWhereHas('ketuaPengusul', fn($q2) => $q2->where('name', 'like', "%{$q}%"))
+                    ->orWhere('rumpun_ilmu', 'like', "%{$q}%")
+                    ->orWhere('nama_mitra', 'like', "%{$q}%");
             });
         }
 
         $proposals = $query->paginate(10)->withQueryString();
 
         // ===============================
-        // 🧠 Auto update status ke 'approved_by_reviewer' jika semua reviewer approve
+        // Auto update status ke 'approved_by_reviewer' jika semua reviewer approve
         // ===============================
         foreach ($proposals as $proposal) {
             $totalReviewer = $proposal->reviews->count();
@@ -56,26 +59,28 @@ class ProposalReviewController extends Controller
             }
         }
 
+        // List Reviewer
         $reviewers = User::role('reviewer')->get();
 
-        return view('reviews.prpm.penelitian.proposal.index', compact('proposals', 'reviewers'));
+        return view('reviews.prpm.pengabdian.proposal.index', compact('proposals', 'reviewers'));
     }
 
-    public function form(ProposalPenelitian $proposal)
+    public function form(ProposalPengabdian $proposal)
     {
         $proposal->load([
             'documents',
             'reviews.reviewer',
             'ketuaPengusul',
             'anggotaDosen.user',
+            'anggotaMahasiswa',
         ]);
 
         $reviewers = User::role('reviewer')->get();
 
-        return view('reviews.prpm.penelitian.proposal.form', compact('proposal', 'reviewers'));
+        return view('reviews.prpm.pengabdian.proposal.form', compact('proposal', 'reviewers'));
     }
 
-    public function updateStatus(Request $request, ProposalPenelitian $proposal)
+    public function updateStatus(Request $request, ProposalPengabdian $proposal)
     {
         $request->validate([
             'status' => 'required|in:draft,menunggu_validasi_prpm,menunggu_validasi_reviewer,approved_by_reviewer,revisi,rejected,final',
@@ -121,6 +126,6 @@ class ProposalReviewController extends Controller
             $proposal->update(['status' => 'final']);
         }
 
-        return redirect()->back()->with('success', 'Status proposal berhasil diperbarui.');
+        return redirect()->back()->with('success', 'Status proposal pengabdian berhasil diperbarui.');
     }
 }

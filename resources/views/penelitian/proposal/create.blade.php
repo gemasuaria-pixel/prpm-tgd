@@ -1,4 +1,11 @@
 @extends('layouts.main')
+@push('styles')
+    <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
+@endpush
+
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
+@endpush
 
 @section('content')
     <main class="app-main">
@@ -32,7 +39,7 @@
                                 @endif
 
                                 {{-- Formulir --}}
-                                <form action="{{ route('dosen.ProposalPenelitian.store') }}" method="POST"
+                                <form action="{{ route('dosen.penelitian.proposal.store') }}" method="POST"
                                     enctype="multipart/form-data">
                                     @csrf
 
@@ -110,112 +117,47 @@
 
 
 
-                                 <div class="col-md-6">
-    <label class="form-label">Pilih Anggota Dosen</label>
-    <select id="selectAnggota" class="form-select">
-        <option selected disabled>-- Pilih Dosen --</option>
-        @foreach ($dosenTerdaftar as $dosen)
-            <option value="{{ $dosen->id }}" data-nidn="{{ $dosen->nidn }}"
-                data-alamat="{{ $dosen->alamat }}" data-kontak="{{ $dosen->kontak }}">
-                {{ $dosen->name }}
-            </option>
-        @endforeach
-    </select>
-</div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Pilih Anggota Dosen</label>
+                                        <select id="selectAnggota" class="form-select">
+                                            <option selected disabled>-- Pilih Dosen --</option>
+                                            @foreach ($dosenTerdaftar as $dosen)
+                                                <option value="{{ $dosen->id }}" data-nidn="{{ $dosen->nidn }}"
+                                                    data-alamat="{{ $dosen->alamat }}" data-kontak="{{ $dosen->kontak }}">
+                                                    {{ $dosen->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
 
-<div class="text-end mt-2">
-    <button type="button" id="tambahAnggotaBtn" class="btn btn-primary btn-sm">Tambah Dosen</button>
-</div>
 
-<table class="table table-bordered mt-3" id="tabelAnggota">
-    <thead class="table-light">
-        <tr>
-            <th>Nama</th>
-            <th>NIDN</th>
-            <th>Alamat</th>
-            <th>Kontak</th>
-            <th>Aksi</th>
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
+                                    <div class="text-end mt-2">
+                                        <button type="button" id="tambahAnggotaBtn" class="btn btn-primary btn-sm">Tambah
+                                            Dosen</button>
+                                    </div>
 
-<div id="hiddenAnggotaInputs">
-    @if(old('anggota'))
-        @foreach(old('anggota') as $userId)
-            <input type="hidden" name="anggota[]" value="{{ $userId }}">
-        @endforeach
-    @endif
-</div>
+                                    <table class="table table-bordered mt-3" id="tabelAnggota">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Nama</th>
+                                                <th>NIDN</th>
+                                                <th>Alamat</th>
+                                                <th>Kontak</th>
+                                                <th>Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
 
-<script>
-let anggotaList = [];
+                                    <div id="hiddenAnggotaInputs">
+                                        @if (old('anggota'))
+                                            @foreach (old('anggota') as $userId)
+                                                <input type="hidden" name="anggota[]" value="{{ $userId }}">
+                                            @endforeach
+                                        @endif
+                                    </div>
 
-// Inisialisasi dari old input
-@if(old('anggota'))
-    const oldAnggota = @json(old('anggota'));
-    oldAnggota.forEach(id => {
-        const opt = document.querySelector('#selectAnggota option[value="'+id+'"]');
-        if(opt) {
-            anggotaList.push({
-                user_id: id,
-                nama: opt.text,
-                nidn: opt.dataset.nidn,
-                alamat: opt.dataset.alamat,
-                kontak: opt.dataset.kontak
-            });
-        }
-    });
-@endif
 
-function renderTable() {
-    const tbody = document.querySelector('#tabelAnggota tbody');
-    tbody.innerHTML = '';
-    const hiddenContainer = document.getElementById('hiddenAnggotaInputs');
-    hiddenContainer.innerHTML = '';
-
-    anggotaList.forEach((a, index) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${a.nama}</td>
-            <td>${a.nidn}</td>
-            <td>${a.alamat}</td>
-            <td>${a.kontak}</td>
-            <td><button type="button" class="btn btn-danger btn-sm" onclick="hapusAnggota(${index})">Hapus</button></td>
-        `;
-        tbody.appendChild(row);
-
-        hiddenContainer.innerHTML += `<input type="hidden" name="anggota[]" value="${a.user_id}">`;
-    });
-}
-
-function hapusAnggota(index) {
-    anggotaList.splice(index, 1);
-    renderTable();
-}
-
-document.getElementById('tambahAnggotaBtn').addEventListener('click', () => {
-    const select = document.getElementById('selectAnggota');
-    const selectedOption = select.options[select.selectedIndex];
-    if(!selectedOption || selectedOption.disabled) return;
-
-    const userId = selectedOption.value;
-    const nama = selectedOption.text;
-    const nidn = selectedOption.dataset.nidn;
-    const alamat = selectedOption.dataset.alamat;
-    const kontak = selectedOption.dataset.kontak;
-
-    if(!anggotaList.some(a => a.user_id == userId) && anggotaList.length < 4) {
-        anggotaList.push({ user_id: userId, nama, nidn, alamat, kontak });
-        renderTable();
-    }
-
-    select.selectedIndex = 0;
-});
-
-// render tabel awal
-renderTable();
-</script>
 
 
 
@@ -277,8 +219,6 @@ renderTable();
 
                                     <!-- PERNYATAAN -->
                                     <!-- ========================================= -->
-                                    <!-- PERNYATAAN -->
-                                    <!-- ========================================= -->
                                     <div class="form-check mt-4 mb-3">
                                         <input class="form-check-input" type="checkbox" id="syarat_ketentuan"
                                             name="syarat_ketentuan" required>
@@ -287,7 +227,6 @@ renderTable();
                                             dan siap menanggung konsekuensi apabila terjadi pelanggaran.
                                         </label>
                                     </div>
-
 
                                     <!-- Buttons -->
                                     <div class="d-flex justify-content-end gap-2">
@@ -305,6 +244,10 @@ renderTable();
         </div>
     </main>
 
+
+@endsection
+
+@push('scripts')
     {{-- ✅ SweetAlert Notifikasi --}}
     @if (session('status'))
         <script>
@@ -328,7 +271,93 @@ renderTable();
         </script>
     @endif
 
-    @push('scripts')
-    
-    @endpush
-@endsection
+@endpush
+@push('scripts')
+    <script>
+        // Inisialisasi Tom Select
+        new TomSelect('#selectAnggota', {
+            create: false,
+            maxItems: 1, // hanya satu dosen per tambah
+            placeholder: "Cari dan pilih dosen...",
+            sortField: {
+                field: "text",
+                direction: "asc"
+            },
+            dropdownParent: 'body' // menghindari dropdown ketutupan modal (kalau pakai modal)
+        });
+
+        let anggotaList = [];
+
+        @if (old('anggota'))
+            const oldAnggota = @json(old('anggota'));
+            oldAnggota.forEach(id => {
+                const opt = document.querySelector('#selectAnggota option[value="' + id + '"]');
+                if (opt) {
+                    anggotaList.push({
+                        user_id: id,
+                        nama: opt.text,
+                        nidn: opt.dataset.nidn,
+                        alamat: opt.dataset.alamat,
+                        kontak: opt.dataset.kontak
+                    });
+                }
+            });
+        @endif
+
+        function renderTable() {
+            const tbody = document.querySelector('#tabelAnggota tbody');
+            tbody.innerHTML = '';
+            const hiddenContainer = document.getElementById('hiddenAnggotaInputs');
+            hiddenContainer.innerHTML = '';
+
+            anggotaList.forEach((a, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                <td>${a.nama}</td>
+                <td>${a.nidn}</td>
+                <td>${a.alamat}</td>
+                <td>${a.kontak}</td>
+                <td><button type="button" class="btn btn-danger btn-sm" onclick="hapusAnggota(${index})">Hapus</button></td>
+            `;
+                tbody.appendChild(row);
+                hiddenContainer.innerHTML += `<input type="hidden" name="anggota[]" value="${a.user_id}">`;
+            });
+        }
+
+        function hapusAnggota(index) {
+            anggotaList.splice(index, 1);
+            renderTable();
+        }
+
+        document.getElementById('tambahAnggotaBtn').addEventListener('click', () => {
+            const select = document.getElementById('selectAnggota');
+            const selectedOption = select.options[select.selectedIndex];
+            if (!selectedOption || selectedOption.disabled) return;
+
+            const userId = selectedOption.value;
+            const nama = selectedOption.text;
+            const nidn = selectedOption.dataset.nidn;
+            const alamat = selectedOption.dataset.alamat;
+            const kontak = selectedOption.dataset.kontak;
+
+            // Batas 4 anggota
+            if (!anggotaList.some(a => a.user_id == userId) && anggotaList.length < 4) {
+                anggotaList.push({
+                    user_id: userId,
+                    nama,
+                    nidn,
+                    alamat,
+                    kontak
+                });
+                renderTable();
+            }
+
+            // reset tom select ke posisi awal
+            const tomSelect = select.tomselect;
+            tomSelect.clear();
+        });
+
+        // render tabel awal
+        renderTable();
+    </script>
+@endpush

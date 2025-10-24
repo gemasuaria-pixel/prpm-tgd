@@ -2,38 +2,54 @@
 
 namespace App\Models\Pengabdian;
 
+use App\Models\User;
 use App\Models\Document;
 use App\Models\AnggotaDosen;
 use App\Models\Review\Review;
 use App\Models\AnggotaMahasiswa;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Pengabdian\ProposalPengabdian;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class LaporanPengabdian extends Model
+class ProposalPengabdian extends Model
 {
     use HasFactory;
 
-    protected $table = 'laporan_pengabdians';
+    protected $table = 'proposal_pengabdians';
+
 
     protected $fillable = [
-        'proposal_pengabdian_id',
+        'ketua_pengusul_id',
         'judul',
         'tahun_pelaksanaan',
-        'ringkasan',
-        'file_laporan',
-        'link_video',
+        'rumpun_ilmu',
+        'syarat_ketentuan',
+        'luaran_tambahan_dijanjikan',
+        'abstrak',
+        'kata_kunci',
         'status',
-        'komentar_reviewer',
-        'komentar_prpm'
+        'komentar_prpm',
+        'nama_mitra',
+        'jenis_mitra',
+        'alamat_mitra',
+        'kontak_mitra',
+        'pimpinan_mitra',
+        'jumlah_anggota_kelompok',
+        'pernyataan_kebutuhan',
     ];
+/**
+     * Relasi ke User (Ketua Pengusul)
+     */
+    public function ketuaPengusul()
+    {
+        return $this->belongsTo(User::class, 'ketua_pengusul_id');
+    }
 
     /**
-     * Relasi ke proposal pengabdian
+     * Relasi ke Laporan Pengabdian (One to One)
      */
-    public function proposalPengabdian()
+    public function laporanPengabdian()
     {
-        return $this->belongsTo(ProposalPengabdian::class, 'proposal_pengabdian_id');
+        return $this->hasOne(LaporanPengabdian::class, 'proposal_pengabdian_id');
     }
 
     /**
@@ -51,7 +67,11 @@ class LaporanPengabdian extends Model
     {
         return $this->morphMany(Document::class, 'documentable');
     }
- // ProposalPengabdian.php
+
+    /**
+     * Relasi ke anggota (polymorphic) - jika ada anggota dosen/mahasiswa
+     */
+     // ProposalPengabdian.php
 public function anggotaDosen()
 {
     return $this->morphMany(AnggotaDosen::class, 'proposable');
@@ -63,3 +83,5 @@ public function anggotaMahasiswa()
 }
 
 }
+
+

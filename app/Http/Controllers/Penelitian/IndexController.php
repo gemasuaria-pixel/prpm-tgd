@@ -1,11 +1,11 @@
 <?php
+
 namespace App\Http\Controllers\Penelitian;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Penelitian\ProposalPenelitian;
 use App\Models\Penelitian\LaporanPenelitian;
+use App\Models\Penelitian\ProposalPenelitian;
+use Illuminate\Support\Facades\Auth;
 
 class IndexController extends Controller
 {
@@ -14,80 +14,103 @@ class IndexController extends Controller
         $user = Auth::user();
         $userId = $user->id;
 
-        // 1. Ambil semua proposal milik dosen ini
+        // =======================================
+        // 1. Ambil semua proposal milik dosen
+        // =======================================
         $proposals = ProposalPenelitian::where('ketua_pengusul_id', $userId)
             ->latest('updated_at')
             ->get();
 
-        // 2. Hitungan untuk Card Status Proposal
+        // =======================================
+        // 2. Ambil proposal final (untuk tombol buat laporan)
+        // =======================================
+        $proposalFinals = $proposals
+            ->where('status', 'final')
+            ->filter(fn($p) => !$p->laporanPenelitian);
+
+        $proposalFinal = $proposalFinals->first();
+
+        // =======================================
+        // 3. Hitungan untuk Card Status Proposal
+        // =======================================
         $proposalCount = [
+            'total'    => $proposals->count(),
             'diterima' => $proposals->where('status', 'final')->count(),
-            'diproses' => $proposals->whereIn('status', ['menunggu_validasi_prpm'])->count(),
+            'diproses' => $proposals->where('status', 'menunggu_validasi_prpm')->count(),
             'ditolak'  => $proposals->where('status', 'rejected')->count(),
         ];
 
-        // 3. Tentukan Proposal yang sudah "Diterima"
-        $proposalFinal = $proposals->where('status', 'final')->first();
-
-        // 4. Ambil semua laporan penelitian terkait proposal user
-        $proposalIds = $proposals->pluck('id');
-        $reports = LaporanPenelitian::whereIn('proposal_id', $proposalIds)
+        // =======================================
+        // 4. Ambil semua laporan penelitian
+        // =======================================
+        $laporans = LaporanPenelitian::whereIn('proposal_penelitian_id', $proposals->pluck('id'))
+            ->with('proposalPenelitian') // relasi ke proposal
             ->latest('updated_at')
             ->get();
 
+        // =======================================
         // 5. Hitungan untuk Card Status Laporan
+        // =======================================
         $reportCount = [
-            'diterima' => $reports->where('status', 'final')->count(),
-            'diproses' => $reports->whereIn('status', ['menunggu_validasi_prpm'])->count(),
-            'ditolak'  => $reports->where('status', 'rejected')->count(),
+            'total'    => $laporans->count(),
+            'diterima' => $laporans->where('status', 'final')->count(),
+            'diproses' => $laporans->where('status', 'menunggu_validasi_prpm')->count(),
+            'ditolak'  => $laporans->where('status', 'rejected')->count(),
         ];
 
-        // 6. Gabungkan Proposal dan Laporan untuk tabel
+        // =======================================
+        // 6. Gabungkan Proposal & Laporan ke 1 Collection
+        // =======================================
         $allEntries = collect();
 
         foreach ($proposals as $p) {
-            $allEntries->push((object)[
-                'tanggal_upload' => $p->created_at,
-                'judul' => $p->judul,
-                'jenis' => 'Proposal',
-                'status' => $p->status,
-                'tanggal_update' => $p->updated_at,
+            $allEntries->push((object) [
+                'id'              => $p->id,
+                'judul'           => $p->judul,
+                'jenis'           => 'Proposal',
+                'status'          => $p->status,
+                'tanggal_upload'  => $p->created_at,
+                'tanggal_update'  => $p->updated_at,
             ]);
         }
 
-        foreach ($reports as $r) {
-            $parentProposal = $proposals->firstWhere('id', $r->proposal_id);
-            if ($parentProposal) {
-                $allEntries->push((object)[
-                    'tanggal_upload' => $r->created_at,
-                    'judul' => 'Laporan: ' . $parentProposal->judul,
-                    'jenis' => 'Laporan',
-                    'status' => $r->status,
-                    'tanggal_update' => $r->updated_at,
-                ]);
-            }
+        foreach ($laporans as $r) {
+            $allEntries->push((object) [
+                'id'              => $r->id,
+                'judul'           => $r->judul,
+                'jenis'           => 'Laporan',
+                'status'          => $r->status,
+                'tanggal_upload'  => $r->created_at,
+                'tanggal_update'  => $r->updated_at,
+            ]);
         }
 
-        // 7. Cek profil lengkap
-        $isProfileComplete = $user->full_name &&
-                             $user->nidn &&
-                             $user->tempat_lahir &&
-                             $user->tanggal_lahir &&
-                             $user->institusi &&
-                             $user->program_studi &&
-                             $user->alamat &&
-                             $user->kontak;
+        $allEntries = $allEntries->sortByDesc('tanggal_update')->values();
 
-        // 8. Urutkan semua entri berdasarkan tanggal update terbaru
-        $allEntries = $allEntries->sortByDesc('tanggal_update');
+        // =======================================
+        // 7. Cek kelengkapan profil dosen
+        // =======================================
+        $isProfileComplete = collect([
+            $user->full_name,
+            $user->nidn,
+            $user->tempat_lahir,
+            $user->tanggal_lahir,
+            $user->institusi,
+            $user->program_studi,
+            $user->alamat,
+            $user->kontak,
+        ])->every(fn($item) => !empty($item));
 
-        // 9. Kirim data ke view
-        return view('penelitian.index', compact(
-            'proposalFinal',
-            'proposalCount',
-            'reportCount',
-            'allEntries',
-            'isProfileComplete'
-        ));
+        // =======================================
+        // 8. Kirim data ke view
+        // =======================================
+        return view('penelitian.index', [
+            'proposalFinal'    => $proposalFinal,
+            'proposalFinals'   => $proposalFinals,
+            'proposalCount'    => $proposalCount,
+            'reportCount'      => $reportCount,
+            'isProfileComplete'=> $isProfileComplete,
+            'allEntries'       => $allEntries,
+        ]);
     }
 }

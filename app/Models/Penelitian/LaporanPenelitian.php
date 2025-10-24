@@ -15,6 +15,7 @@ class LaporanPenelitian extends Model
     protected $table = 'laporan_penelitians';
 
     protected $fillable = [
+        'judul',
         'proposal_penelitian_id',
         'metode_penelitian',
         'ringkasan_laporan',

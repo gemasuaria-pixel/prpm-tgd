@@ -14,7 +14,7 @@
     <div class="card card-modern overflow-hidden">
         <div class="card-body p-4 p-lg-5">
              
-            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center mb-4 gap-3">
+            {{-- <div class="d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center mb-4 gap-3">
                
 
                 <div class="d-flex gap-3 align-items-center w-100 w-lg-auto">
@@ -34,7 +34,7 @@
                         <small class="muted-small">Menampilkan <span class="fw-semibold">{{ $users->count() }}</span> dari <span class="fw-semibold">{{ $users->total() }}</span></small>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
             {{-- Table --}}
             <div wire:key="user-table" class="table-responsive">

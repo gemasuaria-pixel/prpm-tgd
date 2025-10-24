@@ -23,10 +23,11 @@ return new class extends Migration
             $table->string('kata_kunci')->nullable();
             $table->enum('status', [
                 'draft',
-                'menunggu_validasi_prpm',
                 'revisi',
-                'approved_by_prpm',
                 'rejected',
+                'menunggu_validasi_prpm',
+                'menunggu_validasi_reviewer',
+                'approved_by_reviewer',
                 'final',
             ])->default('menunggu_validasi_prpm');
             $table->text('komentar_prpm')->nullable();
