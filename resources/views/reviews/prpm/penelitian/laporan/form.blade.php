@@ -159,7 +159,7 @@
                     <h5 class="fw-semibold mb-3 text-success">
                         <i class="bi bi-pencil-square me-2"></i>Perbarui Status Laporan
                     </h5>
-                    <form action="{{ route('ketua-prpm.review.laporan.updateStatus', $laporan) }}" method="POST">
+                    <form action="{{ route('ketua-prpm.review.penelitian.laporan.update-status', $laporan) }}" method="POST">
                         @csrf
                         <div class="row g-3">
 
@@ -210,7 +210,7 @@
                         </div>
 
                         <div class="d-flex justify-content-between mt-4">
-                            <a href="{{ route('ketua-prpm.review.laporan.index') }}" class="btn btn-secondary me-2">
+                            <a href="{{ route('ketua-prpm.review.penelitian.laporan.index') }}" class="btn btn-secondary me-2">
                                 <i class="bi bi-arrow-left me-1"></i> Kembali
                             </a>
                             <button type="submit" class="btn btn-success px-4">

@@ -90,7 +90,7 @@ class ProposalReviewController extends Controller
         ]);
 
         // ===============================
-        // 👥 Assign reviewer (kalau ada)
+        // Assign reviewer (kalau ada)
         // ===============================
         if ($request->filled('reviewer_id')) {
             foreach ($request->reviewer_id as $reviewerId) {
@@ -102,7 +102,7 @@ class ProposalReviewController extends Controller
         }
 
         // ===============================
-        // 📝 Update status & komentar
+        //  Update status & komentar
         // ===============================
         $proposal->update([
             'status' => $request->status,
@@ -110,7 +110,7 @@ class ProposalReviewController extends Controller
         ]);
 
         // ===============================
-        // ✅ Cek apakah semua reviewer sudah approve
+        //  Cek apakah semua reviewer sudah approve
         // ===============================
         $totalReviewer = $proposal->reviews()->count();
         $approvedReviewer = $proposal->reviews()->where('status', 'approved')->count();
@@ -120,7 +120,7 @@ class ProposalReviewController extends Controller
         }
 
         // ===============================
-        // 🏁 Jika PRPM finalkan
+        // Jika PRPM finalkan
         // ===============================
         if ($request->status === 'final') {
             $proposal->update(['status' => 'final']);

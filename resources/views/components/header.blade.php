@@ -9,15 +9,15 @@
                 <i class="bi bi-list"></i>
               </a>
             </li>
-            <li class="nav-item d-none d-md-block"><a href="#" class="nav-link">Home</a></li>
-            <li class="nav-item d-none d-md-block"><a href="#" class="nav-link">Contact</a></li>
+            {{-- <li class="nav-item d-none d-md-block"><a href="#" class="nav-link">Home</a></li>
+            <li class="nav-item d-none d-md-block"><a href="#" class="nav-link">Contact</a></li> --}}
           </ul>
           <!--end::Start Navbar Links-->
           <!--begin::End Navbar Links-->
           <ul class="navbar-nav ms-auto">
            
             <!--begin::Messages Dropdown Menu-->
-            <li class="nav-item dropdown">
+            {{-- <li class="nav-item dropdown">
               <a class="nav-link" data-bs-toggle="dropdown" href="#">
                 <i class="bi bi-chat-text"></i>
                 <span class="navbar-badge badge text-bg-danger">3</span>
@@ -102,11 +102,11 @@
                 </a>
                 <div class="dropdown-divider"></div>
                 <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-              </div>
+              </div> --}}
             </li>
             <!--end::Messages Dropdown Menu-->
             <!--begin::Notifications Dropdown Menu-->
-            <li class="nav-item dropdown">
+            {{-- <li class="nav-item dropdown">
               <a class="nav-link" data-bs-toggle="dropdown" href="#">
                 <i class="bi bi-bell-fill"></i>
                 <span class="navbar-badge badge text-bg-warning">15</span>
@@ -131,7 +131,7 @@
                 <div class="dropdown-divider"></div>
                 <a href="#" class="dropdown-item dropdown-footer"> See All Notifications </a>
               </div>
-            </li>
+            </li> --}}
             <!--end::Notifications Dropdown Menu-->
             
             <!--begin::User Menu Dropdown-->
@@ -139,14 +139,14 @@
               <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                 <img
                   src="{{ Auth::user()->profile_photo_url }}"
-                  class="user-image rounded-circle shadow"
+                  class="user-image rounded-circle "
                   alt="User Image"
                 />
                 <span class="d-none d-md-inline">{{ auth()->user()->name }}</span>
               </a>
               <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
                 <!--begin::User Image-->
-                <li class="user-header text-bg-primary">
+                <li class="user-header text-dark rounded bg-white">
                   <img
                     src="{{ Auth::user()->profile_photo_url }}"
                     class="rounded-circle shadow"
@@ -159,21 +159,13 @@
                 </li>
                 <!--end::User Image-->
                 <!--begin::Menu Body-->
-                <li class="user-body">
-                  <!--begin::Row-->
-                  <div class="row">
-                    <div class="col-4 text-center"><a href="#">Followers</a></div>
-                    <div class="col-4 text-center"><a href="#">Sales</a></div>
-                    <div class="col-4 text-center"><a href="#">Friends</a></div>
-                  </div>
-                  <!--end::Row-->
-                </li>
+              
                 <!--end::Menu Body-->
                 <!--begin::Menu Footer-->
-                <li class="user-footer">
+                {{-- <li class="user-footer">
                   <a href="#" class="btn btn-default btn-flat">Profile</a>
-                  <a href="#" class="btn btn-default btn-flat float-end">Sign out</a>
-                </li>
+                  <a href="#" class="btn btn-default btn-flat float-end">log out</a>
+                </li> --}}
                 <!--end::Menu Footer-->
               </ul>
             </li>

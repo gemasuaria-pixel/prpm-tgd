@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers\Pengabdian\Proposal;
 
-use App\Models\User;
-use App\Models\AnggotaDosen;
-use Illuminate\Http\Request;
-use App\Models\AnggotaMahasiswa;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Pengabdian\ProposalPengabdian;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CreateController extends Controller
 {
- public function index()
+    public function index()
     {
         // Ambil semua dosen & mahasiswa untuk pilihan anggota
         $dosenTerdaftar = User::role('dosen')->get();
@@ -22,7 +20,7 @@ class CreateController extends Controller
 
     public function store(Request $request)
     {
-        // ✅ Validasi Input
+        // Validasi Input
         $validated = $request->validate([
             'judul' => 'required|string|max:255',
             'jumlah_anggota_kelompok' => 'required|integer|min:1',
@@ -44,17 +42,20 @@ class CreateController extends Controller
             // Checkbox
             'syarat_ketentuan' => ['accepted'],
 
-          
-            // Anggota mahasiswa (opsional)
+            // Anggota mahasiswa
             'mahasiswa' => 'nullable|array',
             'mahasiswa.*.nama' => 'required_with:mahasiswa|string|max:255',
             'mahasiswa.*.nim' => 'required_with:mahasiswa|string|max:50',
             'mahasiswa.*.prodi' => 'nullable|string|max:100',
             'mahasiswa.*.kontak' => 'nullable|string|max:50',
             'mahasiswa.*.alamat' => 'nullable|string|max:255',
+
+            // Anggota dosen (opsional)
+            'anggota_dosen' => 'nullable|array',
+            'anggota_dosen.*' => 'exists:users,id',
         ]);
 
-        // ✅ Simpan Proposal Pengabdian
+        //  Simpan Proposal Pengabdian
         $proposal = ProposalPengabdian::create([
             'ketua_pengusul_id' => Auth::id(),
             'judul' => $validated['judul'],
@@ -78,10 +79,8 @@ class CreateController extends Controller
             'pernyataan_kebutuhan' => $validated['pernyataan_kebutuhan'],
         ]);
 
-    
-
-        // ✅ Simpan Anggota Mahasiswa (jika diisi)
-        if (!empty($validated['mahasiswa'])) {
+        //  Simpan Anggota Mahasiswa (jika diisi)
+        if (! empty($validated['mahasiswa'])) {
             foreach ($validated['mahasiswa'] as $mhs) {
                 $proposal->anggotaMahasiswa()->create([
                     'nama' => $mhs['nama'],
@@ -92,8 +91,16 @@ class CreateController extends Controller
                 ]);
             }
         }
+        //  Simpan Anggota Dosen (jika ada)
+        if (! empty($validated['anggota_dosen'])) {
+            foreach ($validated['anggota_dosen'] as $dosenId) {
+                $proposal->anggotaDosen()->create([
+                    'user_id' => $dosenId,
+                ]);
+            }
+        }
 
-        // ✅ Simpan Dokumen (jika ada upload)
+        //  Simpan Dokumen (jika ada upload)
         if ($request->hasFile('documents')) {
             $path = $request->file('documents')->store('proposals_pengabdian', 'public');
 

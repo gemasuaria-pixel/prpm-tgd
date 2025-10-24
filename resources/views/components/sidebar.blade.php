@@ -79,7 +79,7 @@
                   
                      <li class="nav-item">
                      <a href="#" class="nav-link">
-                         <i class="bi bi-people-fill"></i>
+                         <i class="bi bi-file-earmark-text-fill"></i>
                          <p>
                              Reviews
                              <i class="nav-arrow bi bi-chevron-right"></i>
@@ -106,10 +106,11 @@
 
                      <li class="nav-item">
                      <a href="#" class="nav-link">
-                         <i class="bi bi-people-fill"></i>
+                         <i class="bi bi-file-earmark-text-fill"></i>
+
                          <p>
                              Reviews
-                             <i class="nav-arrow bi bi-chevron-right"></i>
+                            
                          </p>
                      </a>
                      <ul class="nav nav-treeview">

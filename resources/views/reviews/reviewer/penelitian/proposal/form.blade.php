@@ -83,7 +83,7 @@
             <hr>
 
             {{-- ================== FORM REVIEW ================== --}}
-            <form method="POST" action="{{ route('reviewer.proposal.submit', $review->id) }}">
+            <form method="POST" action="{{ route('reviewer.review.penelitian.proposal.submit', $review->id) }}">
                 @csrf
 
                 <div class="mb-3">
@@ -108,7 +108,7 @@
                 </div>
 
                 <div class="d-flex justify-content-between">
-                    <a href="{{ route('reviewer.proposal.index') }}" class="btn btn-secondary">
+                    <a href="{{ route('reviewer.review.penelitian.proposal.index') }}" class="btn btn-secondary">
                         <i class="bi bi-arrow-left me-1"></i> Kembali
                     </a>
                     <button type="submit" class="btn btn-success">

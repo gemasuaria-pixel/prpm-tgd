@@ -77,7 +77,7 @@
                     <div class="row my-4">
                         <div class="col-md-6 d-grid ">
                             @if ($isProfileComplete)
-                                <a href="{{ route('dosen.ProposalPenelitian') }}"
+                                <a href="{{ route('dosen.penelitian.proposal.create') }}"
                                     class="btn btn-outline-primary btn-lg rounded-3 fw-semibold shadow-sm">
                                     <i class="bi bi-plus-circle me-2"></i> Usulan Penelitian
                                 </a>

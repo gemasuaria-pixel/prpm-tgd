@@ -12,14 +12,14 @@
                     {{--  Nav Tabs Navigasi Antar Halaman --}}
                     <ul class="nav nav-tabs mt-3 px-3" id="reviewTabs" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <a href="{{ route('reviewer.review.pengabdian.proposal.index') }}"
-                                class="nav-link {{ request()->routeIs('reviewer.proposal.index') ? 'active' : '' }}">
+                            <a href="{{ route('reviewer.review.penelitian.proposal.index') }}"
+                                class="nav-link {{ request()->routeIs('reviewer.review.penelitian.proposal.index') ? 'active' : '' }}">
                                 Proposal Penelitian
                             </a>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <a href="{{ route('reviewer.review.pengabdian.laporan.index') }}"
-                                class="nav-link {{ request()->routeIs('reviewer.laporan.index') ? 'active' : '' }}">
+                            <a href="{{ route('reviewer.review.penelitian.laporan.index') }}"
+                                class="nav-link {{ request()->routeIs('reviewer.review.penelitian.laporan.index') ? 'active' : '' }}">
                                 Laporan Penelitian
                             </a>
                         </li>

@@ -26,7 +26,7 @@
                                     </div>
                                 @endif
 
-                                <form action="{{ route('dosen.uploadLaporan.store', $proposal) }}" method="POST"
+                                <form action="{{ route('dosen.penelitian.laporan.store', $proposal) }}" method="POST"
                                     enctype="multipart/form-data">
                                     @csrf
 

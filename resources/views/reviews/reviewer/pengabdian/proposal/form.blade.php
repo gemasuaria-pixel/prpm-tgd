@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mt-4">
-    <h4 class="mb-4">Form Review Proposal Penelitian</h4>
+    <h4 class="mb-4">Form Review Proposal Pengabdian</h4>
 
     <div class="card shadow-sm border-0 rounded-4">
         <div class="card-body">
@@ -20,7 +20,7 @@
                 <div class="col-md-6">
                     <p><strong>Ketua Pengusul:</strong> {{ $proposal->ketuaPengusul->name ?? '-' }}</p>
                     <p><strong>Rumpun Ilmu:</strong> {{ $proposal->rumpun_ilmu ?? '-' }}</p>
-                    <p><strong>Bidang Penelitian:</strong> {{ $proposal->bidang_penelitian ?? '-' }}</p>
+                    <p><strong>Bidang Pengabdian:</strong> {{ $proposal->bidang_pengabdian ?? '-' }}</p>
                 </div>
                 <div class="col-md-6">
                     <p><strong>Tahun Pelaksanaan:</strong> {{ $proposal->tahun_pelaksanaan ?? '-' }}</p>
@@ -47,9 +47,9 @@
                 </div>
             </div>
 
-            {{-- ================== ANGGOTA PENELITIAN ================== --}}
+            {{-- ================== ANGGOTA DOSEN ================== --}}
             <div class="mb-4">
-                <strong>Daftar Anggota Penelitian:</strong>
+                <strong>Daftar Anggota Dosen:</strong>
                 <div class="table-responsive mt-2">
                     <table class="table table-sm table-bordered align-middle mb-0">
                         <thead class="table-light">
@@ -71,7 +71,40 @@
                             @empty
                                 <tr>
                                     <td colspan="4" class="text-center text-muted py-2">
-                                        Belum ada anggota penelitian.
+                                        Belum ada anggota dosen.
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {{-- ================== ANGGOTA MAHASISWA ================== --}}
+            <div class="mb-4">
+                <strong>Daftar Anggota Mahasiswa:</strong>
+                <div class="table-responsive mt-2">
+                    <table class="table table-sm table-bordered align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Nama</th>
+                                <th>NIM</th>
+                                <th>Program Studi</th>
+                                <th>Kontak</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($proposal->anggotaMahasiswa ?? [] as $mhs)
+                                <tr>
+                                    <td>{{ $mhs->nama ?? ($mhs->user->name ?? '-') }}</td>
+                                    <td>{{ $mhs->nim ?? ($mhs->user->nim ?? '-') }}</td>
+                                    <td>{{ $mhs->program_studi ?? ($mhs->user->program_studi ?? '-') }}</td>
+                                    <td>{{ $mhs->kontak ?? ($mhs->user->kontak ?? '-') }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted py-2">
+                                        Belum ada anggota mahasiswa.
                                     </td>
                                 </tr>
                             @endforelse

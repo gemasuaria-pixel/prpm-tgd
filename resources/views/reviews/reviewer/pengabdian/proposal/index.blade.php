@@ -2,7 +2,7 @@
 
 @section('content')
 <main class="app-main">
-    <x-breadcrumbs>Review PRPM</x-breadcrumbs>
+    <x-breadcrumbs>Review</x-breadcrumbs>
 
     <div class="app-content">
         <div class="container-fluid">
@@ -13,13 +13,13 @@
                     <ul class="nav nav-tabs mt-3 px-3" id="reviewTabs" role="tablist">
                         <li class="nav-item" role="presentation">
                             <a href="{{ route('reviewer.review.pengabdian.proposal.index') }}"
-                                class="nav-link {{ request()->routeIs('reviewer.proposal.index') ? 'active' : '' }}">
+                                class="nav-link {{ request()->routeIs('reviewer.review.pengabdian.proposal.index') ? 'active' : '' }}">
                                 Proposal Pengabdian
                             </a>
                         </li>
                         <li class="nav-item" role="presentation">
                             <a href="{{ route('reviewer.review.pengabdian.laporan.index') }}"
-                                class="nav-link {{ request()->routeIs('reviewer.laporan.index') ? 'active' : '' }}">
+                                class="nav-link {{ request()->routeIs('reviewer.review.pengabdian.laporan.index') ? 'active' : '' }}">
                                 Laporan Pengabdian
                             </a>
                         </li>

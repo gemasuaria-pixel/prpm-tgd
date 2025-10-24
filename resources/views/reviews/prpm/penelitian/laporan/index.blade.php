@@ -12,14 +12,14 @@
                         {{-- Tabs --}}
                         <ul class="nav nav-tabs mt-3 px-3" id="reviewTabs" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <a href="{{ route('ketua-prpm.review.proposal.index') }}"
-                                    class="nav-link {{ request()->routeIs('ketua-prpm.review.proposal.index') ? 'active' : '' }}">
+                                <a href="{{ route('ketua-prpm.review.penelitian.proposal.index') }}"
+                                    class="nav-link {{ request()->routeIs('ketua-prpm.review.penelitian.proposal.index') ? 'active' : '' }}">
                                     Proposal Penelitian
                                 </a>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <a href="{{ route('ketua-prpm.review.laporan.index') }}"
-                                    class="nav-link {{ request()->routeIs('ketua-prpm.review.laporan.index') ? 'active' : '' }}">
+                                <a href="{{ route('ketua-prpm.review.penelitian.laporan.index') }}"
+                                    class="nav-link {{ request()->routeIs('ketua-prpm.review.penelitian.laporan.index') ? 'active' : '' }}">
                                     Laporan Penelitian
                                 </a>
                             </li>
@@ -76,7 +76,7 @@
                                                 </span>
                                             </td>
                                             <td class="text-center">
-                                                <a href="{{ route('ketua-prpm.review.laporan.show', $laporan->id) }}"
+                                                <a href="{{ route('ketua-prpm.review.penelitian.laporan.form', $laporan->id) }}"
                                                     class="btn btn-light btn-sm borders rounded-pill px-3">
                                                     <i class="bi bi-pencil-square text-primary"></i> Review
                                                 </a>

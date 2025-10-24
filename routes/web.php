@@ -76,12 +76,11 @@ Route::middleware(['auth', 'role:dosen', 'check.status'])
                 ->name('proposal.store');
 
             // Upload Laporan Pengabdian
-            Route::get('/laporan/create', [App\Http\Controllers\Pengabdian\Laporan\CreateController::class, 'index'])
+            Route::get('/laporan/create/{proposal}', [App\Http\Controllers\Pengabdian\Laporan\CreateController::class, 'index'])
                 ->name('laporan.create');
-
-            // Status Pengabdian (Index)
-            Route::get('/', [App\Http\Controllers\Pengabdian\IndexController::class, 'index'])
-                ->name('index');
+            Route::post('/laporan/create/{proposal}', [App\Http\Controllers\Pengabdian\Laporan\CreateController::class, 'store'])
+                ->name('laporan.store');
+            
         });
 
     });
