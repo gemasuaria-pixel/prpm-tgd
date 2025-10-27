@@ -7,6 +7,7 @@ use App\Models\Member;
 use App\Models\Document;
 use App\Models\AnggotaDosen;
 use App\Models\Review\Review;
+use App\Traits\HasKetuaPengusul;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Penelitian\LaporanPenelitian;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class ProposalPenelitian extends Model
 {
     use HasFactory;
+    use HasKetuaPengusul;
     protected $table = 'proposal_penelitians';
     protected $fillable = [
         'ketua_pengusul_id',

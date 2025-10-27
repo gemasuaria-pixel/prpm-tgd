@@ -148,7 +148,7 @@
                                                 <small class="text-muted">ID: {{ $identifier }}</small>
                                             </div>
 
-                                            <a href="{{ route('dosen.pengabdian.laporan.create', $proposal->id)  }}"
+                                            <a href="{{ route('dosen.pengabdian.laporan.create', $proposal->id) }}"
                                                 class="btn btn-outline-success btn-sm fw-semibold">
                                                 <i class="bi bi-upload me-1"></i> Upload
                                             </a>
@@ -244,13 +244,9 @@
 
                         {{-- Optional: Pagination Static (nanti bisa diganti pagination real kalau pakai paginate()) --}}
                         <div class="card-footer clearfix">
-                            <ul class="pagination pagination-sm m-0 float-end">
-                                <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-                            </ul>
+                            <div class="float-end">
+                                {{ $allEntries->links() }}
+                            </div>
                         </div>
                     </div>
 

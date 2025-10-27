@@ -26,7 +26,7 @@ class IndexController extends Controller
         // =======================================
         $proposalFinals = $proposals
             ->where('status', 'final')
-            ->filter(fn($p) => !$p->laporanPengabdian);
+            ->filter(fn ($p) => ! $p->laporanPengabdian);
 
         $proposalFinal = $proposalFinals->first();
 
@@ -34,10 +34,10 @@ class IndexController extends Controller
         // 3. Hitungan untuk Card Status Proposal
         // =======================================
         $proposalCount = [
-            'total'    => $proposals->count(),
+            'total' => $proposals->count(),
             'diterima' => $proposals->where('status', 'final')->count(),
             'diproses' => $proposals->where('status', 'menunggu_validasi_prpm')->count(),
-            'ditolak'  => $proposals->where('status', 'rejected')->count(),
+            'ditolak' => $proposals->where('status', 'rejected')->count(),
         ];
 
         // =======================================
@@ -52,10 +52,10 @@ class IndexController extends Controller
         // 5. Hitungan untuk Card Status Laporan
         // =======================================
         $reportCount = [
-            'total'    => $laporans->count(),
+            'total' => $laporans->count(),
             'diterima' => $laporans->where('status', 'final')->count(),
             'diproses' => $laporans->where('status', 'menunggu_validasi_prpm')->count(),
-            'ditolak'  => $laporans->where('status', 'rejected')->count(),
+            'ditolak' => $laporans->where('status', 'rejected')->count(),
         ];
 
         // =======================================
@@ -65,23 +65,23 @@ class IndexController extends Controller
 
         foreach ($proposals as $p) {
             $allEntries->push((object) [
-                'id'              => $p->id,
-                'judul'           => $p->judul,
-                'jenis'           => 'Proposal',
-                'status'          => $p->status,
-                'tanggal_upload'  => $p->created_at,
-                'tanggal_update'  => $p->updated_at,
+                'id' => $p->id,
+                'judul' => $p->judul,
+                'jenis' => 'Proposal',
+                'status' => $p->status,
+                'tanggal_upload' => $p->created_at,
+                'tanggal_update' => $p->updated_at,
             ]);
         }
 
         foreach ($laporans as $r) {
             $allEntries->push((object) [
-                'id'              => $r->id,
-                'judul'           => $r->judul,
-                'jenis'           => 'Laporan',
-                'status'          => $r->status,
-                'tanggal_upload'  => $r->created_at,
-                'tanggal_update'  => $r->updated_at,
+                'id' => $r->id,
+                'judul' => $r->judul,
+                'jenis' => 'Laporan',
+                'status' => $r->status,
+                'tanggal_upload' => $r->created_at,
+                'tanggal_update' => $r->updated_at,
             ]);
         }
 
@@ -99,18 +99,33 @@ class IndexController extends Controller
             $user->program_studi,
             $user->alamat,
             $user->kontak,
-        ])->every(fn($item) => !empty($item));
+        ])->every(fn ($item) => ! empty($item));
+
+        // ===== Tambahkan Pagination di sini =====
+        $currentPage = request('page', 1);
+        $perPage = 8;
+
+        $paginatedEntries = new \Illuminate\Pagination\LengthAwarePaginator(
+            $allEntries->forPage($currentPage, $perPage),
+            $allEntries->count(),
+            $perPage,
+            $currentPage,
+            [
+                'path' => request()->fullUrlWithoutQuery('page'),
+            ]
+        );
 
         // =======================================
         // 8. Kirim data ke view
         // =======================================
         return view('pengabdian.index', [
-            'proposalFinal'    => $proposalFinal,
-            'proposalFinals'   => $proposalFinals,
-            'proposalCount'    => $proposalCount,
-            'reportCount'      => $reportCount,
-            'isProfileComplete'=> $isProfileComplete,
-            'allEntries'       => $allEntries,
+            'proposalFinal' => $proposalFinal,
+            'proposalFinals' => $proposalFinals,
+            'proposalCount' => $proposalCount,
+            'reportCount' => $reportCount,
+            'isProfileComplete' => $isProfileComplete,
+            'allEntries' => $paginatedEntries,
+
         ]);
     }
 }

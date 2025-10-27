@@ -1,86 +1,21 @@
 @extends('layouts.main')
 
 @section('content')
-    <main class="app-main">
-        <x-breadcrumbs>Review PRPM - Pengabdian</x-breadcrumbs>
+<main class="app-main">
+    <x-breadcrumbs>Review PRPM</x-breadcrumbs>
 
-        <div class="app-content">
-            <div class="container-fluid">
-                <div class="card border-0 shadow-sm rounded-4">
-                    <div class="card-body p-0">
+    <div class="app-content">
+        <div class="container-fluid">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-0">
+                    {{-- Komponen Tabs --}}
+                    <x-tabs.review-prpm domain="pengabdian" active="proposal" />
 
-                        {{-- Tabs --}}
-                        <ul class="nav nav-tabs mt-3 px-3" id="reviewTabs" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <a href="{{ route('ketua-prpm.review.pengabdian.proposal.index') }}"
-                                    class="nav-link {{ request()->routeIs('ketua-prpm.review.pengabdian.proposal.index') ? 'active' : '' }}">
-                                    Proposal Pengabdian
-                                </a>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <a href="{{ route('ketua-prpm.review.pengabdian.laporan.index') }}"
-                                    class="nav-link {{ request()->routeIs('ketua-prpm.review.pengabdian.laporan.index') ? 'active' : '' }}">
-                                    Laporan Pengabdian
-                                </a>
-                            </li>
-                        </ul>
-
-                        <div class="table-responsive">
-                            <table class="table table-hover align-middle mb-0">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>Judul</th>
-                                        <th>Ketua Pengusul</th>
-                                        <th>Nama Mitra</th>
-                                        <th>Status</th>
-                                        <th class="text-center">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse ($proposals as $proposal)
-                                        @php
-                                            [$statusClass, $statusIcon, $statusLabel] = match ($proposal->status) {
-                                                'menunggu_validasi_reviewer' => ['bg-warning text-dark', 'bi-hourglass', 'Menunggu Reviewer'],
-                                                'menunggu_validasi_prpm' => ['bg-warning text-dark', 'bi-hourglass', 'Menunggu PRPM'],
-                                                'approved_by_reviewer' => ['bg-success text-white', 'bi-check-circle', 'Disetujui Reviewer'],
-                                                'revisi' => ['bg-warning text-dark', 'bi-arrow-repeat', 'Perlu Revisi'],
-                                                'rejected' => ['bg-danger text-white', 'bi-x-circle', 'Ditolak'],
-                                                'final' => ['bg-primary text-white', 'bi-flag', 'Final'],
-                                                default => ['bg-secondary text-white', 'bi-question-circle', ucfirst($proposal->status)]
-                                            };
-                                        @endphp
-
-                                        <tr>
-                                            <td class="fw-semibold text-wrap">{{ Str::limit($proposal->judul, 30, '...') ?? '-' }}</td>
-                                            <td>{{ Str::limit($proposal->ketuaPengusul->name ?? '-', 30, '...') }}</td>
-                                            <td>{{ Str::limit($proposal->nama_mitra ?? '-', 30, '...') }}</td>
-                                            <td>
-                                                <span class="badge rounded-pill px-3 py-2 {{ $statusClass }}">
-                                                    <i class="bi {{ $statusIcon }} me-1"></i>
-                                                    {{ $statusLabel }}
-                                                </span>
-                                            </td>
-                                            <td class="text-center">
-                                                <a href="{{ route('ketua-prpm.review.pengabdian.proposal.form', $proposal->id) }}"
-                                                    class="btn btn-light btn-sm borders rounded-pill px-3">
-                                                    <i class="bi bi-pencil-square text-primary"></i> Review
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="5" class="text-center py-4 text-muted">
-                                                Tidak ada usulan pengabdian yang menunggu persetujuan.
-                                            </td>
-                                        </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
-
-                    </div>
+                    {{-- Komponen Table --}}
+                    <x-table.review-prpm :entries="$proposals" />
                 </div>
             </div>
         </div>
-    </main>
+    </div>
+</main>
 @endsection

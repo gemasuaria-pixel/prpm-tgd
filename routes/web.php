@@ -44,7 +44,7 @@ Route::middleware(['auth', 'role:dosen', 'check.status'])
          */
         Route::prefix('penelitian')->name('penelitian.')->group(function () {
 
-            Route::get('/proposal', [App\Http\Controllers\Penelitian\IndexController::class, 'index'])
+            Route::get('/', [App\Http\Controllers\Penelitian\IndexController::class, 'index'])
                 ->name('index');
             // Usulan Proposal Penelitian
             Route::get('/proposal/create', [App\Http\Controllers\Penelitian\Proposal\CreateController::class, 'index'])
@@ -67,8 +67,9 @@ Route::middleware(['auth', 'role:dosen', 'check.status'])
          * PENGABDIAN
          */
         Route::prefix('pengabdian')->name('pengabdian.')->group(function () {
-            Route::get('/proposal', [App\Http\Controllers\Pengabdian\IndexController::class, 'index'])
+            Route::get('/', [App\Http\Controllers\Pengabdian\IndexController::class, 'index'])
                 ->name('index');
+                
             // Usulan Proposal Pengabdian
             Route::get('/proposal/create', [App\Http\Controllers\Pengabdian\Proposal\CreateController::class, 'index'])
                 ->name('proposal.create');

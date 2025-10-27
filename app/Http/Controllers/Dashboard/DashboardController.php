@@ -14,9 +14,9 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
-
+        
         // ===============================
-        // 🧪 PROPOSAL PENELITIAN
+        //  PROPOSAL PENELITIAN
         // ===============================
         $proposalPenelitianDiterima = ProposalPenelitian::where('status', 'final')->count();
         $proposalPenelitianDiproses = ProposalPenelitian::whereIn('status', [
@@ -28,7 +28,7 @@ class DashboardController extends Controller
         $proposalPenelitianDitolak  = ProposalPenelitian::where('status', 'rejected')->count();
 
         // ===============================
-        // 📚 PROPOSAL PENGABDIAN
+        // PROPOSAL PENGABDIAN
         // ===============================
         $proposalPengabdianDiterima = ProposalPengabdian::where('status', 'final')->count();
         $proposalPengabdianDiproses = ProposalPengabdian::whereIn('status', [
@@ -40,7 +40,7 @@ class DashboardController extends Controller
         $proposalPengabdianDitolak  = ProposalPengabdian::where('status', 'rejected')->count();
 
         // ===============================
-        // 🔍 LAPORAN PENELITIAN
+        //  LAPORAN PENELITIAN
         // ===============================
         $laporanPenelitianDiterima = LaporanPenelitian::where('status', 'final')->count();
         $laporanPenelitianDiproses = LaporanPenelitian::whereIn('status', [
@@ -52,7 +52,7 @@ class DashboardController extends Controller
         $laporanPenelitianDitolak  = LaporanPenelitian::where('status', 'rejected')->count();
 
         // ===============================
-        // 🔍 LAPORAN PENGABDIAN
+        //  LAPORAN PENGABDIAN
         // ===============================
         $laporanPengabdianDiterima = LaporanPengabdian::where('status', 'final')->count();
         $laporanPengabdianDiproses = LaporanPengabdian::whereIn('status', [
@@ -64,7 +64,7 @@ class DashboardController extends Controller
         $laporanPengabdianDitolak  = LaporanPengabdian::where('status', 'rejected')->count();
 
         // ===============================
-        // 📊 TOTAL GLOBAL
+        //  TOTAL GLOBAL
         // ===============================
         $diterimaCount = $proposalPenelitianDiterima + $proposalPengabdianDiterima + $laporanPenelitianDiterima + $laporanPengabdianDiterima;
         $diprosesCount = $proposalPenelitianDiproses + $proposalPengabdianDiproses + $laporanPenelitianDiproses + $laporanPengabdianDiproses;

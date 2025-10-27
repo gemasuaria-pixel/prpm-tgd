@@ -9,11 +9,12 @@ use App\Models\Review\Review;
 use App\Models\AnggotaMahasiswa;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Traits\HasKetuaPengusul; // <- ini penting!
 
 class ProposalPengabdian extends Model
 {
     use HasFactory;
-
+    use HasKetuaPengusul;
     protected $table = 'proposal_pengabdians';
 
 
@@ -41,6 +42,7 @@ class ProposalPengabdian extends Model
      */
     public function ketuaPengusul()
     {
+
         return $this->belongsTo(User::class, 'ketua_pengusul_id');
     }
 

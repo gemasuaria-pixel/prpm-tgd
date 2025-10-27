@@ -12,60 +12,66 @@
                 <div class="container-fluid py-4">
                     <!--begin::Row-->
 
-                 <!--begin::Row-->
-<div class="row g-4">
+                    <!--begin::Row-->
+                    <div class="row g-4">
 
-    <div class="col-md-4 col-sm-6">
-        <div class="card border-0 shadow-sm rounded-4 h-100">
-            <div class="card-body text-center">
-                <div class="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded-3 p-3 mb-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="#0d6efd" viewBox="0 0 24 24" width="28" height="28">
-                        <path d="M3 4h18v2H3zm0 6h18v2H3zm0 6h18v2H3z" />
-                    </svg>
-                </div>
-                <div>
-                    <h3 class="fw-bold text-primary mb-1">{{ $proposalCount['total'] }}</h3>
-                    <p class="text-secondary small mb-0">Total Proposal Aktif</p>
-                </div>
-            </div>
-        </div>
-    </div>
+                        <div class="col-md-4 col-sm-6">
+                            <div class="card border-0 shadow-sm rounded-4 h-100">
+                                <div class="card-body text-center">
+                                    <div
+                                        class="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded-3 p-3 mb-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="#0d6efd" viewBox="0 0 24 24"
+                                            width="28" height="28">
+                                            <path d="M3 4h18v2H3zm0 6h18v2H3zm0 6h18v2H3z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h3 class="fw-bold text-primary mb-1">{{ $proposalCount['total'] }}</h3>
+                                        <p class="text-secondary small mb-0">Total Proposal Aktif</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-    <div class="col-md-4 col-sm-6">
-        <div class="card border-0 shadow-sm rounded-4 h-100">
-            <div class="card-body text-center">
-                <div class="d-inline-flex align-items-center justify-content-center bg-success bg-opacity-10 rounded-3 p-3 mb-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="#198754" viewBox="0 0 640 640" width="28" height="28">
-                        <path
-                            d="M320 576C461.4 576 576 461.4 576 320C576 178.6 461.4 64 320 64C178.6 64 64 178.6 64 320C64 461.4 178.6 576 320 576zM404.4 276.7L324.4 404.7C320.2 411.4 313 415.6 305.1 416C297.2 416.4 289.6 412.8 284.9 406.4L236.9 342.4C228.9 331.8 231.1 316.8 241.7 308.8C252.3 300.8 267.3 303 275.3 313.6L302.3 349.6L363.7 251.3C370.7 240.1 385.5 236.6 396.8 243.7C408.1 250.8 411.5 265.5 404.4 276.8z" />
-                    </svg>
-                </div>
-                <div>
-                    <h3 class="fw-bold text-success mb-1">{{ $proposalCount['diterima'] }}</h3>
-                    <p class="text-secondary small mb-0">Proposal Diterima</p>
-                </div>
-            </div>
-        </div>
-    </div>
+                        <div class="col-md-4 col-sm-6">
+                            <div class="card border-0 shadow-sm rounded-4 h-100">
+                                <div class="card-body text-center">
+                                    <div
+                                        class="d-inline-flex align-items-center justify-content-center bg-success bg-opacity-10 rounded-3 p-3 mb-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="#198754" viewBox="0 0 640 640"
+                                            width="28" height="28">
+                                            <path
+                                                d="M320 576C461.4 576 576 461.4 576 320C576 178.6 461.4 64 320 64C178.6 64 64 178.6 64 320C64 461.4 178.6 576 320 576zM404.4 276.7L324.4 404.7C320.2 411.4 313 415.6 305.1 416C297.2 416.4 289.6 412.8 284.9 406.4L236.9 342.4C228.9 331.8 231.1 316.8 241.7 308.8C252.3 300.8 267.3 303 275.3 313.6L302.3 349.6L363.7 251.3C370.7 240.1 385.5 236.6 396.8 243.7C408.1 250.8 411.5 265.5 404.4 276.8z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h3 class="fw-bold text-success mb-1">{{ $proposalCount['diterima'] }}</h3>
+                                        <p class="text-secondary small mb-0">Proposal Diterima</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-    <div class="col-md-4 col-sm-6">
-        <div class="card border-0 shadow-sm rounded-4 h-100">
-            <div class="card-body text-center">
-                <div class="d-inline-flex align-items-center justify-content-center bg-info bg-opacity-10 rounded-3 p-3 mb-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="#0dcaf0" viewBox="0 0 640 640" width="28" height="28">
-                        <path
-                            d="M320 576C461.4 576 576 461.4 576 320C576 178.6 461.4 64 320 64C178.6 64 64 178.6 64 320C64 461.4 178.6 576 320 576zM404.4 276.7L324.4 404.7C320.2 411.4 313 415.6 305.1 416C297.2 416.4 289.6 412.8 284.9 406.4L236.9 342.4C228.9 331.8 231.1 316.8 241.7 308.8C252.3 300.8 267.3 303 275.3 313.6L302.3 349.6L363.7 251.3C370.7 240.1 385.5 236.6 396.8 243.7C408.1 250.8 411.5 265.5 404.4 276.8z" />
-                    </svg>
-                </div>
-                <div>
-                    <h3 class="fw-bold text-info mb-1">{{ $reportCount['diterima'] }}</h3>
-                    <p class="text-secondary small mb-0">Laporan Diterima</p>
-                </div>
-            </div>
-        </div>
-    </div>
+                        <div class="col-md-4 col-sm-6">
+                            <div class="card border-0 shadow-sm rounded-4 h-100">
+                                <div class="card-body text-center">
+                                    <div
+                                        class="d-inline-flex align-items-center justify-content-center bg-info bg-opacity-10 rounded-3 p-3 mb-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="#0dcaf0" viewBox="0 0 640 640"
+                                            width="28" height="28">
+                                            <path
+                                                d="M320 576C461.4 576 576 461.4 576 320C576 178.6 461.4 64 320 64C178.6 64 64 178.6 64 320C64 461.4 178.6 576 320 576zM404.4 276.7L324.4 404.7C320.2 411.4 313 415.6 305.1 416C297.2 416.4 289.6 412.8 284.9 406.4L236.9 342.4C228.9 331.8 231.1 316.8 241.7 308.8C252.3 300.8 267.3 303 275.3 313.6L302.3 349.6L363.7 251.3C370.7 240.1 385.5 236.6 396.8 243.7C408.1 250.8 411.5 265.5 404.4 276.8z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h3 class="fw-bold text-info mb-1">{{ $reportCount['diterima'] }}</h3>
+                                        <p class="text-secondary small mb-0">Laporan Diterima</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-</div>
+                    </div>
 
 
 
@@ -243,14 +249,11 @@
 
                         {{-- Optional: Pagination Static (nanti bisa diganti pagination real kalau pakai paginate()) --}}
                         <div class="card-footer clearfix">
-                            <ul class="pagination pagination-sm m-0 float-end">
-                                <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-                            </ul>
+                            <div class="float-end">
+                                {{ $allEntries->links() }}
+                            </div>
                         </div>
+
                     </div>
 
 
