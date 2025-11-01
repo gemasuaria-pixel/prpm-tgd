@@ -17,7 +17,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**spatie */
     use HasRoles;
-
+  
     /**
      * The attributes that are mass assignable.
      *
@@ -62,7 +62,9 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    protected $appends = ['profile_photo_url'];
+    protected $appends = ['profile_photo_url', 'review_tabs'];
+
+
 
     public function getProfilePhotoUrlAttribute()
     {

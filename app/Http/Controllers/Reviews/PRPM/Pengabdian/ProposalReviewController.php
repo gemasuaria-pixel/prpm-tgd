@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Pengabdian\ProposalPengabdian;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Helpers\EntryHelper;
 
 class ProposalReviewController extends Controller
 {
@@ -20,41 +21,34 @@ class ProposalReviewController extends Controller
             'ketuaPengusul',
         ])->orderByDesc('created_at');
 
-        // ===============================
-        //  Filter status
-        // ===============================
+        // Filter status
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
 
-        // ===============================
-        //  Search
-        // ===============================
+        // Search
         if ($request->filled('q')) {
             $q = $request->q;
             $query->where(function ($query) use ($q) {
                 $query->where('judul', 'like', "%{$q}%")
-                    ->orWhereHas('ketuaPengusul', fn($q2) => $q2->where('name', 'like', "%{$q}%"))
-                    ->orWhere('rumpun_ilmu', 'like', "%{$q}%")
-                    ->orWhere('nama_mitra', 'like', "%{$q}%");
+                      ->orWhereHas('ketuaPengusul', fn($q2) => $q2->where('name', 'like', "%{$q}%"))
+                      ->orWhere('rumpun_ilmu', 'like', "%{$q}%")
+                      ->orWhere('nama_mitra', 'like', "%{$q}%");
             });
         }
 
+        // Paginate
         $proposals = $query->paginate(10)->withQueryString();
 
-        // ===============================
-        // Auto update status ke 'approved_by_reviewer' jika semua reviewer approve
-        // ===============================
+        
+        // Auto update status jika semua reviewer approve (opsional, skala kecil)
         foreach ($proposals as $proposal) {
             $totalReviewer = $proposal->reviews->count();
             $approvedCount = $proposal->reviews->where('status', 'approved')->count();
 
-            if (
-                $totalReviewer > 0 &&
+            if ($totalReviewer > 0 &&
                 $approvedCount === $totalReviewer &&
-                $proposal->status !== 'approved_by_reviewer' &&
-                $proposal->status !== 'final'
-            ) {
+                !in_array($proposal->status, ['approved_by_reviewer', 'final'])) {
                 $proposal->update(['status' => 'approved_by_reviewer']);
             }
         }
@@ -62,7 +56,10 @@ class ProposalReviewController extends Controller
         // List Reviewer
         $reviewers = User::role('reviewer')->get();
 
-        return view('reviews.prpm.pengabdian.proposal.index', compact('proposals', 'reviewers'));
+        return view('reviews.prpm.pengabdian.proposal.index', [
+            'proposals' => $proposals,  // <-- Blade component iterasi di sini
+            'reviewers' => $reviewers,
+        ]);
     }
 
     public function form(ProposalPengabdian $proposal)
@@ -89,9 +86,7 @@ class ProposalReviewController extends Controller
             'reviewer_id.*' => 'exists:users,id',
         ]);
 
-        // ===============================
-        // Assign reviewer (kalau ada)
-        // ===============================
+        // Assign reviewer
         if ($request->filled('reviewer_id')) {
             foreach ($request->reviewer_id as $reviewerId) {
                 $proposal->reviews()->firstOrCreate(
@@ -101,17 +96,13 @@ class ProposalReviewController extends Controller
             }
         }
 
-        // ===============================
-        //  Update status & komentar
-        // ===============================
+        // Update status & komentar
         $proposal->update([
             'status' => $request->status,
             'komentar_prpm' => $request->komentar_prpm,
         ]);
 
-        // ===============================
-        //  Cek apakah semua reviewer sudah approve
-        // ===============================
+        // Cek semua reviewer approve
         $totalReviewer = $proposal->reviews()->count();
         $approvedReviewer = $proposal->reviews()->where('status', 'approved')->count();
 
@@ -119,9 +110,7 @@ class ProposalReviewController extends Controller
             $proposal->update(['status' => 'approved_by_reviewer']);
         }
 
-        // ===============================
-        // Jika PRPM finalkan
-        // ===============================
+        // Final
         if ($request->status === 'final') {
             $proposal->update(['status' => 'final']);
         }

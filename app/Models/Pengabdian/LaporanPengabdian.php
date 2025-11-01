@@ -3,12 +3,8 @@
 namespace App\Models\Pengabdian;
 
 use App\Models\User;
-use App\Models\Member;
 use App\Models\Document;
-use App\Models\AnggotaDosen;
 use App\Models\Review\Review;
-use App\Models\AnggotaMahasiswa;
-use App\Traits\HasKetuaPengusul;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Pengabdian\ProposalPengabdian;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,7 +12,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class LaporanPengabdian extends Model
 {
     use HasFactory;
-    use HasKetuaPengusul;
     protected $table = 'laporan_pengabdians';
 
     protected $fillable = [

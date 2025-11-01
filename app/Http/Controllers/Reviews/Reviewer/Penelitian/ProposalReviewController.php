@@ -14,7 +14,7 @@ class ProposalReviewController extends Controller
     {
         $reviewerId = Auth::id();
 
-        $proposalReviews = Review::with([
+        $proposals = Review::with([
             'reviewable',
             'reviewable.ketuaPengusul',
             'reviewable.anggotaDosen',
@@ -22,9 +22,10 @@ class ProposalReviewController extends Controller
             ->where('reviewer_id', $reviewerId)
             ->where('reviewable_type', ProposalPenelitian::class)
             ->latest()
-            ->get();
+            ->paginate(10); // <-- jangan ada get()
+        
 
-        return view('reviews.reviewer.penelitian.proposal.index', compact('proposalReviews'));
+        return view('reviews.reviewer.penelitian.proposal.index', compact('proposals'));
     }
 
     public function form(Review $review)
@@ -52,7 +53,7 @@ class ProposalReviewController extends Controller
         ]);
 
         return redirect()
-            ->route('reviewer.proposal.index')
+            ->route('reviewer.review.penelitian.proposal.index')
             ->with('success', 'Review proposal berhasil disimpan.');
 
     }

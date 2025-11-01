@@ -4,7 +4,6 @@ namespace App\Models\Penelitian;
 
 use App\Models\Document;
 use App\Models\Review\Review;
-use App\Traits\HasKetuaPengusul;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Penelitian\ProposalPenelitian;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,7 +11,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class LaporanPenelitian extends Model
 {
     use HasFactory;
-    use HasKetuaPengusul;
     protected $table = 'laporan_penelitians';
 
     protected $fillable = [

@@ -1,89 +1,31 @@
 @extends('layouts.main')
 
 @section('content')
-<main class="app-main">
-    <x-breadcrumbs>Review</x-breadcrumbs>
+    <main class="app-main">
+        <x-breadcrumbs>Review PRPM</x-breadcrumbs>
 
-    <div class="app-content">
-        <div class="container-fluid">
-            <div class="card border-0 shadow-sm rounded-4">
-                <div class="card-body p-0">
+        <div class="app-content">
+            <div class="container-fluid">
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-body p-0">
+                        {{-- Komponen Tabs --}}
+                        <x-tabs.review-prpm :tabs="[
+                            'proposal' => route('reviewer.review.penelitian.proposal.index'),
+                            'laporan' => route('reviewer.review.penelitian.laporan.index'),
+                        ]" active="laporan"  />
 
-                    {{-- ✅ Nav Tabs Navigasi Antar Halaman --}}
-                    <ul class="nav nav-tabs mt-3 px-3" id="reviewTabs" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <a href="{{ route('reviewer.review.penelitian.proposal.index') }}"
-                                class="nav-link {{ request()->routeIs('reviewer.review.penelitian.proposal.index') ? 'active' : '' }}">
-                                Proposal Penelitian
-                            </a>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <a href="{{ route('reviewer.review.penelitian.laporan.index') }}"
-                                class="nav-link {{ request()->routeIs('reviewer.review.penelitian.laporan.index') ? 'active' : '' }}">
-                                Laporan Penelitian
-                            </a>
-                        </li>
-                    </ul>
+                        {{-- Komponen Table --}}
+                        <x-table.review-prpm :entries="$laporans" routeResolver="reviewer.review.penelitian.laporan.form"
+                            :columns="[
+                                ['label' => 'Judul', 'key' => 'judul'],
+                                ['label' => 'Ketua Pengusul', 'key' => 'ketuaPengusul.name'],
+                                ['label' => 'Rumpun Ilmu', 'key' => 'rumpun_ilmu'],
+                                ['label' => 'Status', 'key' => 'status', 'type' => 'status'],
+                            ]" />
 
-                    {{-- ✅ Tabel List Laporan --}}
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Judul</th>
-                                    <th>Ketua Pengusul</th>
-                                    <th>Status Review</th>
-                                    <th class="text-center">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($laporanReviews as $review)
-                                    @php
-                                        $laporan = $review->reviewable;
-                                        $proposal = $laporan->proposalPenelitian ?? null;
-
-                                        $statusClass = match ($review->status) {
-                                            'approved' => 'bg-success-subtle text-success fw-semibold',
-                                            'revision' => 'bg-warning-subtle text-warning fw-semibold',
-                                            'rejected' => 'bg-danger-subtle text-danger fw-semibold',
-                                            'pending' => 'bg-secondary-subtle text-secondary fw-semibold',
-                                            default => 'bg-secondary-subtle text-secondary fw-semibold',
-                                        };
-                                    @endphp
-
-                                    <tr>
-                                        <td class="fw-semibold text-wrap">
-                                            {{ Str::limit($laporan->judul, 30, '...')?? '-' }}
-                                        </td>
-                                        <td>
-                                            {{ $proposal->ketuaPengusul->name ?? '-' }}
-                                        </td>
-                                        <td>
-                                            <span class="badge rounded-pill px-3 py-2 {{ $statusClass }}">
-                                                {{ ucfirst($review->status ?? 'Menunggu') }}
-                                            </span>
-                                        </td>
-                                        <td class="text-center">
-                                            <a href="{{ route('reviewer.review.penelitian.laporan.form', $review->id) }}"
-                                                class="btn btn-light btn-sm border rounded-pill px-3">
-                                                <i class="bi bi-pencil-square text-primary"></i> Review
-                                            </a>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="4" class="text-center py-4 text-muted">
-                                            Tidak ada laporan yang menunggu review.
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
                     </div>
-
                 </div>
             </div>
         </div>
-    </div>
-</main>
+    </main>
 @endsection

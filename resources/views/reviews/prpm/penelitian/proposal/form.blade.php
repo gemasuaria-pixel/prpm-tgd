@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Detail Proposal Pengabdian')
+@section('title', 'Detail Proposal penelitian')
 
 @push('styles')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css">
@@ -8,28 +8,28 @@
 
 @section('content')
 <div class="container mt-4">
-    <h4 class="mb-4">Detail Proposal Pengabdian</h4>
+    <h4 class="mb-4">Detail Proposal penelitian</h4>
 
     <div class="card shadow-sm border-0 rounded-4">
         <div class="card-body">
 
-            {{-- ================== INFORMASI PENGABDIAN ================== --}}
+            {{-- ================== INFORMASI penelitian ================== --}}
             <h5 class="fw-semibold text-primary mb-3">
-                {{ $pengabdian->judul ?? '-' }}
+                {{ $proposal->judul ?? '-' }}
             </h5>
 
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <p><strong>Ketua Pengusul:</strong> {{ $pengabdian->ketuaPengusul->name ?? '-' }}</p>
-                    <p><strong>Rumpun Ilmu:</strong> {{ $pengabdian->rumpun_ilmu ?? '-' }}</p>
-                    <p><strong>Bidang Pengabdian:</strong> {{ $pengabdian->bidang_pengabdian ?? '-' }}</p>
+                    <p><strong>Ketua Pengusul:</strong> {{ $proposal->ketuaPengusul->name ?? '-' }}</p>
+                    <p><strong>Rumpun Ilmu:</strong> {{ $proposal->rumpun_ilmu ?? '-' }}</p>
+                    <p><strong>Bidang penelitian:</strong> {{ $proposal->bidang_penelitian ?? '-' }}</p>
                 </div>
                 <div class="col-md-6">
-                    <p><strong>Tahun Pelaksanaan:</strong> {{ $pengabdian->tahun_pelaksanaan ?? '-' }}</p>
+                    <p><strong>Tahun Pelaksanaan:</strong> {{ $proposal->tahun_pelaksanaan ?? '-' }}</p>
                     <p>
-                        <strong>Dokumen Pengabdian:</strong><br>
-                        @if ($pengabdian->documents->isNotEmpty())
-                            @foreach ($pengabdian->documents as $doc)
+                        <strong>Dokumen proposal:</strong><br>
+                        @if ($proposal->documents->isNotEmpty())
+                            @foreach ($proposal->documents as $doc)
                                 <a href="{{ asset('storage/' . $doc->file_path) }}" 
                                    target="_blank" 
                                    class="btn btn-sm btn-outline-primary mt-1">
@@ -47,14 +47,14 @@
             <div class="mb-4">
                 <strong>Deskripsi Kegiatan:</strong>
                 <div class="border rounded p-3 bg-light mt-1">
-                    {{ $pengabdian->deskripsi ?? 'Belum ada deskripsi.' }}
+                    {{ $proposal->deskripsi ?? 'Belum ada deskripsi.' }}
                 </div>
             </div>
 
-            {{-- ================== ANGGOTA PENGABDIAN ================== --}}
-            @if ($pengabdian->anggotaDosen->isNotEmpty())
+            {{-- ================== ANGGOTA penelitian ================== --}}
+            @if ($proposal->anggotaDosen->isNotEmpty())
             <div class="mb-4">
-                <strong>Daftar Anggota Pengabdian:</strong>
+                <strong>Daftar Anggota penelitian:</strong>
                 <div class="table-responsive mt-2">
                     <table class="table table-sm table-bordered align-middle mb-0">
                         <thead class="table-light">
@@ -66,7 +66,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($pengabdian->anggotaDosen as $a)
+                            @foreach ($proposal->anggotaDosen as $a)
                                 <tr>
                                     <td>{{ $a->user->name ?? '-' }}</td>
                                     <td>{{ $a->user->nidn ?? '-' }}</td>
@@ -81,11 +81,11 @@
             @endif
 
             {{-- ================== REVIEW SEBELUMNYA ================== --}}
-            @if ($pengabdian->reviews->isNotEmpty())
+            @if ($proposal->reviews->isNotEmpty())
             <div class="mb-4">
                 <strong>Review oleh Reviewer:</strong>
                 <ul class="list-group list-group-flush mt-2">
-                    @foreach ($pengabdian->reviews as $review)
+                    @foreach ($proposal->reviews as $review)
                         <li class="list-group-item">
                             <div class="d-flex justify-content-between">
                                 <div>
@@ -107,16 +107,16 @@
 
             {{-- ================== FORM TINDAKAN PRPM ================== --}}
             @php
-                $totalReviewer = $pengabdian->reviews->count();
-                $approvedCount = $pengabdian->reviews->where('status', 'approved')->count();
+                $totalReviewer = $proposal->reviews->count();
+                $approvedCount = $proposal->reviews->where('status', 'approved')->count();
                 $allApproved = $totalReviewer > 0 && $approvedCount === $totalReviewer;
             @endphp
 
             <div class="mt-4">
                 <h5 class="fw-semibold mb-3 text-success">
-                    <i class="bi bi-pencil-square me-2"></i>Perbarui Status Pengabdian
+                    <i class="bi bi-pencil-square me-2"></i>Perbarui Status penelitian
                 </h5>
-                <form action="{{ route('ketua-prpm.review.pengabdian.updateStatus', $pengabdian) }}" method="POST">
+                <form action="{{ route('ketua-prpm.review.penelitian.proposal.update-status', $proposal) }}" method="POST">
                     @csrf
                     <div class="row g-3">
 
@@ -127,13 +127,13 @@
                                 @if(!$allApproved)
                                     <option value="">-- Pilih Status --</option>
                                     <option value="menunggu_validasi_reviewer"
-                                        {{ $pengabdian->status == 'menunggu_validasi_reviewer' ? 'selected' : '' }}>
+                                        {{ $proposal->status == 'menunggu_validasi_reviewer' ? 'selected' : '' }}>
                                         Kirim ke Reviewer
                                     </option>
-                                    <option value="revisi" {{ $pengabdian->status == 'revisi' ? 'selected' : '' }}>
+                                    <option value="revisi" {{ $proposal->status == 'revisi' ? 'selected' : '' }}>
                                         Minta Revisi
                                     </option>
-                                    <option value="rejected" {{ $pengabdian->status == 'rejected' ? 'selected' : '' }}>
+                                    <option value="rejected" {{ $proposal->status == 'rejected' ? 'selected' : '' }}>
                                         Tolak
                                     </option>
                                 @else
@@ -148,7 +148,7 @@
                             <select name="reviewer_id[]" id="reviewer_id" multiple class="form-select" {{ $allApproved ? 'disabled' : '' }}>
                                 @foreach ($reviewers as $reviewer)
                                     <option value="{{ $reviewer->id }}"
-                                        {{ in_array($reviewer->id, $pengabdian->reviews->pluck('reviewer_id')->toArray()) ? 'selected' : '' }}>
+                                        {{ in_array($reviewer->id, $proposal->reviews->pluck('reviewer_id')->toArray()) ? 'selected' : '' }}>
                                         {{ $reviewer->name }}
                                     </option>
                                 @endforeach
@@ -161,12 +161,12 @@
                         {{-- Komentar PRPM --}}
                         <div class="col-12">
                             <label for="komentar_prpm" class="form-label fw-semibold">Catatan / Komentar</label>
-                            <textarea name="komentar_prpm" id="komentar_prpm" class="form-control" rows="3">{{ $pengabdian->komentar_prpm ?? '' }}</textarea>
+                            <textarea name="komentar_prpm" id="komentar_prpm" class="form-control" rows="3">{{ $proposal->komentar_prpm ?? '' }}</textarea>
                         </div>
                     </div>
 
                     <div class="d-flex justify-content-between mt-4">
-                        <a href="{{ route('ketua-prpm.review.pengabdian.index') }}" class="btn btn-secondary me-2">
+                        <a href="{{ route('ketua-prpm.review.penelitian.proposal.index') }}" class="btn btn-secondary me-2">
                             <i class="bi bi-arrow-left me-1"></i> Kembali
                         </a>
                         <button type="submit" class="btn btn-success px-4">

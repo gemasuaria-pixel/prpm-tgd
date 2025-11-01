@@ -17,7 +17,7 @@ class ProposalReviewController extends Controller
     {
         $reviewerId = Auth::id();
 
-        $proposalReviews = Review::with([
+        $proposals = Review::with([
             'reviewable',
             'reviewable.ketuaPengusul',
             'reviewable.anggotaDosen',
@@ -26,9 +26,9 @@ class ProposalReviewController extends Controller
             ->where('reviewer_id', $reviewerId)
             ->where('reviewable_type', ProposalPengabdian::class)
             ->latest()
-            ->get();
+            ->paginate(10);
 
-        return view('reviews.reviewer.pengabdian.proposal.index', compact('proposalReviews'));
+        return view('reviews.reviewer.pengabdian.proposal.index', compact('proposals'));
     }
 
     /**

@@ -14,17 +14,17 @@ class LaporanReviewController extends Controller
     {
         $reviewerId = Auth::id();
 
-        $laporanReviews = Review::with([
+        $query = Review::with([
             'reviewable',
             'reviewable.proposalPenelitian.ketuaPengusul',
             'reviewable.proposalPenelitian.anggotaDosen',
         ])
             ->where('reviewer_id', $reviewerId)
-            ->where('reviewable_type', LaporanPenelitian::class)
-            ->latest()
-            ->get();
+            ->where('reviewabsle_type', LaporanPenelitian::class)
+            ->latest();
 
-        return view('reviews.reviewer.penelitian.laporan.index', compact('laporanReviews'));
+            $laporans = $query->paginate(10)->withQueryString();
+        return view('reviews.reviewer.penelitian.laporan.index', compact('laporans'));
     }
 
     public function form(Review $review)
