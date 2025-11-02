@@ -6,7 +6,7 @@ use App\Models\User;
 use App\Models\Document;
 use App\Models\AnggotaDosen;
 use App\Models\Review\Review;
-use App\Models\AnggotaMahasiswa;
+use App\Models\Anggota;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -72,14 +72,9 @@ class ProposalPengabdian extends Model
      * Relasi ke anggota (polymorphic) - jika ada anggota dosen/mahasiswa
      */
      // ProposalPengabdian.php
-public function anggotaDosen()
+public function anggota()
 {
-    return $this->morphMany(AnggotaDosen::class, 'proposable');
-}
-
-public function anggotaMahasiswa()
-{
-    return $this->morphMany(AnggotaMahasiswa::class, 'proposable');
+    return $this->morphMany(Anggota::class, 'proposable');
 }
 
 }

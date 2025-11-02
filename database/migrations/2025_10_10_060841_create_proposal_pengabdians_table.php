@@ -36,12 +36,9 @@ return new class extends Migration
             $table->string('jenis_mitra');
             $table->string('alamat_mitra');
             $table->string('kontak_mitra', 20);
-            $table->string('pimpinan_mitra');
-            $table->integer('jumlah_anggota_kelompok');
             $table->text('pernyataan_kebutuhan');
             $table->timestamps();
         });
-
     }
 
     /**

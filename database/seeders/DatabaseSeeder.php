@@ -3,10 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
+use App\Models\Mahasiswa;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,13 +15,17 @@ class DatabaseSeeder extends Seeder
     {
         $faker = Faker::create('id_ID'); // Lokal Indonesia
 
-        // === Buat Roles ===
+        // =========================
+        // 1. Buat Roles
+        // =========================
         $adminRole       = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
         $ketuaprpmRole   = Role::firstOrCreate(['name' => 'ketua_prpm', 'guard_name' => 'web']);
         $dosenRole       = Role::firstOrCreate(['name' => 'dosen', 'guard_name' => 'web']);
         $reviewerRole    = Role::firstOrCreate(['name' => 'reviewer', 'guard_name' => 'web']);
 
-        // === Buat Admin ===
+        // =========================
+        // 2. Buat Admin
+        // =========================
         $superAdmin = User::firstOrCreate(
             ['email' => 'admin@example.com'],
             [
@@ -32,7 +37,9 @@ class DatabaseSeeder extends Seeder
         );
         $superAdmin->assignRole($adminRole);
 
-        // === Buat Ketua PRPM ===
+        // =========================
+        // 3. Buat Ketua PRPM
+        // =========================
         $ketuaprpm = User::firstOrCreate(
             ['email' => 'ketuaprpm@example.com'],
             [
@@ -44,16 +51,33 @@ class DatabaseSeeder extends Seeder
         );
         $ketuaprpm->assignRole($ketuaprpmRole);
 
-        // === Data Program Studi untuk dosen ===
+        // =========================
+        // 4. Buat 20 mahasiswa dummy
+        // =========================
+        $prodis = ['Sistem Informasi', 'Sistem Komputer'];
+
+        for ($j = 1; $j <= 20; $j++) {
+            Mahasiswa::create([
+                'nama' => $faker->name,
+                'nim' => $faker->unique()->numerify('20########'),
+                'prodi' => $prodis[array_rand($prodis)],
+                'email' => $faker->unique()->safeEmail,
+                'no_hp' => $faker->numerify('08##########'),
+                'alamat' => $faker->address,
+            ]);
+        }
+
+        // =========================
+        // 5. Buat 10 dosen dummy
+        // =========================
         $programStudis = ['Sistem Informasi', 'Sistem Komputer'];
 
-        // === Generate 10 dosen dummy ===
-        for ($i = 1; $i <= 10; $i++) {
+        for ($k = 1; $k <= 10; $k++) {
             $name = $faker->name;
             $fullName = $name . ', S.Kom, M.Kom';
 
             $dosen = User::firstOrCreate(
-                ['email' => "dosen$i@example.com"],
+                ['email' => "dosen$k@example.com"],
                 [
                     'name' => $name,
                     'full_name' => $fullName,
@@ -69,21 +93,23 @@ class DatabaseSeeder extends Seeder
                 ]
             );
 
-            // Kalau dosen ke-1 → assign dua role
-            if ($i === 1) {
+            // Dosen pertama assign dua role
+            if ($k === 1) {
                 $dosen->assignRole([$dosenRole, $reviewerRole]);
             } else {
                 $dosen->assignRole($dosenRole);
             }
         }
 
-        // === Generate 3 reviewer dummy ===
-        for ($i = 1; $i <= 3; $i++) {
+        // =========================
+        // 6. Buat 3 reviewer dummy
+        // =========================
+        for ($l = 1; $l <= 3; $l++) {
             $name = $faker->name;
             $fullName = $name . ', S.Kom, M.Kom';
 
             $reviewer = User::firstOrCreate(
-                ['email' => "reviewer$i@example.com"],
+                ['email' => "reviewer$l@example.com"],
                 [
                     'name' => $name,
                     'full_name' => $fullName,

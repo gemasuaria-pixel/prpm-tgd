@@ -28,7 +28,7 @@ class CreateController extends Controller
         }
 
         // Load relasi anggota (jika view butuh)
-        $proposal->load('anggotaDosen');
+        $proposal->load('anggota');
 
         return view('pengabdian.laporan.create', compact('proposal'));
     }

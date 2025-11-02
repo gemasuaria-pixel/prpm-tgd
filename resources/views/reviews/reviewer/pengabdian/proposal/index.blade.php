@@ -1,21 +1,31 @@
 @extends('layouts.main')
 
 @section('content')
-<main class="app-main">
-    <x-breadcrumbs>Review</x-breadcrumbs>
+    <main class="app-main">
+        <x-breadcrumbs>Review PRPM</x-breadcrumbs>
 
-    <div class="app-content">
-        <div class="container-fluid">
-            <div class="card border-0 shadow-sm rounded-4">
-                <div class="card-body p-0">
-                    {{-- Komponen Tabs --}}
-                    <x-tabs.review-prpm domain="penelititan" active="proposal" />
+        <div class="app-content">
+            <div class="container-fluid">
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-body p-0">
+                        {{-- Komponen Tabs --}}
+                        <x-tabs.review-prpm :tabs="[
+                            'proposal' => route('reviewer.review.pengabdian.proposal.index'),
+                            'laporan' => route('reviewer.review.pengabdian.laporan.index'),
+                        ]" active="proposal"  />
 
-                    {{-- Komponen Table --}}
-                    <x-table.review-prpm :entries="$entries" />
+                        {{-- Komponen Table --}}
+                        <x-table.review-prpm :entries="$proposals" routeResolver="reviewer.review.pengabdian.proposal.form"
+                            :columns="[
+                                ['label' => 'Judul', 'key' => 'reviewable.judul'],
+                                ['label' => 'Ketua Pengusul', 'key' => 'reviewable.ketuaPengusul.name'],
+                                ['label' => 'Rumpun Ilmu', 'key' => 'reviewable.rumpun_ilmu'],
+                                ['label' => 'Status', 'key' => 'status', 'type' => 'status'],
+                            ]" />
+
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</main>
+    </main>
 @endsection

@@ -3,8 +3,8 @@
 namespace App\Models\Penelitian;
 
 use App\Models\User;
+use App\Models\Anggota;
 use App\Models\Document;
-use App\Models\AnggotaDosen;
 use App\Models\Review\Review;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Penelitian\LaporanPenelitian;
@@ -51,9 +51,9 @@ class ProposalPenelitian extends Model
     }
 
 // ProposalPenelitian.php
-public function anggotaDosen()
+public function anggota()
 {
-    return $this->morphMany(AnggotaDosen::class, 'proposable');
+    return $this->morphMany(Anggota::class, 'proposable');
 }
 
 }

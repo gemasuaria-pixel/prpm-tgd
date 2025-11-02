@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Admin\AssignRoleController;
 use App\Http\Controllers\Admin\UserRegistrationManagementController;
 use App\Http\Controllers\Dashboard\AdminDashboardController;
 use App\Http\Controllers\HomeController;
@@ -23,8 +22,9 @@ Route::middleware(['auth', 'role:admin', 'check.status'])
             ->name('user-registration.approve-user');
         Route::post('/users-registration/reject-user/{id}', [UserRegistrationManagementController::class, 'rejectUser'])
             ->name('user-registration.reject-user');
-        Route::get('/assign-role', [AssignRoleController::class, 'index'])->name('assign-role.index');
-        Route::put('/assign-role/{user}', [AssignRoleController::class, 'update'])->name('assign-role.update');
+        Route::get('/assign-role', function () {
+            return view('admin.users.assign-role');
+        })->name('assign-role.index');
 
     });
 
@@ -69,7 +69,7 @@ Route::middleware(['auth', 'role:dosen', 'check.status'])
         Route::prefix('pengabdian')->name('pengabdian.')->group(function () {
             Route::get('/', [App\Http\Controllers\Pengabdian\IndexController::class, 'index'])
                 ->name('index');
-                
+
             // Usulan Proposal Pengabdian
             Route::get('/proposal/create', [App\Http\Controllers\Pengabdian\Proposal\CreateController::class, 'index'])
                 ->name('proposal.create');
@@ -81,12 +81,12 @@ Route::middleware(['auth', 'role:dosen', 'check.status'])
                 ->name('laporan.create');
             Route::post('/laporan/create/{proposal}', [App\Http\Controllers\Pengabdian\Laporan\CreateController::class, 'store'])
                 ->name('laporan.store');
-            
+
         });
 
     });
 
-    Route::middleware(['auth', 'role:ketua_prpm'])
+Route::middleware(['auth', 'role:ketua_prpm'])
     ->prefix('ketua-prpm')
     ->name('ketua-prpm.')
     ->group(function () {

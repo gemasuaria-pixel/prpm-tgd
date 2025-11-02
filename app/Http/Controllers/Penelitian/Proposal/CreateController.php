@@ -51,7 +51,7 @@ class CreateController extends Controller
 
         //  Simpan anggota dosen (relasi ke user)
         foreach ($validated['anggota'] as $userId) {
-            $proposal->anggotaDosen()->create([
+            $proposal->anggota()->create([
                 'user_id' => $userId,
             ]);
         }

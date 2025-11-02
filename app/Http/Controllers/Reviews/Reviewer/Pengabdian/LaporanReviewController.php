@@ -15,7 +15,7 @@ class LaporanReviewController extends Controller
     {
         $reviewerId = Auth::id();
 
-        $laporanReviews = Review::with([
+        $laporans= Review::with([
             'reviewable',
             'reviewable.proposalPengabdian.ketuaPengusul',
             'reviewable.proposalPengabdian.anggotaDosen',
@@ -23,9 +23,9 @@ class LaporanReviewController extends Controller
             ->where('reviewer_id', $reviewerId)
             ->where('reviewable_type', LaporanPengabdian::class)
             ->latest()
-            ->get();
+            ->paginate(10);
 
-        return view('reviews.reviewer.pengabdian.laporan.index', compact('laporanReviews'));
+        return view('reviews.reviewer.pengabdian.laporan.index', compact('laporans'));
     }
 
     // Menampilkan form review untuk satu laporan
