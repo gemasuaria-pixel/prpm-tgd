@@ -64,6 +64,10 @@ class User extends Authenticatable implements MustVerifyEmail
 
     protected $appends = ['profile_photo_url', 'review_tabs'];
 
+public function getReviewTabsAttribute()
+{
+    return []; // kosong aja supaya tidak error
+}
 
 
     public function getProfilePhotoUrlAttribute()

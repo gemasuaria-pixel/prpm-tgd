@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6964004a4cd7f399a46e2b4ba14e9871",
+    "content-hash": "2861865b3c28ca1c071c0e74731c3904",
     "packages": [
         {
             "name": "aldhix/breeze-bootstrap-ui",
@@ -3460,6 +3460,218 @@
                 "source": "https://github.com/ramsey/uuid/tree/4.9.1"
             },
             "time": "2025-09-04T20:59:21+00:00"
+        },
+        {
+            "name": "spatie/laravel-collection-macros",
+            "version": "8.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-collection-macros.git",
+                "reference": "a2c1f4e4df5b61b1d9228835f3c413cc2672bb4d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-collection-macros/zipball/a2c1f4e4df5b61b1d9228835f3c413cc2672bb4d",
+                "reference": "a2c1f4e4df5b61b1d9228835f3c413cc2672bb4d",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^12.0",
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "amphp/parallel": "^2.2",
+                "amphp/parallel-functions": "^2.0",
+                "mockery/mockery": "^1.6.2",
+                "orchestra/testbench": "^10.0",
+                "pestphp/pest": "^3.7",
+                "phpunit/phpunit": "^11.5.3",
+                "spatie/laravel-ray": "^1.32.5",
+                "symfony/stopwatch": "^6.3|^7.0"
+            },
+            "suggest": {
+                "amphp/parallel-functions": "Required when using the parallel*-macros."
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Spatie\\CollectionMacros\\CollectionMacroServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\CollectionMacros\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://github.com/freekmurze",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Sebastian De Deyne",
+                    "email": "sebastian@spatie.be",
+                    "homepage": "https://github.com/sebastiandedeyne",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A set of useful Laravel collection macros",
+            "homepage": "https://github.com/spatie/laravel-collection-macros",
+            "keywords": [
+                "laravel-collection-macros",
+                "spatie"
+            ],
+            "support": {
+                "source": "https://github.com/spatie/laravel-collection-macros/tree/8.0.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-08-18T07:40:01+00:00"
+        },
+        {
+            "name": "spatie/laravel-livewire-wizard",
+            "version": "2.4.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-livewire-wizard.git",
+                "reference": "cd5da89010075455a5a9810a9c852647ee132af3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-livewire-wizard/zipball/cd5da89010075455a5a9810a9c852647ee132af3",
+                "reference": "cd5da89010075455a5a9810a9c852647ee132af3",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^10.0|^11.0|^12.0",
+                "illuminate/support": "^10.0|^11.0|^12.0",
+                "livewire/livewire": "^3.0",
+                "php": "^8.2",
+                "spatie/laravel-collection-macros": "^7.13|^8.0",
+                "spatie/laravel-package-tools": "^1.16.1"
+            },
+            "require-dev": {
+                "ext-dom": "*",
+                "nunomaduro/collision": "^7.8.1|^8.0",
+                "orchestra/testbench": "^8.9.1|^9.0|^10.0",
+                "pestphp/pest": "^2.16|^3.7",
+                "pestphp/pest-plugin-laravel": "^2.2|^3.1",
+                "spatie/laravel-ray": "^1.32.6",
+                "spatie/pest-plugin-snapshots": "^2.0.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Spatie\\LivewireWizard\\WizardServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\LivewireWizard\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Rias Van der Veken",
+                    "email": "rias@spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Build wizards using Livewire",
+            "homepage": "https://github.com/spatie/laravel-livewire-wizard",
+            "keywords": [
+                "laravel",
+                "laravel-livewire-wizard",
+                "spatie"
+            ],
+            "support": {
+                "source": "https://github.com/spatie/laravel-livewire-wizard/tree/2.4.3"
+            },
+            "time": "2025-07-22T07:56:37+00:00"
+        },
+        {
+            "name": "spatie/laravel-package-tools",
+            "version": "1.92.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-package-tools.git",
+                "reference": "f09a799850b1ed765103a4f0b4355006360c49a5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-package-tools/zipball/f09a799850b1ed765103a4f0b4355006360c49a5",
+                "reference": "f09a799850b1ed765103a4f0b4355006360c49a5",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^9.28|^10.0|^11.0|^12.0",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.5",
+                "orchestra/testbench": "^7.7|^8.0|^9.0|^10.0",
+                "pestphp/pest": "^1.23|^2.1|^3.1",
+                "phpunit/php-code-coverage": "^9.0|^10.0|^11.0",
+                "phpunit/phpunit": "^9.5.24|^10.5|^11.5",
+                "spatie/pest-plugin-test-time": "^1.1|^2.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\LaravelPackageTools\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Tools for creating Laravel packages",
+            "homepage": "https://github.com/spatie/laravel-package-tools",
+            "keywords": [
+                "laravel-package-tools",
+                "spatie"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-package-tools/issues",
+                "source": "https://github.com/spatie/laravel-package-tools/tree/1.92.7"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-07-17T15:46:43+00:00"
         },
         {
             "name": "spatie/laravel-permission",

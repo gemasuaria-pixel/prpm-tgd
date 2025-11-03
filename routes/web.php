@@ -76,11 +76,12 @@ Route::middleware(['auth', 'role:dosen', 'check.status'])
             Route::post('/proposal', [App\Http\Controllers\Pengabdian\Proposal\CreateController::class, 'store'])
                 ->name('proposal.store');
 
+             
             // Upload Laporan Pengabdian
-            Route::get('/laporan/create/{proposal}', [App\Http\Controllers\Pengabdian\Laporan\CreateController::class, 'index'])
-                ->name('laporan.create');
-            Route::post('/laporan/create/{proposal}', [App\Http\Controllers\Pengabdian\Laporan\CreateController::class, 'store'])
-                ->name('laporan.store');
+           Route::get('/proposal/create', function () {
+            return view('pengabdian.proposal.create');})
+        ->name('proposal.create');
+
 
         });
 

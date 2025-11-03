@@ -20,6 +20,7 @@ class ProposalPengabdian extends Model
         'ketua_pengusul_id',
         'judul',
         'tahun_pelaksanaan',
+        'bidang_pengabdian',
         'rumpun_ilmu',
         'syarat_ketentuan',
         'luaran_tambahan_dijanjikan',

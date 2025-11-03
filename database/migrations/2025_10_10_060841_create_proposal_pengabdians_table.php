@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('judul');
             $table->year('tahun_pelaksanaan');
             $table->string('rumpun_ilmu')->nullable();
+            $table->string('bidang_pengabdian')->nullable();
             $table->boolean('syarat_ketentuan')->default(false)->comment('Persetujuan syarat & ketentuan');
             $table->text('luaran_tambahan_dijanjikan')->nullable();
             $table->text('abstrak')->nullable();
