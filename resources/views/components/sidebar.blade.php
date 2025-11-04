@@ -1,5 +1,5 @@
  <!--begin::Sidebar-->
- <aside class="app-sidebar d-flex flex-column bg-transparent " data-bs-theme="light">
+ <aside class="app-sidebar d-flex flex-column bg-white " data-bs-theme="light">
      <!--begin::Sidebar Brand-->
      <div class="sidebar-brand text-center py-5">
          <a href="{{ asset('lte/dist/index.html') }}"

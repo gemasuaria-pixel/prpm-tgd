@@ -16,7 +16,7 @@ class Mahasiswa extends Model
 
 public function anggota()
 {
-    return $this->hasMany(Anggota::class, 'mahasiswa_id');
+    return $this->morphMany(Anggota::class, 'mahasiswa_id');
 }
 
 }

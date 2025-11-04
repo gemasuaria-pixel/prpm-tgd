@@ -81,4 +81,10 @@ public function getReviewTabsAttribute()
     {
         return $this->hasMany(Review::class, 'reviewer_id');
     }
+
+    public function anggota()
+{
+    return $this->morphMany(Anggota::class, 'anggota');
+}
+
 }

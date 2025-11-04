@@ -23,7 +23,10 @@
         <div class="col-md-6">
             <label class="form-label">Rumpun Ilmu</label>
             <input type="text" wire:model.lazy="identitas.rumpun_ilmu"
-                   class="form-control">
+                    class="form-control @error('identitas.rumpun_ilmu') is-invalid @enderror">
+                    @error('identitas.rumpun_ilmu')
+                <span class="text-danger small">{{ $message }}</span>
+            @enderror
         </div>
 
         <div class="col-md-6">

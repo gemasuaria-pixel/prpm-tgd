@@ -19,10 +19,11 @@ class Anggota extends Model
     ];
 
     // Polymorphic untuk anggota (Mahasiswa atau User/dosen)
-    public function anggota()
-    {
-        return $this->morphTo();
-    }
+ public function individu() // atau person(), anggotaEntity(), terserah kamu
+{
+    return $this->morphTo(__FUNCTION__, 'anggota_type', 'anggota_id');
+}
+
 
     // Polymorphic untuk proposal (ProposalPenelitian atau ProposalPengabdian)
     public function proposable()

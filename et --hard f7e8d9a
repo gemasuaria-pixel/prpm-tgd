@@ -1,0 +1,16 @@
+[33m8415b43[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m a lot change
+[33m41e4e56[m a lot of changes, assign role, pengabdian proposal
+[33mf078224[m reefactor pindah ke component blade untuk review sehingga maintanable
+[33mfc0ad45[m[33m ([m[1;32mbackup-accessor[m[33m)[m refactor and make some blade to component more reusable and less verbose
+[33m7bc2237[m a lot of upgrade
+[33m7d9fd91[m a lot of upgrade. refactoring route, controller, model, view. make changes in pengabdian
+[33m64e9c12[m rerpairing review prpm  ui/ux
+[33m0930103[m add
+[33mdf5e12a[m fitur review prpm, and reviewer
+[33md310462[m add migration model relation, reviewer asign, dll
+[33m7eeee7e[m add assign role feature for admin
+[33m4ea8914[m halaman review
+[33md231ec4[m menambahkan halaman review(still not ready), dan perbaaikan management folder
+[33m81aef00[m form proposal penelitian berfungsi dengan baik
+[33me2b4946[m menambahkan livewirer
+[33m0f53ab9[m mengganti semua front-end full-boostrap
