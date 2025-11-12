@@ -1,197 +1,20 @@
 @extends('layouts.main')
 
-@section('title', 'Detail Proposal penelitian')
-
-@push('styles')
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css">
-@endpush
-
 @section('content')
-<div class="container mt-4">
-    <h4 class="mb-4">Detail Proposal penelitian</h4>
+    <main class="app-main">
+        <x-breadcrumbs>Form Review</x-breadcrumbs>
 
-    <div class="card shadow-sm border-0 rounded-4">
-        <div class="card-body">
+        <div class="app-content">
+            <div class="container-fluid">
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-body p-0">
 
-            {{-- ================== INFORMASI penelitian ================== --}}
-            <h5 class="fw-semibold text-primary mb-3">
-                {{ $proposal->judul ?? '-' }}
-            </h5>
+                        <livewire:reviews.prpm.penelitian.proposal.reviews-form  :proposal-id="$proposalId"/>
+                       
 
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p><strong>Ketua Pengusul:</strong> {{ $proposal->ketuaPengusul->name ?? '-' }}</p>
-                    <p><strong>Rumpun Ilmu:</strong> {{ $proposal->rumpun_ilmu ?? '-' }}</p>
-                    <p><strong>Bidang penelitian:</strong> {{ $proposal->bidang_penelitian ?? '-' }}</p>
-                </div>
-                <div class="col-md-6">
-                    <p><strong>Tahun Pelaksanaan:</strong> {{ $proposal->tahun_pelaksanaan ?? '-' }}</p>
-                    <p>
-                        <strong>Dokumen proposal:</strong><br>
-                        @if ($proposal->documents->isNotEmpty())
-                            @foreach ($proposal->documents as $doc)
-                                <a href="{{ asset('storage/' . $doc->file_path) }}" 
-                                   target="_blank" 
-                                   class="btn btn-sm btn-outline-primary mt-1">
-                                    <i class="bi bi-file-earmark-text me-1"></i> {{ ucfirst($doc->tipe) }}
-                                </a>
-                            @endforeach
-                        @else
-                            <span class="text-muted">Belum ada dokumen</span>
-                        @endif
-                    </p>
-                </div>
-            </div>
-
-            {{-- ================== DESKRIPSI / ABSTRAK ================== --}}
-            <div class="mb-4">
-                <strong>Deskripsi Kegiatan:</strong>
-                <div class="border rounded p-3 bg-light mt-1">
-                    {{ $proposal->deskripsi ?? 'Belum ada deskripsi.' }}
-                </div>
-            </div>
-
-            {{-- ================== ANGGOTA penelitian ================== --}}
-            @if ($proposal->anggotaDosen->isNotEmpty())
-            <div class="mb-4">
-                <strong>Daftar Anggota penelitian:</strong>
-                <div class="table-responsive mt-2">
-                    <table class="table table-sm table-bordered align-middle mb-0">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Nama</th>
-                                <th>NIDN</th>
-                                <th>Alamat</th>
-                                <th>Kontak</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($proposal->anggotaDosen as $a)
-                                <tr>
-                                    <td>{{ $a->user->name ?? '-' }}</td>
-                                    <td>{{ $a->user->nidn ?? '-' }}</td>
-                                    <td>{{ $a->user->alamat ?? '-' }}</td>
-                                    <td>{{ $a->user->kontak ?? '-' }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            @endif
-
-            {{-- ================== REVIEW SEBELUMNYA ================== --}}
-            @if ($proposal->reviews->isNotEmpty())
-            <div class="mb-4">
-                <strong>Review oleh Reviewer:</strong>
-                <ul class="list-group list-group-flush mt-2">
-                    @foreach ($proposal->reviews as $review)
-                        <li class="list-group-item">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <strong>{{ $review->reviewer->name ?? '-' }}</strong><br>
-                                    <small class="text-muted">{{ $review->created_at->format('d F Y') }}</small>
-                                </div>
-                                <span class="badge bg-light text-dark">
-                                    {{ ucfirst(str_replace('_', ' ', $review->status)) }}
-                                </span>
-                            </div>
-                            <p class="mb-0 mt-2 text-muted fst-italic">{{ $review->komentar ?? '-' }}</p>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
-
-            <hr>
-
-            {{-- ================== FORM TINDAKAN PRPM ================== --}}
-            @php
-                $totalReviewer = $proposal->reviews->count();
-                $approvedCount = $proposal->reviews->where('status', 'approved')->count();
-                $allApproved = $totalReviewer > 0 && $approvedCount === $totalReviewer;
-            @endphp
-
-            <div class="mt-4">
-                <h5 class="fw-semibold mb-3 text-success">
-                    <i class="bi bi-pencil-square me-2"></i>Perbarui Status penelitian
-                </h5>
-                <form action="{{ route('ketua-prpm.review.penelitian.proposal.update-status', $proposal) }}" method="POST">
-                    @csrf
-                    <div class="row g-3">
-
-                        {{-- Status --}}
-                        <div class="col-md-6">
-                            <label for="status" class="form-label fw-semibold">Status</label>
-                            <select name="status" id="status" class="form-select" required>
-                                @if(!$allApproved)
-                                    <option value="">-- Pilih Status --</option>
-                                    <option value="menunggu_validasi_reviewer"
-                                        {{ $proposal->status == 'menunggu_validasi_reviewer' ? 'selected' : '' }}>
-                                        Kirim ke Reviewer
-                                    </option>
-                                    <option value="revisi" {{ $proposal->status == 'revisi' ? 'selected' : '' }}>
-                                        Minta Revisi
-                                    </option>
-                                    <option value="rejected" {{ $proposal->status == 'rejected' ? 'selected' : '' }}>
-                                        Tolak
-                                    </option>
-                                @else
-                                    <option value="final" selected>Final (semua reviewer sudah approve)</option>
-                                @endif
-                            </select>
-                        </div>
-
-                        {{-- Assign Reviewer --}}
-                        <div class="col-md-6">
-                            <label for="reviewer_id" class="form-label fw-semibold">Tugaskan Reviewer</label>
-                            <select name="reviewer_id[]" id="reviewer_id" multiple class="form-select" {{ $allApproved ? 'disabled' : '' }}>
-                                @foreach ($reviewers as $reviewer)
-                                    <option value="{{ $reviewer->id }}"
-                                        {{ in_array($reviewer->id, $proposal->reviews->pluck('reviewer_id')->toArray()) ? 'selected' : '' }}>
-                                        {{ $reviewer->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            <small class="text-muted">
-                                {{ $allApproved ? 'Semua reviewer sudah approve, tidak bisa ubah reviewer.' : 'Ketik untuk mencari reviewer dengan cepat.' }}
-                            </small>
-                        </div>
-
-                        {{-- Komentar PRPM --}}
-                        <div class="col-12">
-                            <label for="komentar_prpm" class="form-label fw-semibold">Catatan / Komentar</label>
-                            <textarea name="komentar_prpm" id="komentar_prpm" class="form-control" rows="3">{{ $proposal->komentar_prpm ?? '' }}</textarea>
-                        </div>
                     </div>
-
-                    <div class="d-flex justify-content-between mt-4">
-                        <a href="{{ route('ketua-prpm.review.penelitian.proposal.index') }}" class="btn btn-secondary me-2">
-                            <i class="bi bi-arrow-left me-1"></i> Kembali
-                        </a>
-                        <button type="submit" class="btn btn-success px-4">
-                            <i class="bi bi-save me-1"></i> Simpan
-                        </button>
-                    </div>
-                </form>
+                </div>
             </div>
-
         </div>
-    </div>
-</div>
+    </main>
 @endsection
-
-@push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            new TomSelect("#reviewer_id", {
-                plugins: ['remove_button'],
-                maxItems: null,
-                create: false,
-                sortField: { field: "text", direction: "asc" },
-                placeholder: "Cari dan pilih reviewer..."
-            });
-        });
-    </script>
-@endpush

@@ -14,7 +14,7 @@ class ProposalReviewController extends Controller
         // Ambil semua proposal + relasi penting
         $query = ProposalPenelitian::with([
             'documents',
-            'anggotaDosen.user',
+            'anggota',
             'reviews.reviewer',
         ])->orderByDesc('created_at');
 
@@ -67,7 +67,7 @@ class ProposalReviewController extends Controller
             'documents',
             'reviews.reviewer',
             'ketuaPengusul',
-            'anggotaDosen.user',
+            'anggota',
         ]);
 
         $reviewers = User::role('reviewer')->get();

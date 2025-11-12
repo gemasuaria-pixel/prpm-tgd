@@ -41,6 +41,17 @@ class LaporanPengabdian extends Model
         return $this->morphMany(Review::class, 'reviewable');
     }
 
+    
+    public function reviewers()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'reviews',           // tabel pivot
+            'reviewable_id',     // FK ke proposal
+            'reviewer_id'        // FK ke users
+        )->wherePivot('reviewable_type', self::class);
+    }
+
     /**
      * Relasi ke dokumen (polymorphic)
      */

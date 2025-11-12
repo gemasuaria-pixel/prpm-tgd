@@ -48,13 +48,5 @@
         </div>
     </div>
 
-    {{-- Syarat & Ketentuan --}}
-    <div class="form-check mt-3">
-        <input type="checkbox" wire:model.lazy="dokumen.syarat_ketentuan"
-               class="form-check-input @error('dokumen.syarat_ketentuan') is-invalid @enderror" required>
-        <label class="form-check-label">Saya menyatakan data yang saya masukkan benar.</label>
-        @error('dokumen.syarat_ketentuan')
-            <div class="invalid-feedback d-block">{{ $message }}</div>
-        @enderror
-    </div>
+   
 </div>

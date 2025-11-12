@@ -15,8 +15,7 @@ class ProposalReviewController extends Controller
         // Ambil semua proposal + relasi penting
         $query = ProposalPengabdian::with([
             'documents',
-            'anggotaDosen.user',
-            'anggotaMahasiswa',
+            'anggota',
             'reviews.reviewer',
             'ketuaPengusul',
         ])->orderByDesc('created_at');
@@ -62,14 +61,14 @@ class ProposalReviewController extends Controller
         ]);
     }
 
+
     public function form(ProposalPengabdian $proposal)
     {
         $proposal->load([
             'documents',
             'reviews.reviewer',
             'ketuaPengusul',
-            'anggotaDosen.user',
-            'anggotaMahasiswa',
+            'anggota',
         ]);
 
         $reviewers = User::role('reviewer')->get();

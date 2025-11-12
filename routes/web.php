@@ -47,20 +47,15 @@ Route::middleware(['auth', 'role:dosen', 'check.status'])
             Route::get('/', [App\Http\Controllers\Penelitian\IndexController::class, 'index'])
                 ->name('index');
             // Usulan Proposal Penelitian
-            Route::get('/proposal/create', [App\Http\Controllers\Penelitian\Proposal\CreateController::class, 'index'])
-                ->name('proposal.create');
-            Route::post('/proposal', [App\Http\Controllers\Penelitian\Proposal\CreateController::class, 'store'])
-                ->name('proposal.store');
+            // Upload Laporan Pengabdian
+            Route::get('/proposal/create', function () {
+                return view('penelitian.proposal.create');
+            })->name('proposal.create');
 
             // Upload Laporan Penelitian
-            Route::get('/laporan/{proposal}', [App\Http\Controllers\Penelitian\Laporan\CreateController::class, 'index'])
-                ->name('laporan.create');
-            Route::post('/laporan/{proposal}', [App\Http\Controllers\Penelitian\Laporan\CreateController::class, 'store'])
-                ->name('laporan.store');
-
-            // Status Penelitian
-            Route::get('/status', [App\Http\Controllers\Penelitian\IndexController::class, 'index'])
-                ->name('status');
+            Route::get('/lapoan/create/{proposalId}', function ($proposalId) {
+                return view('penelitian.laporan.create', compact('proposalId'));
+            })->name('laporan.create');
         });
 
         /**
@@ -70,18 +65,15 @@ Route::middleware(['auth', 'role:dosen', 'check.status'])
             Route::get('/', [App\Http\Controllers\Pengabdian\IndexController::class, 'index'])
                 ->name('index');
 
-            // Usulan Proposal Pengabdian
-            Route::get('/proposal/create', [App\Http\Controllers\Pengabdian\Proposal\CreateController::class, 'index'])
-                ->name('proposal.create');
-            Route::post('/proposal', [App\Http\Controllers\Pengabdian\Proposal\CreateController::class, 'store'])
-                ->name('proposal.store');
-
-             
+            // Upload proposal Pengabdian
+            Route::get('/proposal/create', function () {
+                return view('pengabdian.proposal.create');
+            })->name('proposal.create');
+         
             // Upload Laporan Pengabdian
-           Route::get('/proposal/create', function () {
-            return view('pengabdian.proposal.create');})
-        ->name('proposal.create');
-
+            Route::get('/laporan/create/{proposalId}', function ($proposalId) {
+                return view('pengabdian.laporan.create',compact('proposalId'));
+            })->name('laporan.create');
 
         });
 
@@ -103,16 +95,25 @@ Route::middleware(['auth', 'role:ketua_prpm'])
 
             // Proposal
             Route::prefix('proposal')->name('proposal.')->group(function () {
-                Route::get('/', [App\Http\Controllers\Reviews\PRPM\Penelitian\ProposalReviewController::class, 'index'])->name('index');
-                Route::get('/{proposal}', [App\Http\Controllers\Reviews\PRPM\Penelitian\ProposalReviewController::class, 'form'])->name('form');
-                Route::post('/{proposal}/update-status', [App\Http\Controllers\Reviews\PRPM\Penelitian\ProposalReviewController::class, 'updateStatus'])->name('update-status');
+                Route::get('/', function () {
+                    return view('reviews.prpm.penelitian.proposal.index');
+                })->name('index');
+                Route::get('/{proposalId}', function ($proposalId) {
+                    return view('reviews.prpm.penelitian.proposal.form', compact('proposalId'));
+                })->name('form');
+
             });
 
             // Laporan
             Route::prefix('laporan')->name('laporan.')->group(function () {
-                Route::get('/', [App\Http\Controllers\Reviews\PRPM\Penelitian\LaporanReviewController::class, 'index'])->name('index');
-                Route::get('/{laporan}', [App\Http\Controllers\Reviews\PRPM\Penelitian\LaporanReviewController::class, 'form'])->name('form');
-                Route::post('/{laporan}/update-status', [App\Http\Controllers\Reviews\PRPM\Penelitian\LaporanReviewController::class, 'updateStatus'])->name('update-status');
+
+                Route::get('/', function () {
+                    return view('reviews.prpm.penelitian.laporan.index');
+                })->name('index');
+                Route::get('/{laporanId}', function ($laporanId) {
+                    return view('reviews.prpm.penelitian.laporan.form', compact('laporanId'));
+                })->name('form');
+
             });
         });
 
@@ -123,16 +124,25 @@ Route::middleware(['auth', 'role:ketua_prpm'])
 
             // Proposal
             Route::prefix('proposal')->name('proposal.')->group(function () {
-                Route::get('/', [App\Http\Controllers\Reviews\PRPM\Pengabdian\ProposalReviewController::class, 'index'])->name('index');
-                Route::get('/{proposal}', [App\Http\Controllers\Reviews\PRPM\Pengabdian\ProposalReviewController::class, 'form'])->name('form');
-                Route::post('/{proposal}/update-status', [App\Http\Controllers\Reviews\PRPM\Pengabdian\ProposalReviewController::class, 'updateStatus'])->name('update-status');
+                Route::get('/', function () {
+                    return view('reviews.prpm.pengabdian.proposal.index');
+                })->name('index');
+                Route::get('/{proposalId}', function ($proposalId) {
+                    return view('reviews.prpm.pengabdian.proposal.form', compact('proposalId'));
+                })->name('form');
+
             });
 
             // Laporan
             Route::prefix('laporan')->name('laporan.')->group(function () {
-                Route::get('/', [App\Http\Controllers\Reviews\PRPM\Pengabdian\LaporanReviewController::class, 'index'])->name('index');
-                Route::get('/{laporan}', [App\Http\Controllers\Reviews\PRPM\Pengabdian\LaporanReviewController::class, 'form'])->name('form');
-                Route::post('/{laporan}/update-status', [App\Http\Controllers\Reviews\PRPM\Pengabdian\LaporanReviewController::class, 'updateStatus'])->name('update-status');
+
+                Route::get('/', function () {
+                    return view('reviews.prpm.pengabdian.laporan.index');
+                })->name('index');
+                Route::get('/{laporanId}', function ($laporanId) {
+                    return view('reviews.prpm.pengabdian.laporan.form', compact('laporanId'));
+                })->name('form');
+
             });
         });
     });
@@ -149,22 +159,22 @@ Route::middleware(['auth', 'role:reviewer'])
 
             // Proposal
             Route::prefix('proposal')->name('proposal.')->group(function () {
-                Route::get('/', [App\Http\Controllers\Reviews\Reviewer\Penelitian\ProposalReviewController::class, 'index'])
-                    ->name('index');
-                Route::get('/{review}', [App\Http\Controllers\Reviews\Reviewer\Penelitian\ProposalReviewController::class, 'form'])
-                    ->name('form');
-                Route::post('/{review}/submit', [App\Http\Controllers\Reviews\Reviewer\Penelitian\ProposalReviewController::class, 'submit'])
-                    ->name('submit');
+                Route::get('/', function () {
+                    return view('reviews.reviewer.penelitian.proposal.index');
+                })->name('index');
+                Route::get('/{proposalId}', function ($proposalId) {
+                    return view('reviews.reviewer.penelitian.proposal.form', compact('proposalId'));
+                })->name('form');
             });
 
             // Laporan
             Route::prefix('laporan')->name('laporan.')->group(function () {
-                Route::get('/', [App\Http\Controllers\Reviews\Reviewer\Penelitian\LaporanReviewController::class, 'index'])
-                    ->name('index');
-                Route::get('/{review}', [App\Http\Controllers\Reviews\Reviewer\Penelitian\LaporanReviewController::class, 'form'])
-                    ->name('form');
-                Route::post('/{review}/submit', [App\Http\Controllers\Reviews\Reviewer\Penelitian\LaporanReviewController::class, 'submit'])
-                    ->name('submit');
+                Route::get('/', function () {
+                    return view('reviews.reviewer.penelitian.laporan.index');
+                })->name('index');
+                Route::get('/{laporanId}', function ($laporanId) {
+                    return view('reviews.reviewer.penelitian.laporan.form', compact('laporanId'));
+                })->name('form');
             });
         });
 
@@ -176,22 +186,22 @@ Route::middleware(['auth', 'role:reviewer'])
 
             // Proposal
             Route::prefix('proposal')->name('proposal.')->group(function () {
-                Route::get('/', [App\Http\Controllers\Reviews\Reviewer\Pengabdian\ProposalReviewController::class, 'index'])
-                    ->name('index');
-                Route::get('/{review}', [App\Http\Controllers\Reviews\Reviewer\Pengabdian\ProposalReviewController::class, 'form'])
-                    ->name('form');
-                Route::post('/{review}/submit', [App\Http\Controllers\Reviews\Reviewer\Pengabdian\ProposalReviewController::class, 'submit'])
-                    ->name('submit');
+                Route::get('/', function () {
+                    return view('reviews.reviewer.pengabdian.proposal.index');
+                })->name('index');
+                Route::get('/{proposalId}', function ($proposalId) {
+                    return view('reviews.reviewer.pengabdian.proposal.form', compact('proposalId'));
+                })->name('form');
             });
 
             // Laporan
             Route::prefix('laporan')->name('laporan.')->group(function () {
-                Route::get('/', [App\Http\Controllers\Reviews\Reviewer\Pengabdian\LaporanReviewController::class, 'index'])
-                    ->name('index');
-                Route::get('/{review}', [App\Http\Controllers\Reviews\Reviewer\Pengabdian\LaporanReviewController::class, 'form'])
-                    ->name('form');
-                Route::post('/{review}/submit', [App\Http\Controllers\Reviews\Reviewer\Pengabdian\LaporanReviewController::class, 'submit'])
-                    ->name('submit');
+                Route::get('/', function () {
+                    return view('reviews.reviewer.pengabdian.laporan.index');
+                })->name('index');
+                Route::get('/{laporanId}', function ($laporanId) {
+                    return view('reviews.reviewer.pengabdian.laporan.form', compact('laporanId'));
+                })->name('form');
             });
         });
     });

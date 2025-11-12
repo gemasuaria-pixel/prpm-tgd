@@ -42,8 +42,10 @@ class ProposalWizard extends Component
         'kata_kunci' => '',
         'luaran_tambahan_dijanjikan' => '',
         'file_path' => null,
-        'syarat_ketentuan' => false,
     ];
+    
+    // --- STEP 5: preview ---
+    public $syarat_ketentuan = false;
 
     // --- Dropdown data ---
     public $dosenTerdaftar = [];
@@ -72,12 +74,20 @@ class ProposalWizard extends Component
     public function nextStep()
     {
         $this->validateCurrentStep();
-        if ($this->step < 4) $this->step++;
+         if ($this->step < 5) {
+        $this->step++;
+       $this->dispatch('setStep', $this->step);
     }
+    
+    }
+
 
     public function prevStep()
     {
-        if ($this->step > 1) $this->step--;
+         if ($this->step > 1) {
+        $this->step--;
+        $this->dispatch('setStep', $this->step);//  kirim ke StepIndicator
+    }
     }
 
     // ------------------------------------------------------------------
@@ -95,6 +105,7 @@ class ProposalWizard extends Component
         }
 
         if ($this->step === 2) {
+          
             if (empty($this->anggota_dosen) && empty($this->anggota_mahasiswa)) {
                 $this->addError('anggota', 'Minimal ada satu anggota (dosen atau mahasiswa).');
             }
@@ -115,7 +126,13 @@ if ($this->step === 4) {
         'dokumen.kata_kunci' => 'required|string|max:255',
         'dokumen.luaran_tambahan_dijanjikan' => 'required|string|in:jurnal,program,buku',
         'dokumen.file_path' => 'required|file|mimes:pdf,docx|max:2048',
-        'dokumen.syarat_ketentuan' => 'accepted',
+      
+    ]);
+}
+if ($this->step === 5) {
+    $this->validate([
+        
+        'syarat_ketentuan' => 'accepted',
     ]);
 }
 
@@ -164,7 +181,9 @@ protected $messages = [
     'dokumen.file_path.required' => 'File proposal harus diunggah.',
     'dokumen.file_path.mimes' => 'File proposal harus berupa PDF atau DOCX.',
     'dokumen.file_path.max' => 'Ukuran file maksimal 2MB.',
-    'dokumen.syarat_ketentuan.accepted' => 'Anda harus menyetujui syarat dan ketentuan.',
+    
+    // Step 5 - Syarat & Ketentuan
+    'syarat_ketentuan.accepted' => 'Anda harus menyetujui syarat dan ketentuan.',
 ];
 
 protected $validationAttributes = [
@@ -189,11 +208,13 @@ protected $validationAttributes = [
     'dokumen.kata_kunci' => 'Kata Kunci',
     'dokumen.luaran_tambahan_dijanjikan' => 'Luaran Tambahan',
     'dokumen.file_path' => 'File Proposal',
-    'dokumen.syarat_ketentuan' => 'Syarat & Ketentuan',
+
+    // Syarat & Ketentuan
+    'syarat_ketentuan' => 'Syarat & Ketentuan',
 ];
 
     // ------------------------------------------------------------------
-    // 🔹 Submit Final
+    //  Submit Final
     // ------------------------------------------------------------------
     public function submit()
     {

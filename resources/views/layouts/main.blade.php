@@ -13,10 +13,10 @@
         rel="stylesheet">
     {{-- end google font inter --}}
     {{-- css costume --}}
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+    @vite(['resources/js/app.js'])
 
-
+    @livewireStyles()
 
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     <!--begin::Accessibility Meta Tags-->
@@ -90,7 +90,7 @@
     <!-- bagian bawah body -->
 
 
-    
+
     <script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/browser/overlayscrollbars.browser.es6.min.js"
         crossorigin="anonymous"></script>
     <!--end::Third Party Plugin(OverlayScrollbars)--><!--begin::Required Plugin(popperjs for Bootstrap 5)-->
@@ -124,8 +124,8 @@
     <!--end::OverlayScrollbars Configure-->
 
 
+    @livewireScripts()
     @stack('scripts')
-
     <!--end::Script-->
 </body>
 <!--end::Body-->

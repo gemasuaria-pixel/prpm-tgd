@@ -50,7 +50,7 @@ class AuthenticatedSessionController extends Controller
         return redirect()->route('ketua-prpm.dashboard');
     }
     if ($user->hasRole('reviewer')) {
-        return redirect()->route('dashboard');
+        return redirect()->route('reviewer.review.penelitian.proposal.index');
     }
 
     // fallback

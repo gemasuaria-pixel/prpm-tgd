@@ -52,10 +52,5 @@
     </div>
 
 
-    <style>
-        .is-invalid {
-            border-color: #dc3545 !important;
-            background-color: #fff5f5;
-        }
-    </style>
+
 </div>

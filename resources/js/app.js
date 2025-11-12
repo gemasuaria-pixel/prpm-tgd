@@ -1,4 +1,2 @@
-import './bootstrap';
-import TomSelect from 'tom-select';
-import 'tom-select/dist/css/tom-select.css';
-
+import Swal from 'sweetalert2';
+window.Swal = Swal;

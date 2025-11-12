@@ -154,7 +154,7 @@
                                                 <small class="text-muted">ID: {{ $identifier }}</small>
                                             </div>
 
-                                            <a href="{{ route('dosen.penelitian.laporan.create', $proposal->id) }}"
+                                            <a href="{{ route('dosen.penelitian.laporan.create', ['proposalId' => $proposal->id]) }}"
                                                 class="btn btn-outline-success btn-sm fw-semibold">
                                                 <i class="bi bi-upload me-1"></i> Upload
                                             </a>

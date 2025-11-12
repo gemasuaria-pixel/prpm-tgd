@@ -2,6 +2,7 @@
 
 namespace App\Models\Penelitian;
 
+use App\Models\User;
 use App\Models\Document;
 use App\Models\Review\Review;
 use Illuminate\Database\Eloquent\Model;
@@ -35,6 +36,15 @@ class LaporanPenelitian extends Model
     public function reviews()
     {
         return $this->morphMany(Review::class, 'reviewable');
+    }
+      public function reviewers()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'reviews',           // tabel pivot
+            'reviewable_id',     // FK ke proposal
+            'reviewer_id'        // FK ke users
+        )->wherePivot('reviewable_type', self::class);
     }
 
     public function documents()
