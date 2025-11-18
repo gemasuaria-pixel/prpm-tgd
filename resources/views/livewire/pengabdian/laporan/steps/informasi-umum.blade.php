@@ -21,7 +21,6 @@
             <tr>
                 <th>Nama</th>
                 <th>NIDN</th>
-                <th>Alamat</th>
             </tr>
         </thead>
         <tbody>
@@ -31,7 +30,7 @@
             <tr>
               <td>{{ $anggota->individu->name }}</td>
               <td>{{ $anggota->individu->nidn }}</td>
-              <td>{{ $anggota->individu->alamat }}</td>
+
             </tr>
         @endif
                 </tr>
@@ -45,7 +44,6 @@
             <tr>
                 <th>Nama</th>
                 <th>NIM</th>
-                <th>Program Studi</th>
             </tr>
         </thead>
         <tbody>
@@ -55,7 +53,7 @@
             <tr>
               <td>{{ $anggota->individu->nama }}</td>
               <td>{{ $anggota->individu->nim }}</td>
-              <td>{{ $anggota->individu->program_studi }}</td>
+
             </tr>
         @endif
                 </tr>

@@ -7,6 +7,35 @@
         <div class="app-content">
             <!--begin::Container-->
             <div class="container-fluid">
+
+                 <div class="container my-4">
+                        <div class="card border-0 text-white" style="background-color: #0d6efd; border-radius: 20px;">
+
+                            <div class="card-body p-5 d-flex flex-column flex-md-row align-items-center">
+
+                                <!-- Left Section -->
+                                <div class="col-md-6 mb-4 mb-md-0">
+                                    <h1 class="fw-bold display-5">
+                                        Halo Admin <span>👋</span>
+                                    </h1>
+                                    <p class="mt-2 fs-5">
+                                        cek aktivitas terkini para user yuk!
+                                    </p>
+                                    <a href="#" class="btn btn-light btn-lg mt-3"
+                                        style="border-radius: 10px; padding: 10px 25px;">
+                                        cek aktivitas
+                                    </a>
+                                </div>
+
+                                <!-- Right Section (Image) -->
+                                <div class="col-md-6 d-flex justify-content-center">
+                                    <img src="{{ asset('banner.png') }}" alt="banner" class="img-fluid"
+                                        style="max-height: 220px;">
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
                 <div class="row">
                     <div class="col-md-8">
                         <div class="card mb-4">

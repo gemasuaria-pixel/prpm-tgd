@@ -25,7 +25,7 @@
                                 <i class="bi bi-file-earmark-text me-1"></i> proposal
                             </a>
                         @endforeach
-        
+                            
                   @endif
             </div>
         </div>

@@ -2,7 +2,7 @@
 
 @section('content')
     <main class="app-main">
-        <x-breadcrumbs>Review PRPM</x-breadcrumbs>
+        <x-breadcrumbs>Review</x-breadcrumbs>
 
         <div class="app-content">
             <div class="container-fluid">

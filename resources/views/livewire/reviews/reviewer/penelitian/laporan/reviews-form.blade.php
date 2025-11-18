@@ -24,6 +24,7 @@
                             class="btn btn-sm btn-outline-primary me-1 mb-1">
                             <i class="bi bi-file-earmark-text me-1"></i> Laporan
                         </a>
+                        
                     @endforeach
                 @endif
             </div>

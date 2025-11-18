@@ -18,8 +18,11 @@
                     <dt class="col-sm-4">Judul Laporan</dt>
                     <dd class="col-sm-8">{{ $laporan['judul'] ?: '-' }}</dd>
 
+                    <dt class="col-sm-4">kata kunci</dt>
+                    <dd class="col-sm-8">{{ $laporan['kata_kunci'] ?: '-' }}</dd>
+
                     <dt class="col-sm-4">Ringkasan Laporan</dt>
-                    <dd class="col-sm-8">{{ $laporan['ringkasan'] ?: '-' }}</dd>
+                    <dd class="col-sm-8">{{ $laporan['ringkasan_laporan'] ?: '-' }}</dd>
                 </dl>
             </div>
 

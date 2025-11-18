@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+
         Schema::create('laporan_pengabdians', function (Blueprint $table) {
             $table->id();
             $table->foreignId('proposal_pengabdian_id')
@@ -18,8 +19,10 @@ return new class extends Migration
                 ->onDelete('cascade');
             $table->unique('proposal_pengabdian_id');
             $table->string('judul');
-            $table->year('tahun_pelaksanaan');
-            $table->text('ringkasan')->nullable();
+            $table->text('abstrak')->nullable();
+            $table->string('kata_kunci')->nullable();
+            $table->string('metode_penelitian')->nullable();
+            $table->text('ringkasan_laporan')->nullable();
             // Tambahan: JSON untuk link eksternal (video / jurnal)
             $table->json('external_links')->nullable()
                 ->comment('Simpan link video/jurnal dalam format JSON: [{"type":"video","url":"..."},{"type":"jurnal","url":"..."}]');
@@ -37,7 +40,6 @@ return new class extends Migration
             $table->text('komentar_prpm')->nullable();
             $table->timestamps();
         });
-
     }
 
     /**
@@ -45,6 +47,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+
         Schema::dropIfExists('laporan_pengabdians');
+
     }
 };

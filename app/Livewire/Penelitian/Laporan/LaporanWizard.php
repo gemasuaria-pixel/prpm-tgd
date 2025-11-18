@@ -107,18 +107,10 @@ class LaporanWizard extends Component
             'pernyataan' => 'accepted',
         ]);
 
-        // Simpan file laporan
-        $path = $this->file_path->store('laporan_penelitian', 'public');
-
-        // Update variabel agar preview bisa buka path permanen
-$this->file_path = $path;
-        $this->proposal->documents()->create([
-            'tipe' => 'laporan_penelitian',
-            'file_path' => $path,
-        ]);
+       
 
         // Simpan ke database (update kalau sudah ada)
-        LaporanPenelitian::updateOrCreate(
+        $laporan = LaporanPenelitian::updateOrCreate(
             ['proposal_penelitian_id' => $this->proposal->id],
             [
                 'judul' => $this->laporan['judul'],
@@ -127,10 +119,19 @@ $this->file_path = $path;
                 'metode_penelitian' => $this->laporan['metode_penelitian'],
                 'ringkasan_laporan' => $this->laporan['ringkasan_laporan'],
                 'luaran' => json_encode($this->luaran),
-                'file_path' => $path,
                 'status' => 'menunggu_validasi_prpm',
             ]
         );
+
+         // Simpan file laporan
+        $path = $this->file_path->store('laporan_penelitian', 'public');
+
+        // Update variabel agar preview bisa buka path permanen
+        $this->file_path = $path;
+        $laporan->documents()->create([
+            'tipe' => 'laporan_penelitian',
+            'file_path' => $path,
+        ]);
 
         session()->flash('success', 'Laporan penelitian berhasil disimpan!');
 

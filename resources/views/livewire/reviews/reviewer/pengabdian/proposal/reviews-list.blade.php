@@ -84,7 +84,7 @@
                                     href="{{ route('reviewer.review.pengabdian.proposal.form', ['proposalId' => $proposal->id]) }}"
                                     class="btn btn-outline-primary btn-sm rounded-3 d-inline-flex align-items-center gap-1 px-2">
                                     <i class="bi bi-eye"></i>
-                                    <span>Lihat</span>
+                                    <span>review</span>
                                 </a>
                             </td>
                         </tr>

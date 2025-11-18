@@ -12,7 +12,7 @@
             <div class="col-md-6 small">
                 <p><strong>Ketua Pengusul:</strong> {{ $laporan->proposalPenelitian->ketuaPengusul->name ?? '-' }}</p>
                 <p><strong>Rumpun Ilmu:</strong> {{ $laporan->proposalPenelitian->rumpun_ilmu ?? '-' }}</p>
-                <p><strong>Bidang:</strong> {{ $laporan->proposalPenelitian->bidang_penelitian ?? '-' }}</p>
+                <p><strong>Bidang penelitian:</strong> {{ $laporan->proposalPenelitian->bidang_penelitian ?? '-' }}</p>
             </div>
             <div class="col-md-6 small">
                 <p><strong>Tahun Pelaksanaan:</strong> {{ $laporan->proposalPenelitian->tahun_pelaksanaan ?? '-' }}</p>

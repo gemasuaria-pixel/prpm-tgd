@@ -1,10 +1,8 @@
-<div class="container">
-    <h4 class="fw-bold mb-4">
-        <i class="bi bi-eye me-2 text-primary"></i>Preview Proposal Pengabdian
-    </h4>
-
-    {{-- Identitas Proposal --}}
+<div>
     <div class="mb-4">
+        <h4 class="fw-bold mb-4">
+            <i class="bi bi-eye me-2 text-primary"></i>Preview Proposal Pengabdian
+        </h4>
         <h5 class="text-secondary mb-3"><i class="bi bi-person-badge me-2"></i>Identitas Proposal</h5>
         <table class="table table-bordered small">
             <tr>
@@ -44,7 +42,7 @@
         </div>
     </div>
 
-   
+
     {{-- Dokumen --}}
     <div class="mb-4">
         <h5 class="text-secondary mb-3"><i class="bi bi-file-earmark-text me-2"></i>Dokumen</h5>
@@ -79,11 +77,11 @@
         <i class="bi bi-info-circle me-2"></i>
         Pastikan semua data sudah benar sebelum mengirim proposal.
     </div>
-    
-     {{-- Syarat & Ketentuan --}}
+
+    {{-- Syarat & Ketentuan --}}
     <div class="form-check mt-3">
         <input type="checkbox" wire:model.lazy="syarat_ketentuan"
-               class="form-check-input @error('syarat_ketentuan') is-invalid @enderror" required>
+            class="form-check-input @error('syarat_ketentuan') is-invalid @enderror" required>
         <label class="form-check-label">Saya menyatakan data yang saya masukkan benar.</label>
         @error('syarat_ketentuan')
             <div class="invalid-feedback d-block">{{ $message }}</div>

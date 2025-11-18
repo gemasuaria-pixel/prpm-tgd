@@ -11,8 +11,8 @@
         <div class="row g-3 mb-3">
             <div class="col-md-6 small">
                 <p><strong>Ketua Pengusul:</strong> {{ $proposal->ketuaPengusul->name ?? '-' }}</p>
-                <p><strong>Bidang Pengabdian:</strong> {{ $proposal->bidang_pengabdian ?? '-' }}</p>
-                <p><strong>Lokasi Kegiatan:</strong> {{ $proposal->lokasi_kegiatan ?? '-' }}</p>
+                <p><strong>rumpun ilmu:</strong> {{ $proposal->rumpun_ilmu ?? '-' }}</p>
+                <p><strong>Bidang penelitian:</strong> {{ $proposal->bidang_penelitian ?? '-' }}</p>
             </div>
             <div class="col-md-6 small">
                 <p><strong>Tahun Pelaksanaan:</strong> {{ $proposal->tahun_pelaksanaan ?? '-' }}</p>
@@ -152,7 +152,7 @@
                 </div>
 
                 <div class="d-flex justify-content-between mt-4">
-                    <a wire:navigate href="{{ route('ketua-prpm.review.pengabdian.proposal.index') }}"
+                    <a wire:navigate href="{{ route('ketua-prpm.review.penelitian.proposal.index') }}"
                         class="btn btn-light border">
                         <i class="bi bi-arrow-left me-1"></i> Kembali
                     </a>

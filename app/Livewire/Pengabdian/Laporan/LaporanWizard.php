@@ -18,8 +18,9 @@ class LaporanWizard extends Component
 
     public $laporan = [
         'judul' => '',
-        'ringkasan' => '',
-        'tahun_pelaksanaan' => '',
+        'kata_kunci' => '',
+        'ringkasan_laporan' => '',
+        
     ];
 
     public $file_path;
@@ -33,22 +34,20 @@ class LaporanWizard extends Component
 
     public function mount($proposalId)
     {
-        // Ambil proposal dengan relasi anggota
         $this->proposal = ProposalPengabdian::with(['anggota', 'anggota.individu'])
             ->findOrFail($proposalId);
 
-        // Cek akses
         $user = Auth::user();
+
         if ($this->proposal->ketua_pengusul_id !== $user->id) {
             abort(403, 'Anda tidak berhak mengakses proposal ini.');
         }
 
-        // Pastikan proposal sudah final
         if ($this->proposal->status !== 'final') {
             abort(403, 'Proposal belum berstatus final.');
         }
 
-        // Jika laporan sudah pernah dibuat → isi form dengan data lama
+        // Jika laporan sudah ada, isi form
         if ($laporan = LaporanPengabdian::where('proposal_pengabdian_id', $proposalId)->first()) {
             foreach ($this->laporan as $key => $value) {
                 if (isset($laporan->$key)) {
@@ -60,7 +59,6 @@ class LaporanWizard extends Component
         }
     }
 
-    // 🔹 Navigasi Wizard
     public function nextStep()
     {
         $this->validateStep();
@@ -76,17 +74,19 @@ class LaporanWizard extends Component
         }
     }
 
-    //  Validasi per langkah
     protected function validateStep()
     {
+        // Step 2: isi laporan utama
         if ($this->step === 2) {
             $this->validate([
                 'laporan.judul' => 'required|string|max:255',
-                'laporan.ringkasan' => 'required|string|min:10',
-                'laporan.tahun_pelaksanaan' => 'required|digits:4|integer|min:2024',
+                'laporan.kata_kunci' => 'required|string|min:3',
+                'laporan.ringkasan_laporan' => 'required|string|min:10',
+              
             ]);
         }
 
+        // Step 3: upload dokumen
         if ($this->step === 3) {
             $this->validate([
                 'file_path' => 'required|file|mimes:pdf,doc,docx|max:25000',
@@ -94,7 +94,6 @@ class LaporanWizard extends Component
         }
     }
 
-    // ➕ Tambah / hapus link luaran
     public function addLuaran($type)
     {
         $this->luaran[$type][] = '';
@@ -106,28 +105,27 @@ class LaporanWizard extends Component
         $this->luaran[$type] = array_values($this->luaran[$type]);
     }
 
-    // ✅ Submit akhir
     public function submit()
     {
         $this->validate([
             'laporan.judul' => 'required|string|max:255',
-            'laporan.tahun_pelaksanaan' => 'required|int|min:4',
-            'laporan.ringkasan' => 'required|string|min:4',
+            'laporan.kata_kunci' => 'required|string|min:3',
+
             'file_path' => 'required|file|mimes:pdf,doc,docx|max:25000',
             'pernyataan' => 'accepted',
         ]);
 
-        // Simpan file laporan ke storage
+        // Simpan file laporan
         $path = $this->file_path->store('pengabdian/laporan', 'public');
         $this->file_path = $path;
 
-        // Simpan laporan ke database
+        // Simpan ke database
         $laporan = LaporanPengabdian::updateOrCreate(
             ['proposal_pengabdian_id' => $this->proposal->id],
             [
                 'judul' => $this->laporan['judul'],
-                'tahun_pelaksanaan' => $this->laporan['tahun_pelaksanaan'],
-                'ringkasan' => $this->laporan['ringkasan'],
+                'kata_kunci' => $this->laporan['kata_kunci'],
+                'ringkasan_laporan' => $this->laporan['ringkasan_laporan'],
                 'external_links' => json_encode($this->luaran),
                 'file_path' => $path,
                 'status' => 'menunggu_validasi_prpm',
@@ -135,16 +133,15 @@ class LaporanWizard extends Component
             ]
         );
 
-        // Simpan juga ke tabel dokumen (jika ada relasi)
+        // Simpan dokumen ke tabel documents bila ada relasi
         $laporan->documents()->create([
             'tipe' => 'laporan_pengabdian',
             'file_path' => $path,
         ]);
 
-        // Flash sukses
         session()->flash('success', 'Laporan pengabdian berhasil disimpan!');
 
-        // Reset data form
+        // Reset state
         $this->reset([
             'laporan',
             'file_path',
@@ -153,7 +150,6 @@ class LaporanWizard extends Component
             'step',
         ]);
 
-        // Redirect
         return redirect()->route('dosen.pengabdian.index');
     }
 

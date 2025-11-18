@@ -1,12 +1,11 @@
 @extends('layouts.main')
 @section('content')
     <main class="app-main">
-        <x-breadcrumbs>Dashoard </x-breadcrumbs>
+        <x-breadcrumbs>User registration management</x-breadcrumbs>
         <!--begin::App Content-->
         <div class="app-content">
             <!--begin::Container-->
             <div class="container-fluid my-5">
-                <h1 class="mb-4 text-center">Pending Users</h1>
 
                 @if (session('success'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">

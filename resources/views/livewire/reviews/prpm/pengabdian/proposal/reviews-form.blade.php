@@ -33,7 +33,7 @@
         {{-- =============== ANGGOTA =============== --}}
         @if ($proposal->anggota->isNotEmpty())
             <div class="mb-4">
-                <h6 class="fw-semibold text-secondary mb-2">Anggota Pengabdian</h6>
+                <h6 class="fw-semibold text-secondary mb-2">Anggota dosen </h6>
                 <div class="table-responsive">
                     <table class="table table-sm table-bordered align-middle">
                         <thead class="table-light">
@@ -46,12 +46,39 @@
                         </thead>
                         <tbody>
                             @foreach ($proposal->anggota as $a)
-                                <tr>
-                                    <td>{{ $a->individu->name ?? '-' }}</td>
-                                    <td>{{ $a->individu->nidn ?? '-' }}</td>
-                                    <td>{{ $a->individu->alamat ?? '-' }}</td>
-                                    <td>{{ $a->individu->kontak ?? '-' }}</td>
-                                </tr>
+                                @if ($a->individu instanceof \App\Models\User)
+                                    <tr>
+                                        <td>{{ $a->individu->name ?? '-' }}</td>
+                                        <td>{{ $a->individu->nidn ?? '-' }}</td>
+                                        <td>{{ $a->individu->alamat ?? '-' }}</td>
+                                        <td>{{ $a->individu->kontak ?? '-' }}</td>
+                                    </tr>
+                                @endif
+                            @endforeach
+
+                        </tbody>
+                    </table>
+                    <h6 class="fw-semibold text-secondary mb-2">Anggota mahasiswa </h6>
+                    <table class="table table-sm table-bordered align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Nama</th>
+                                <th>NIDN</th>
+                                <th>Alamat</th>
+                                <th>Kontak</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach ($proposal->anggota as $a)
+                                @if ($a->individu instanceof \App\Models\Mahasiswa)
+                                    <tr>
+                                        <td>{{ $a->individu->nama ?? '-' }}</td>
+                                        <td>{{ $a->individu->nim ?? '-' }}</td>
+                                        <td>{{ $a->individu->alamat ?? '-' }}</td>
+                                        <td>{{ $a->individu->no_hp ?? '-' }}</td>
+                                    </tr>
+                                @endif
                             @endforeach
                         </tbody>
                     </table>
@@ -99,7 +126,8 @@
                         <select wire:model="status" id="status" class="form-select"
                             {{ $allApproved || $proposal->status === 'final' ? 'disabled' : '' }}>
                             @if (!$allApproved)
-                                <option class="disabled text-muted" value="" disabled selected>-- Pilih Status --</option>
+                                <option class="disabled text-muted" value="" disabled selected>-- Pilih Status --
+                                </option>
                                 <option value="menunggu_validasi_reviewer">Kirim ke Reviewer</option>
                                 <option value="revisi">Minta Revisi</option>
                                 <option value="rejected">Tolak</option>
@@ -110,9 +138,7 @@
                     </div>
 
                     {{-- REVIEWER PICKER --}}
-                    <div class="col-md-6" 
-                        x-data="reviewerPicker($el.dataset.reviewers, @entangle('reviewer_id'))" 
-                        x-init="init()" 
+                    <div class="col-md-6" x-data="reviewerPicker($el.dataset.reviewers, @entangle('reviewer_id'))" x-init="init()"
                         data-reviewers='@json($reviewers)'
                         x-show="$wire.status === 'menunggu_validasi_reviewer'" x-transition>
 

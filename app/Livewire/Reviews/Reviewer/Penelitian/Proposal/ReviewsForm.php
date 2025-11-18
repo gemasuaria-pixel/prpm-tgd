@@ -32,7 +32,7 @@ class ReviewsForm extends Component
             'ketuaPengusul',
             'reviews' => fn ($q) => $q->where('reviewer_id', Auth::id())->with('reviewer'),
         ])->whereHas('reviewers', function ($q) {
-                $q->where('users.id', Auth::id()); // ✨ spesifik 'users.id'
+                $q->where('users.id', Auth::id()); //  spesifik 'users.id'
             })
             ->findOrFail($proposalId);
 

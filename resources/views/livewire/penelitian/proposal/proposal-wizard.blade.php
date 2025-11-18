@@ -19,12 +19,13 @@
             <div style="{{ $step !== 2 ? 'display:none;' : '' }}">
                 @include('livewire.penelitian.proposal.steps.anggota')
             </div>
-            <div style="{{ $step !== 3 ? 'display:none;' : '' }}">
-                @include('livewire.penelitian.proposal.steps.dokumen')
-            </div>
             <div style="{{ $step !== 4 ? 'display:none;' : '' }}">
                 @include('livewire.penelitian.proposal.steps.preview')
             </div>
+            <div style="{{ $step !== 3 ? 'display:none;' : '' }}">
+                @include('livewire.penelitian.proposal.steps.dokumen')
+            </div>
+            
 
         </div>
 
